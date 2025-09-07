@@ -4,6 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
+
         string[,] pieceA = { { "[*]", "[ ]", "[ ]" }, { "[*]", "[*]", "[*]" } };
 
         for (int i = 0; i < pieceA.GetLength(0); i++)

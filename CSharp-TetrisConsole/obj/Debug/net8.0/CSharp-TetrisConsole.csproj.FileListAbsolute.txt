@@ -12,3 +12,4 @@
 /Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/obj/Debug/net8.0/CSharp-TetrisConsole.pdb
 /Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/obj/Debug/net8.0/CSharp-TetrisConsole.genruntimeconfig.cache
 /Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/obj/Debug/net8.0/ref/CSharp-TetrisConsole.dll
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/obj/Debug/net8.0/CSharp-TetrisConsole.sourcelink.json
