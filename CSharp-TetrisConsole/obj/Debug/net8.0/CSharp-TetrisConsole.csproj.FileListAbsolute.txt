@@ -1,0 +1,14 @@
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/bin/Debug/net8.0/CSharp-TetrisConsole
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/bin/Debug/net8.0/CSharp-TetrisConsole.deps.json
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/bin/Debug/net8.0/CSharp-TetrisConsole.runtimeconfig.json
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/bin/Debug/net8.0/CSharp-TetrisConsole.dll
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/bin/Debug/net8.0/CSharp-TetrisConsole.pdb
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/obj/Debug/net8.0/CSharp-TetrisConsole.GeneratedMSBuildEditorConfig.editorconfig
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/obj/Debug/net8.0/CSharp-TetrisConsole.AssemblyInfoInputs.cache
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/obj/Debug/net8.0/CSharp-TetrisConsole.AssemblyInfo.cs
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/obj/Debug/net8.0/CSharp-TetrisConsole.csproj.CoreCompileInputs.cache
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/obj/Debug/net8.0/CSharp-TetrisConsole.dll
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/obj/Debug/net8.0/refint/CSharp-TetrisConsole.dll
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/obj/Debug/net8.0/CSharp-TetrisConsole.pdb
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/obj/Debug/net8.0/CSharp-TetrisConsole.genruntimeconfig.cache
+/Users/marcelobrea/Documents/mock-code/CSharp-TetrisConsole/obj/Debug/net8.0/ref/CSharp-TetrisConsole.dll
