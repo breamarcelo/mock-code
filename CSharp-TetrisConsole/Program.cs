@@ -4,7 +4,15 @@ class Program
 {
     static void Main(string[] args)
     {
+        for (int i = 0; i < 5; i++)
+        {
+            Console.WriteLine("Piece: " + i);
+            Piece myPiece = new Piece(i);
+            Console.WriteLine();
+        }
+        Console.ReadKey();
 
+        /*
         string[,] pieceA = { { "[*]", "[ ]", "[ ]" }, { "[*]", "[*]", "[*]" } };
 
         for (int i = 0; i < pieceA.GetLength(0); i++)
@@ -51,5 +59,6 @@ class Program
             }
             Console.WriteLine();
         }
+        */
     }
 }
