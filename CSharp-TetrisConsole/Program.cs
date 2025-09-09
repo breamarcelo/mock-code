@@ -4,6 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
+        /*
         for (int i = 0; i < 5; i++)
         {
             Console.WriteLine("Piece: " + i);
@@ -11,8 +12,8 @@ class Program
             Console.WriteLine();
         }
         Console.ReadKey();
+        */
 
-        /*
         string[,] pieceA = { { "[*]", "[ ]", "[ ]" }, { "[*]", "[*]", "[*]" } };
 
         for (int i = 0; i < pieceA.GetLength(0); i++)
@@ -35,7 +36,7 @@ class Program
             }
             Console.WriteLine();
         }
-
+        /*
         Console.WriteLine("----ROTATED----");
         string[,] pieceC = { { "[*]", "[*]", "[*]" }, { "[ ]", "[ ]", "[*]" } };
 
