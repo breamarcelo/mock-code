@@ -4,7 +4,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        /*
         for (int i = 0; i < 5; i++)
         {
             Console.WriteLine("Piece: " + i);
@@ -12,7 +11,6 @@ class Program
             Console.WriteLine();
         }
         Console.ReadKey();
-        */
 
         string[,] pieceA = { { "[*]", "[ ]", "[ ]" }, { "[*]", "[*]", "[*]" } };
 

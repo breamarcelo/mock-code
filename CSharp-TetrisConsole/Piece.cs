@@ -16,6 +16,7 @@ public class Piece
         new int[]{ 2, 2, 1, 1, 1, 1}
     };
 
+    // need to create rotation
 
     public Piece(int shapeIndex)
     {
