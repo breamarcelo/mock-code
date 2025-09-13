@@ -17,6 +17,7 @@ public class Piece
     };
 
     // need to create rotation
+    // added a coment
 
     public Piece(int shapeIndex)
     {
