@@ -4,7 +4,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,7 +13,7 @@ public class App {
     static ArrayList<Item> itemsList = new ArrayList<Item>();
     public static void main(String[] args) throws Exception {
         int option = -1;
-        while (option != 0) {
+        while (option != 3) {
             itemsList = read();
             System.out.println("__________________________" + "\n" +
                                "       TodoList App       " + "\n" +
@@ -25,15 +24,17 @@ public class App {
             System.out.println("2. Delete item");
             System.out.println("3. Close");
             option = sc.nextInt();
+            sc.nextLine();
             switch (option) {
                 case 1:
                     write(itemsList);
                     break;
                 case 2:
+                    delete(itemsList);
                     break;
             }
         }
-        
+      sc.close();  
     }
     
     public static void write(ArrayList<Item> items){
@@ -47,7 +48,7 @@ public class App {
     
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("file.dat"))) {
             for(Item item : items) {
-                oos.writeObject((Item) myItem);
+                oos.writeObject((Item) item);
             }
             oos.close();
         } catch (IOException e) {
@@ -75,8 +76,23 @@ public class App {
     public static void display(ArrayList<Item> items){
         int counter = 1;
         for(Item item : items) {
-            System.out.println(counter + ")" + item);
+            System.out.println(counter + ") " + item);
             counter++;
+        }
+    }
+
+    public static void delete(ArrayList<Item> items){
+        System.out.println("Write item index (1-" + items.size() + "):");
+        int index = sc.nextInt();
+        sc.nextLine();
+        items.remove(index - 1);
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("file.dat"))) {
+            for(Item item : items) {
+                oos.writeObject((Item) item);
+            }
+            oos.close();
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
         }
     }
 }
