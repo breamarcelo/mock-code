@@ -5,8 +5,8 @@ public class Item {
     private String description;
 
     public Item(String title, String description) {
-        this.description = description;
-        this.title = title;
+        this.setDescription(description);
+        this.setTitle(title);
     }
 
     public String getTitle() {
@@ -27,7 +27,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return this.getTitle() + "\n" + this.getDescription();
+        return this.getTitle() + "\n" + this.getDescription() + "\n";
     }
     
     
