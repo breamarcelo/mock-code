@@ -1,8 +1,82 @@
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
 public class App {
+    static Scanner sc = new Scanner(System.in);
+    static ArrayList<Item> itemsList = new ArrayList<Item>();
     public static void main(String[] args) throws Exception {
+        int option = -1;
+        while (option != 0) {
+            itemsList = read();
+            System.out.println("__________________________" + "\n" +
+                               "       TodoList App       " + "\n" +
+                               "__________________________" + "\n");
+            display(itemsList);
+            System.out.println("Select option:");
+            System.out.println("1. Add item");
+            System.out.println("2. Delete item");
+            System.out.println("3. Close");
+            option = sc.nextInt();
+            switch (option) {
+                case 1:
+                    write(itemsList);
+                    break;
+                case 2:
+                    break;
+            }
+        }
         
-        Menu myMenu = new Menu();
-        myMenu.menu();
+    }
+    
+    public static void write(ArrayList<Item> items){
+        System.out.println("Enter title: ");
+        String title = sc.nextLine();
+        System.out.println("Enter description: ");
+        String description = sc.nextLine();
+    
+        Item myItem = new Item(title, description);
+        items.add(myItem);
+    
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("file.dat"))) {
+            for(Item item : items) {
+                oos.writeObject((Item) myItem);
+            }
+            oos.close();
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    public static ArrayList<Item> read(){
+        ArrayList<Item> items = new ArrayList<Item>();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("file.dat"))) {
+            try {
+                while (true) { 
+                    items.add((Item) ois.readObject());
+                }
+            } catch (Exception e) {
+            }
+            ois.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return items;
+    }
+
+    public static void display(ArrayList<Item> items){
+        int counter = 1;
+        for(Item item : items) {
+            System.out.println(counter + ")" + item);
+            counter++;
+        }
     }
 }
