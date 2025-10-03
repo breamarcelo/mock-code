@@ -13,23 +13,27 @@ public class App {
     static ArrayList<Item> itemsList = new ArrayList<Item>();
     public static void main(String[] args) throws Exception {
         int option = -1;
-        while (option != 3) {
+        while (option != 5) {
             itemsList = read();
             System.out.println("__________________________" + "\n" +
                                "       TodoList App       " + "\n" +
                                "__________________________" + "\n");
-            display(itemsList);
             System.out.println("Select option:");
-            System.out.println("1. Add item");
-            System.out.println("2. Delete item");
-            System.out.println("3. Close");
+            System.out.println("1. Display list");
+            System.out.println("2. Add item");
+            System.out.println("3. Update item");
+            System.out.println("4. Delete item");
+            System.out.println("5. Close");
             option = sc.nextInt();
             sc.nextLine();
             switch (option) {
                 case 1:
-                    write(itemsList);
+                    display(itemsList);
                     break;
                 case 2:
+                    write(itemsList);
+                    break;
+                case 4:
                     delete(itemsList);
                     break;
             }
@@ -67,8 +71,7 @@ public class App {
             }
             ois.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
         }
         return items;
     }
@@ -94,5 +97,9 @@ public class App {
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
         }
+    }
+
+    public static void update(ArrayList<Item> items) {
+        
     }
 }
