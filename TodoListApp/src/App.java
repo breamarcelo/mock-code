@@ -33,6 +33,9 @@ public class App {
                 case 2:
                     write(itemsList);
                     break;
+                case 3:
+                    update(itemsList);
+                    break;
                 case 4:
                     delete(itemsList);
                     break;
@@ -86,9 +89,9 @@ public class App {
 
     public static void delete(ArrayList<Item> items){
         System.out.println("Write item index (1-" + items.size() + "):");
-        int index = sc.nextInt();
+        int index = sc.nextInt() - 1;
         sc.nextLine();
-        items.remove(index - 1);
+        items.remove(index);
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("file.dat"))) {
             for(Item item : items) {
                 oos.writeObject((Item) item);
@@ -100,6 +103,22 @@ public class App {
     }
 
     public static void update(ArrayList<Item> items) {
-        
+        System.out.println("Write item index (1-" + items.size() + "):");
+        int index = sc.nextInt() - 1;
+        sc.nextLine();
+        System.out.println("Enter new title (" + items.get(index).getTitle() + "):");
+        String newTitle = sc.nextLine();
+        System.out.println("Enter new description (" + items.get(index).getDescription() + "):");
+        String newDesc = sc.nextLine();
+        items.get(index).setTitle(newTitle != "" ? newTitle : items.get(index).getTitle());
+        items.get(index).setDescription(newDesc != "" ? newDesc : items.get(index).getDescription());
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("file.dat"))) {
+            for(Item item : items) {
+                oos.writeObject((Item) item);
+            }
+            oos.close();
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
     }
 }
