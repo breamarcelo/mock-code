@@ -10,9 +10,10 @@ public class DateDemo {
         System.out.println(date);
         //System.out.println(cal);
         LocalDate ld = LocalDate.of(2025, 10, 3);
-        DateTimeFormatter myFormat = DateTimeFormatter.ofPattern("dd-mm-yyyy");
+        DateTimeFormatter myFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         System.out.println("Before formatting:");
         System.out.println(ld);
         System.out.println("After formatting:");
+        System.out.println(ld.format(myFormat));
     }
 }
