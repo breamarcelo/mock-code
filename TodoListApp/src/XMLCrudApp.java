@@ -1,4 +1,5 @@
 
+import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -9,13 +10,17 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public class XMLCrudApp {
-    public static void main(String[] args) throws TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError {
+    public static void main(String[] args) throws TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, SAXException, IOException {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
             createXML(builder);
+            // createElement(builder);
         } catch (ParserConfigurationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -25,7 +30,30 @@ public class XMLCrudApp {
     public static void createXML(DocumentBuilder builder) throws TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError {
         Document doc = builder.getDOMImplementation().createDocument(null, "Personas", null);
         doc.setXmlVersion("1.0");
+        Element persona = doc.createElement("persona");
+        doc.getDocumentElement().appendChild(persona);
+        persona.setAttribute("ID", "1");
+        persona.appendChild(doc.createElement("nombre")).appendChild(doc.createTextNode("Marcelo"));
+        persona.appendChild(doc.createElement("edad")).appendChild(doc.createTextNode("38"));
+        Element persona2 = doc.createElement("persona");
+        doc.getDocumentElement().appendChild(persona2);
+        persona2.setAttribute("ID", "2");
+        persona2.appendChild(doc.createElement("nombre")).appendChild(doc.createTextNode("Nathalia"));
+        persona2.appendChild(doc.createElement("edad")).appendChild(doc.createTextNode("37"));
+
+        NodeList list = doc.getElementsByTagName("persona");
+        for(int i = 0; i < list.getLength(); i++) {
+            if(list.item(i).getAttributes().getNamedItem("ID").getTextContent().equals("2")){
+                System.out.println(list.item(i).getFirstChild().getTextContent());
+                
+            }
+        }
+        
 
         TransformerFactory.newInstance().newTransformer().transform(new DOMSource(doc), new StreamResult("personas.xml"));
+    }
+
+    public static void createElement(DocumentBuilder builder) throws SAXException, IOException {
+        Document doc = builder.newDocument();
     }
 }
