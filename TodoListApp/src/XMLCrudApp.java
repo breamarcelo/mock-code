@@ -11,6 +11,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -40,12 +41,25 @@ public class XMLCrudApp {
         persona2.setAttribute("ID", "2");
         persona2.appendChild(doc.createElement("nombre")).appendChild(doc.createTextNode("Nathalia"));
         persona2.appendChild(doc.createElement("edad")).appendChild(doc.createTextNode("37"));
+        Element persona3 = doc.createElement("persona");
+        doc.getDocumentElement().appendChild(persona3);
+        persona3.setAttribute("ID", "3");
+        persona3.appendChild(doc.createElement("nombre")).appendChild(doc.createTextNode("Loreto"));
+        persona3.appendChild(doc.createElement("edad")).appendChild(doc.createTextNode("6"));
+        Element persona4 = doc.createElement("persona");
+        //doc.getDocumentElement().appendChild(persona4);
+        persona4.setAttribute("ID", "4");
+        persona4.appendChild(doc.createElement("nombre")).appendChild(doc.createTextNode("Iago"));
+        persona4.appendChild(doc.createElement("edad")).appendChild(doc.createTextNode("0"));
+
+        doc.getDocumentElement().replaceChild(persona4, persona3);
 
         NodeList list = doc.getElementsByTagName("persona");
         for(int i = 0; i < list.getLength(); i++) {
             if(list.item(i).getAttributes().getNamedItem("ID").getTextContent().equals("2")){
-                System.out.println(list.item(i).getFirstChild().getTextContent());
-                
+                Node n = list.item(i).getFirstChild();
+                System.out.println(n.getTextContent());
+                doc.getDocumentElement().removeChild(n.getParentNode());                
             }
         }
         
