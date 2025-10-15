@@ -40,11 +40,13 @@ public class XMLApp {
         String apellidos = sc.nextLine();
         System.out.println("Departamento: ");
         String departamento = sc.nextLine();
+        System.out.println("Código epartamento: ");
+        int codDept = sc.nextInt();
         System.out.println("Salario: ");
         double salario = sc.nextDouble();
         sc.nextLine();
 
-        addEmpleado(doc, id, nombre, apellidos, departamento, salario);
+        addEmpleado(doc, id, nombre, apellidos, departamento, codDept, salario);
         
     }
 
@@ -58,13 +60,16 @@ public class XMLApp {
         outputTransformer(doc);
     }
 
-    public static void addEmpleado(Document doc, int id, String nombre, String apellidos, String departamento, double salario){
+    public static void addEmpleado(Document doc, int id, String nombre, String apellidos, String departamento, int codDept, double salario){
         Element emp = doc.createElement("empleado");
         doc.getDocumentElement().appendChild(emp);
         emp.setAttribute("ID", Integer.toString(id));
         emp.appendChild(doc.createElement("nombre")).appendChild(doc.createTextNode(nombre));
         emp.appendChild(doc.createElement("apellidos")).appendChild(doc.createTextNode(apellidos));
-        emp.appendChild(doc.createElement("departamento")).appendChild(doc.createTextNode(departamento));
+        Element dept = doc.createElement("departamento");
+        dept.appendChild(doc.createTextNode(departamento));
+        dept.setAttribute("codDept", Integer.toString(codDept));
+        emp.appendChild(dept);
         emp.appendChild(doc.createElement("salario")).appendChild(doc.createTextNode(Double.toString(salario)));
 
         try {

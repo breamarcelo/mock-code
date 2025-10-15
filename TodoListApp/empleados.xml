@@ -12,4 +12,10 @@
         <departamento>Diseño</departamento>
         <salario>3500.0</salario>
     </empleado>
+    <empleado ID="3">
+        <nombre>Loreto</nombre>
+        <apellidos>Brea Rodriguez</apellidos>
+        <departamento codDept="1324">Marketing</departamento>
+        <salario>1500.0</salario>
+    </empleado>
 </Empleados>
