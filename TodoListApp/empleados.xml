@@ -1,1 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><Empleados/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Empleados>
+    <empleado ID="1">
+        <nombre>Marcelo</nombre>
+        <apellidos>Brea Perez</apellidos>
+        <departamento>Desarrollo</departamento>
+        <salario>4000.0</salario>
+    </empleado>
+    <empleado ID="2">
+        <nombre>Nathalia</nombre>
+        <apellidos>Rodriguez Reyes</apellidos>
+        <departamento>Diseño</departamento>
+        <salario>3500.0</salario>
+    </empleado>
+</Empleados>

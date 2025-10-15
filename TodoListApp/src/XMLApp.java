@@ -1,6 +1,7 @@
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -9,11 +10,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class XMLApp {
     public static void main(String[] args) throws ParserConfigurationException, TransformerException {
-
+        Scanner sc = new Scanner(System.in);
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document doc = null;
         
@@ -29,6 +31,20 @@ public class XMLApp {
             e.printStackTrace();
         }
 
+        System.out.println("ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Nombre: ");
+        String nombre = sc.nextLine();
+        System.out.println("Apellidos: ");
+        String apellidos = sc.nextLine();
+        System.out.println("Departamento: ");
+        String departamento = sc.nextLine();
+        System.out.println("Salario: ");
+        double salario = sc.nextDouble();
+        sc.nextLine();
+
+        addEmpleado(doc, id, nombre, apellidos, departamento, salario);
         
     }
 
@@ -42,4 +58,20 @@ public class XMLApp {
         outputTransformer(doc);
     }
 
+    public static void addEmpleado(Document doc, int id, String nombre, String apellidos, String departamento, double salario){
+        Element emp = doc.createElement("empleado");
+        doc.getDocumentElement().appendChild(emp);
+        emp.setAttribute("ID", Integer.toString(id));
+        emp.appendChild(doc.createElement("nombre")).appendChild(doc.createTextNode(nombre));
+        emp.appendChild(doc.createElement("apellidos")).appendChild(doc.createTextNode(apellidos));
+        emp.appendChild(doc.createElement("departamento")).appendChild(doc.createTextNode(departamento));
+        emp.appendChild(doc.createElement("salario")).appendChild(doc.createTextNode(Double.toString(salario)));
+
+        try {
+            outputTransformer(doc);
+        } catch (TransformerException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }
