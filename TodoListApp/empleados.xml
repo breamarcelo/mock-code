@@ -2,14 +2,14 @@
 <Empleados>
     <empleado ID="1">
         <nombre>Marcelo</nombre>
-        <apellidos>Brea Perez</apellidos>
-        <departamento>Desarrollo</departamento>
-        <salario>4000.0</salario>
+        <apellidos>Brea Pérez</apellidos>
+        <departamento codDept="116">Desarrollo</departamento>
+        <salario>4200.0</salario>
     </empleado>
     <empleado ID="2">
         <nombre>Nathalia</nombre>
         <apellidos>Rodriguez Reyes</apellidos>
-        <departamento>Diseño</departamento>
+        <departamento codDept="3018">Diseño</departamento>
         <salario>3500.0</salario>
     </empleado>
     <empleado ID="3">
