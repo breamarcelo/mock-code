@@ -11,7 +11,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -57,9 +56,7 @@ public class XMLCrudAppDemo {
         NodeList list = doc.getElementsByTagName("persona");
         for(int i = 0; i < list.getLength(); i++) {
             if(list.item(i).getAttributes().getNamedItem("ID").getTextContent().equals("2")){
-                Node n = list.item(i).getFirstChild();
-                System.out.println(n.getTextContent());
-                doc.getDocumentElement().removeChild(n.getParentNode());                
+                doc.getDocumentElement().removeChild(list.item(i));                
             }
         }
         

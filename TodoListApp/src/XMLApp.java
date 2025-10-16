@@ -32,43 +32,41 @@ public class XMLApp {
             e.printStackTrace();
         }
 
-        /* 
-         * 
-         System.out.println("ID: ");
-         int id = sc.nextInt();
-         sc.nextLine();
-         System.out.println("Nombre: ");
-         String nombre = sc.nextLine();
-         System.out.println("Apellidos: ");
-         String apellidos = sc.nextLine();
-         System.out.println("Departamento: ");
-         String departamento = sc.nextLine();
-         System.out.println("Código departamento: ");
-         int codDept = sc.nextInt();
-         System.out.println("Salario: ");
-         double salario = sc.nextDouble();
-         sc.nextLine();
-         
-         addEmpleado(doc, id, nombre, apellidos, departamento, codDept, salario);
-         */
-
-         showEmpleados(doc);
-         actualizarEmpleado(doc);
-         showEmpleados(doc);
+        // addEmpleado(doc);
+        showEmpleados(doc);
+        //actualizarEmpleado(doc);
+        eliminarEmpleado(doc);
+        showEmpleados(doc);
         
     }
-
+    
     public static void outputTransformer(Document doc) throws TransformerException{
         TransformerFactory.newInstance().newTransformer().transform(new DOMSource(doc), new StreamResult("empleados.xml"));
     }
-
+    
     public static void createXMLDocument(DocumentBuilder builder) throws TransformerException{
         Document doc = builder.getDOMImplementation().createDocument(null, "Empleados", null);
         doc.setXmlVersion("1.0");
         outputTransformer(doc);
     }
+    
+    public static void addEmpleado(Document doc){
+        System.out.println("ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Nombre: ");
+        String nombre = sc.nextLine();
+        System.out.println("Apellidos: ");
+        String apellidos = sc.nextLine();
+        System.out.println("Departamento: ");
+        String departamento = sc.nextLine();
+        System.out.println("Código departamento: ");
+        int codDept = sc.nextInt();
+        System.out.println("Salario: ");
+        double salario = sc.nextDouble();
+        sc.nextLine();
 
-    public static void addEmpleado(Document doc, int id, String nombre, String apellidos, String departamento, int codDept, double salario){
+
         Element emp = doc.createElement("empleado");
         doc.getDocumentElement().appendChild(emp);
         emp.setAttribute("ID", Integer.toString(id));
@@ -155,6 +153,25 @@ public class XMLApp {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    public static void eliminarEmpleado(Document doc){
+        NodeList list = doc.getElementsByTagName("empleado");
+        System.out.println("Introduce el ID del empleado a eliminar: ");
+        String id = Integer.toString(sc.nextInt());
+        sc.nextLine();
+        for(int i=0; i<list.getLength(); i++){
+            if(list.item(i).getAttributes().getNamedItem("ID").getTextContent().equals(id)){
+                doc.getDocumentElement().removeChild(list.item(i));
+            }
+        }
+
+        try {
+            outputTransformer(doc);
+        } catch (TransformerException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }
