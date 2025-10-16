@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Empleados>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Empleados>
     <empleado ID="1">
         <nombre>Marcelo</nombre>
         <apellidos>Brea Pérez</apellidos>
@@ -12,10 +11,5 @@
         <departamento codDept="3018">Diseño</departamento>
         <salario>3500.0</salario>
     </empleado>
-    <empleado ID="3">
-        <nombre>Loreto</nombre>
-        <apellidos>Brea Rodriguez</apellidos>
-        <departamento codDept="1324">Marketing</departamento>
-        <salario>1500.0</salario>
-    </empleado>
-</Empleados>
+    
+<empleado ID="3"><nombre>Loreto</nombre><apellidos>Brea Rodriguez</apellidos><departamento codDept="2803">Marketing</departamento><salario>1700.0</salario></empleado></Empleados>

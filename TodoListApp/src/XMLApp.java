@@ -31,13 +31,60 @@ public class XMLApp {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        limpiarConsola();
+        int n = -1;
+        while (n != 0) {
+            System.out.println("ADMINISTRADOR DE EMPLEADOS");
+            System.out.println("--------------------------");
+            System.out.println("Seleccione una opción:");
+            System.out.println("1. Mostrar todos los empleados");
+            System.out.println("2. Crear empleado");
+            System.out.println("3. Actualizar empleado");
+            System.out.println("4. Eliminar empleado");
+            System.out.println("0. Salir");
+            n = sc.nextInt();
+            sc.nextLine();
+            switch (n) {
+                case 1:
+                    limpiarConsola();
+                    showEmpleados(doc);
+                    confirmar();
+                    break;
+                case 2:
+                    limpiarConsola();
+                    addEmpleado(doc);
+                    confirmar();
+                    break;
+                case 3:
+                    limpiarConsola();
+                    actualizarEmpleado(doc);
+                    confirmar();
+                    break;
+                case 4:
+                    limpiarConsola();
+                    eliminarEmpleado(doc);
+                    confirmar();
+                    break;
+                case 0:
+                    limpiarConsola();
+                    System.out.println("Bye!");
+                    break;
+                default:
+                    System.out.println("Opción no válida, introduce un número de 0-4");
+                    break;
+            }
+        }
+    }
 
-        // addEmpleado(doc);
-        showEmpleados(doc);
-        //actualizarEmpleado(doc);
-        eliminarEmpleado(doc);
-        showEmpleados(doc);
-        
+    public static void confirmar(){
+        System.out.println("Presiona INTRO para continuar");
+        sc.nextLine();
+        limpiarConsola();
+    }
+
+    public static void limpiarConsola(){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
     
     public static void outputTransformer(Document doc) throws TransformerException{
