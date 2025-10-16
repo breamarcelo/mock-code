@@ -11,6 +11,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class XMLApp {
@@ -31,22 +32,27 @@ public class XMLApp {
             e.printStackTrace();
         }
 
-        System.out.println("ID: ");
-        int id = sc.nextInt();
-        sc.nextLine();
-        System.out.println("Nombre: ");
-        String nombre = sc.nextLine();
-        System.out.println("Apellidos: ");
-        String apellidos = sc.nextLine();
-        System.out.println("Departamento: ");
-        String departamento = sc.nextLine();
-        System.out.println("Código epartamento: ");
-        int codDept = sc.nextInt();
-        System.out.println("Salario: ");
-        double salario = sc.nextDouble();
-        sc.nextLine();
+        /* 
+         * 
+         System.out.println("ID: ");
+         int id = sc.nextInt();
+         sc.nextLine();
+         System.out.println("Nombre: ");
+         String nombre = sc.nextLine();
+         System.out.println("Apellidos: ");
+         String apellidos = sc.nextLine();
+         System.out.println("Departamento: ");
+         String departamento = sc.nextLine();
+         System.out.println("Código epartamento: ");
+         int codDept = sc.nextInt();
+         System.out.println("Salario: ");
+         double salario = sc.nextDouble();
+         sc.nextLine();
+         
+         addEmpleado(doc, id, nombre, apellidos, departamento, codDept, salario);
+         */
 
-        addEmpleado(doc, id, nombre, apellidos, departamento, codDept, salario);
+         showEmpleados(doc);
         
     }
 
@@ -77,6 +83,15 @@ public class XMLApp {
         } catch (TransformerException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+
+    public static void showEmpleados(Document doc){
+        NodeList list = doc.getElementsByTagName("empleado");
+        for(int i=0; i < list.getLength(); i++){
+            String id = list.item(i).getAttributes().getNamedItem("ID").getTextContent();
+            System.out.println("ID: " + id);
+            
         }
     }
 }
