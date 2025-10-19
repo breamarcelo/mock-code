@@ -1,3 +1,20 @@
+#gridpane {
+    -fx-fill: "hsl(0, 0%, 0%)";
+}
+
 .button {
-    -fx-width: 200%;
+    -fx-max-width: 300px;
+    -fx-pref-width: 100%;
+    -fx-background-color: "hsla(0, 0%, 50%, 100%)";
+    -fx-background-radius: 0px;
+    -fx-text-fill: "hsl(0, 0%, 95%)";
+}
+
+.button:hover {
+    -fx-background-color: "hsla(0, 0%, 50%, 75%)";
+}
+
+.header {
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
 }

@@ -15,9 +15,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
-/**
- * JavaFX App
- */
 public class App extends Application {
 
     private static Scene scene;
@@ -25,12 +22,14 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Stage window = stage;
+        window.resizableProperty().set(false);
         window.setTitle("demo");
         BorderPane root = new BorderPane();
 
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10,10,10,10));
-        grid.setVgap(8);
+        grid.setId("gridpane");
+        grid.setPadding(new Insets(20,20,20,20));
+        grid.setVgap(10);
         grid.setHgap(10);
         grid.setPrefSize(800, 500);
 
@@ -47,6 +46,7 @@ public class App extends Application {
         }
 
         Label empHeader = new Label("Employees");
+        empHeader.getStyleClass().add("header");
         grid.add(empHeader, 0, 0, 2, 1);
 
         ListView<String> ls = new ListView<String>();
@@ -57,7 +57,7 @@ public class App extends Application {
         
         Button delEmpBtn = new Button("Delete");
         grid.add(delEmpBtn, 1, 11);
-        
+        delEmpBtn.setBorder(null);;
         Label idLabel = new Label("ID:");
         grid.add(idLabel, 2, 1, 2, 1);
         
@@ -95,6 +95,7 @@ public class App extends Application {
         grid.add(saveEditEmpBtn, 3, 11);
         
         Label deptHeader = new Label("Departments");
+        deptHeader.getStyleClass().add("header");
         grid.add(deptHeader, 4, 0, 2, 1);
         
         ListView<String> deptList = new ListView<String>();
