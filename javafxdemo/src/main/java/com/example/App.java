@@ -51,6 +51,9 @@ public class App extends Application {
 
         ListView<String> ls = new ListView<String>();
         grid.add(ls, 0, 1, 2, 10);
+        for (int i = 0; i < 26; i++) {
+            ls.getItems().add("Item " + i);
+        }
         
         Button addEmpBtn = new Button("Add");
         grid.add(addEmpBtn, 0, 11);
@@ -100,6 +103,9 @@ public class App extends Application {
         
         ListView<String> deptList = new ListView<String>();
         grid.add(deptList, 4, 1, 2, 5);
+        for (int i = 0; i < 10; i++) {
+            deptList.getItems().add("Department " + i);
+        }
         
         Button addDeptBtn = new Button("Add");
         grid.add(addDeptBtn, 4, 6);

@@ -1,20 +1,59 @@
-#gridpane {
-    -fx-fill: "hsl(0, 0%, 0%)";
-}
-
-.button {
-    -fx-max-width: 300px;
-    -fx-pref-width: 100%;
-    -fx-background-color: "hsla(0, 0%, 50%, 100%)";
-    -fx-background-radius: 0px;
+* {
     -fx-text-fill: "hsl(0, 0%, 95%)";
-}
-
-.button:hover {
-    -fx-background-color: "hsla(0, 0%, 50%, 75%)";
 }
 
 .header {
     -fx-font-weight: bold;
     -fx-font-size: 18px;
+}
+
+GridPane {
+    -fx-background-color: "hsl(0, 0%, 0%)";
+}
+
+Button,
+TextField {
+    -fx-max-width: 300px;
+    -fx-pref-width: 100%;
+    -fx-background-color: "hsla(0, 0%, 50%, 1)";
+    -fx-background-radius: 0px;
+}
+
+TextField {
+    -fx-text-fill: "hsl(0, 0%, 70%)";
+}
+
+Button:hover {
+    -fx-background-color: "hsla(0, 0%, 50%, 0.7)";
+}
+
+ListView {
+    -fx-background-color: "hsl(0, 0%, 0%)";
+}
+
+.list-cell:even {
+    -fx-background-color: "hsla(0, 0%, 25%, 1)";
+}
+
+.list-cell:odd {
+    -fx-background-color: "hsla(0, 0%, 25%, 0.7)";
+}
+
+.list-cell:selected {
+    -fx-background-color: "hsl(0, 0%, 50%)";
+}
+
+.list-cell:hover {
+    -fx-border-color: "hsl(0, 0%, 0%)";
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
+    -fx-start-margin: 0px;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: "hsl(0, 0%, 50%)";
 }
