@@ -85,6 +85,7 @@ public class App {
     public static void limpiarConsola(){
         System.out.print("\033[H\033[2J");
         System.out.flush();
+        sc.nextLine();
     }
     
     public static void outputTransformer(Document doc) throws TransformerException{
