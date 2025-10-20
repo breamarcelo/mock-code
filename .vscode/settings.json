@@ -1,3 +1,4 @@
 {
-    "dotnet.defaultSolution": "CSharp-TetrisConsole.sln"
+    "dotnet.defaultSolution": "CSharp-TetrisConsole.sln",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
