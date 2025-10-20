@@ -48,12 +48,21 @@ public class App extends Application {
         Label empHeader = new Label("Employees");
         empHeader.getStyleClass().add("header");
         grid.add(empHeader, 0, 0, 2, 1);
+        
+        TextField idInput = new TextField();
+        grid.add(idInput, 2, 2, 2, 1);
+        idInput.setDisable(true);
 
         ListView<String> ls = new ListView<String>();
         grid.add(ls, 0, 1, 2, 10);
         for (int i = 0; i < 26; i++) {
-            ls.getItems().add("Item " + i);
+            ls.getItems().add("Item");
         }
+        ls.getSelectionModel().selectedIndexProperty().addListener((obs, oldItem, newItem) -> {
+            System.out.println("Selected item : " + newItem);
+            System.out.println(newItem.intValue());
+            
+        });
         
         Button addEmpBtn = new Button("Add");
         grid.add(addEmpBtn, 0, 11);
@@ -63,9 +72,6 @@ public class App extends Application {
         delEmpBtn.setBorder(null);;
         Label idLabel = new Label("ID:");
         grid.add(idLabel, 2, 1, 2, 1);
-        
-        TextField idInput = new TextField();
-        grid.add(idInput, 2, 2, 2, 1);
 
         Label nameLabel = new Label("Name:");
         grid.add(nameLabel, 2, 3, 2, 1);
