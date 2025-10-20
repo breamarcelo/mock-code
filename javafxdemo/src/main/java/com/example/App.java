@@ -49,19 +49,19 @@ public class App extends Application {
         empHeader.getStyleClass().add("header");
         grid.add(empHeader, 0, 0, 2, 1);
         
-        TextField idInput = new TextField();
-        grid.add(idInput, 2, 2, 2, 1);
-        idInput.setDisable(true);
-
-        
         Button addEmpBtn = new Button("Add");
         grid.add(addEmpBtn, 0, 11);
         
         Button delEmpBtn = new Button("Delete");
         grid.add(delEmpBtn, 1, 11);
         delEmpBtn.setBorder(null);;
+        
         Label idLabel = new Label("ID:");
         grid.add(idLabel, 2, 1, 2, 1);
+        
+        TextField idInput = new TextField();
+        grid.add(idInput, 2, 2, 2, 1);
+        idInput.setDisable(true);
         
         Label nameLabel = new Label("Name:");
         grid.add(nameLabel, 2, 3, 2, 1);
@@ -128,8 +128,11 @@ public class App extends Application {
             ls.getItems().add("Item");
         }
         ls.getSelectionModel().selectedIndexProperty().addListener((obs, oldItem, newItem) -> {
-            System.out.println("Selected item : " + newItem);
-            idInput.setText("Item " + newItem.intValue());
+            idInput.setText("Employee " + newItem.intValue());
+            nameInput.setText("Employee " + newItem.intValue());
+            lNameInput.setText("Employee " + newItem.intValue());
+            departmentInput.setText("Employee " + newItem.intValue());
+            salaryInput.setText("Employee " + newItem.intValue());
         });
         
         ListView<String> deptList = new ListView<String>();
@@ -137,7 +140,7 @@ public class App extends Application {
         for (int i = 0; i < 10; i++) {
             deptList.getItems().add("Department " + i);
         }
-        
+
         root.setCenter(grid);
         Scene scene = new Scene(root);
         scene.getStylesheets().add("styles.css");
