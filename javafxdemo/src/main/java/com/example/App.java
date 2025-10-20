@@ -53,16 +53,6 @@ public class App extends Application {
         grid.add(idInput, 2, 2, 2, 1);
         idInput.setDisable(true);
 
-        ListView<String> ls = new ListView<String>();
-        grid.add(ls, 0, 1, 2, 10);
-        for (int i = 0; i < 26; i++) {
-            ls.getItems().add("Item");
-        }
-        ls.getSelectionModel().selectedIndexProperty().addListener((obs, oldItem, newItem) -> {
-            System.out.println("Selected item : " + newItem);
-            System.out.println(newItem.intValue());
-            
-        });
         
         Button addEmpBtn = new Button("Add");
         grid.add(addEmpBtn, 0, 11);
@@ -72,7 +62,7 @@ public class App extends Application {
         delEmpBtn.setBorder(null);;
         Label idLabel = new Label("ID:");
         grid.add(idLabel, 2, 1, 2, 1);
-
+        
         Label nameLabel = new Label("Name:");
         grid.add(nameLabel, 2, 3, 2, 1);
         
@@ -107,11 +97,6 @@ public class App extends Application {
         deptHeader.getStyleClass().add("header");
         grid.add(deptHeader, 4, 0, 2, 1);
         
-        ListView<String> deptList = new ListView<String>();
-        grid.add(deptList, 4, 1, 2, 5);
-        for (int i = 0; i < 10; i++) {
-            deptList.getItems().add("Department " + i);
-        }
         
         Button addDeptBtn = new Button("Add");
         grid.add(addDeptBtn, 4, 6);
@@ -137,13 +122,29 @@ public class App extends Application {
         Button saveEditDeptBtn = new Button("Save");
         grid.add(saveEditDeptBtn, 5, 11);
         
+        ListView<String> ls = new ListView<String>();
+        grid.add(ls, 0, 1, 2, 10);
+        for (int i = 0; i < 26; i++) {
+            ls.getItems().add("Item");
+        }
+        ls.getSelectionModel().selectedIndexProperty().addListener((obs, oldItem, newItem) -> {
+            System.out.println("Selected item : " + newItem);
+            idInput.setText("Item " + newItem.intValue());
+        });
+        
+        ListView<String> deptList = new ListView<String>();
+        grid.add(deptList, 4, 1, 2, 5);
+        for (int i = 0; i < 10; i++) {
+            deptList.getItems().add("Department " + i);
+        }
+        
         root.setCenter(grid);
         Scene scene = new Scene(root);
         scene.getStylesheets().add("styles.css");
         window.setScene(scene);
         window.show();
     }
-
+    
     public static void main(String[] args) {
         launch();
     }
