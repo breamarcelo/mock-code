@@ -24,7 +24,7 @@ public class App {
 
         try {
             if(!f.exists()){
-                createXMLDocument(builder);
+                (builder);
             } 
             doc = builder.parse(f);
         } catch (SAXException | IOException e) {
