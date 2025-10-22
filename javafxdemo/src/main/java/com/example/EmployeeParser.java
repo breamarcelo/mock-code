@@ -18,6 +18,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class EmployeeParser {
     
     private File file = new File("Employees.xml");
@@ -36,18 +39,30 @@ public class EmployeeParser {
         TransformerFactory.newInstance().newTransformer().transform(new DOMSource(doc), new StreamResult(this.getFile()));
     }
 
-    public void readXmlFile() throws SAXException, IOException{
+    public ObservableList readXmlFile() throws SAXException, IOException{
+        ObservableList<Employee> obsList = FXCollections.observableArrayList();
         Document doc = this.getBuilder().parse(this.getFile());
         NodeList list = doc.getElementsByTagName("employee");
         for (int i = 0; i < list.getLength(); i++) {
             Element emp = (Element) list.item(i);
-            String id = emp.getElementsByTagName("id").item(0).getTextContent();
+            int id = Integer.parseInt(emp.getElementsByTagName("id").item(0).getTextContent());
             String name = emp.getElementsByTagName("name").item(0).getTextContent();
             String lName = emp.getElementsByTagName("lastName").item(0).getTextContent();
-            String deptIt = emp.getElementsByTagName("deptId").item(0).getTextContent();
+            int deptId = Integer.parseInt(emp.getElementsByTagName("deptId").item(0).getTextContent());
             String deptName = emp.getElementsByTagName("deptName").item(0).getTextContent();
-            String salary = emp.getElementsByTagName("salary").item(0).getTextContent();
+            double salary = Double.parseDouble(emp.getElementsByTagName("salary").item(0).getTextContent());
+            System.out.println(id + ": " + name + " " + lName);
+            Employee empItem = new Employee(id, name, lName, deptId, deptName, salary);
+            obsList.add(empItem);
         }
+        return obsList;
+    }
+
+    public void writeToXml() throws SAXException, IOException{
+        Document doc = builder.parse(this.getFile());
+        Element newEmp = doc.createElement("empleado");
+        doc.getDocumentElement().appendChild(newEmp);
+        newEmp.appendChild(doc.createElement("id")).appendChild(doc.createTextNode("data"));
     }
 
     public File getFile() {

@@ -2,7 +2,14 @@ package com.example;
 
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.xml.sax.SAXException;
+
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,7 +27,7 @@ public class App extends Application {
     private static Scene scene;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, SAXException, TransformerConfigurationException, ParserConfigurationException, TransformerException {
         Stage window = stage;
         window.resizableProperty().set(false);
         window.setTitle("demo");
@@ -122,17 +129,19 @@ public class App extends Application {
         Button saveEditDeptBtn = new Button("Save");
         grid.add(saveEditDeptBtn, 5, 11);
         
-        ListView<String> ls = new ListView<String>();
+        EmployeeParser empParser = new EmployeeParser();
+        ObservableList<Employee> obsList = empParser.readXmlFile();
+        
+        ListView<Employee> ls = new ListView<Employee>(obsList);
         grid.add(ls, 0, 1, 2, 10);
-        for (int i = 0; i < 26; i++) {
-            ls.getItems().add("Item");
-        }
+       
         ls.getSelectionModel().selectedIndexProperty().addListener((obs, oldItem, newItem) -> {
-            idInput.setText("Employee " + newItem.intValue());
-            nameInput.setText("Employee " + newItem.intValue());
-            lNameInput.setText("Employee " + newItem.intValue());
-            departmentInput.setText("Employee " + newItem.intValue());
-            salaryInput.setText("Employee " + newItem.intValue());
+            Employee selectedEmployee = obsList.get(newItem.intValue());
+            idInput.setText(Integer.toString(selectedEmployee.getId()));
+            nameInput.setText((String) selectedEmployee.getName());
+            lNameInput.setText(selectedEmployee.getlName());
+            departmentInput.setText(Integer.toString(selectedEmployee.getDeptId()));
+            salaryInput.setText(Double.toString(selectedEmployee.getSalary()));
         });
         
         ListView<String> deptList = new ListView<String>();
