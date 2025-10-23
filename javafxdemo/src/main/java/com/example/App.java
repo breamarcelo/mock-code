@@ -5,11 +5,14 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import org.xml.sax.SAXException;
 
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -56,8 +59,6 @@ public class App extends Application {
         empHeader.getStyleClass().add("header");
         grid.add(empHeader, 0, 0, 2, 1);
         
-        Button addEmpBtn = new Button("Add");
-        grid.add(addEmpBtn, 0, 11);
         
         Button delEmpBtn = new Button("Delete");
         grid.add(delEmpBtn, 1, 11);
@@ -68,7 +69,6 @@ public class App extends Application {
         
         TextField idInput = new TextField();
         grid.add(idInput, 2, 2, 2, 1);
-        idInput.setDisable(true);
         
         Label nameLabel = new Label("Name:");
         grid.add(nameLabel, 2, 3, 2, 1);
@@ -128,10 +128,100 @@ public class App extends Application {
         
         Button saveEditDeptBtn = new Button("Save");
         grid.add(saveEditDeptBtn, 5, 11);
-        
+
+        idInput.setDisable(true);
+        nameInput.setDisable(true);
+        lNameInput.setDisable(true);
+        departmentInput.setDisable(true);
+        salaryInput.setDisable(true);
+
         EmployeeParser empParser = new EmployeeParser();
-        ObservableList<Employee> obsList = empParser.readXmlFile();
+        loadEmployeeList(empParser, grid,idInput, nameInput, lNameInput, departmentInput, salaryInput);
+        // Buttons
+
+        Button addEmpBtn = new Button("Add");
+        grid.add(addEmpBtn, 0, 11);
+        addEmpBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Button pressed");
+                if(addEmpBtn.getText().equals("Add")){
+                    idInput.setDisable(false);
+                    idInput.setText("");
+                    nameInput.setDisable(false);
+                    nameInput.setText("");
+                    lNameInput.setDisable(false);
+                    lNameInput.setText("");
+                    departmentInput.setDisable(false);
+                    departmentInput.setText("");
+                    salaryInput.setDisable(false);
+                    salaryInput.setText("");
+                    addEmpBtn.setText("Submit");
+                } else {
+                    int id = Integer.parseInt(idInput.getText());
+                    String name = nameInput.getText();
+                    String lName = lNameInput.getText();
+                    String dept = departmentInput.getText();
+                    double salary = Double.parseDouble(salaryInput.getText());
+                    try {
+                        empParser.addNewEmp(id, name, lName, dept, salary);
+                    } catch (TransformerConfigurationException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (SAXException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (TransformerException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (TransformerFactoryConfigurationError e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    idInput.setDisable(true);
+                    idInput.setText("");
+                    nameInput.setDisable(true);
+                    nameInput.setText("");
+                    lNameInput.setDisable(true);
+                    lNameInput.setText("");
+                    departmentInput.setDisable(true);
+                    departmentInput.setText("");
+                    salaryInput.setDisable(true);
+                    salaryInput.setText("");
+                    addEmpBtn.setText("add");
+                    try {
+                        loadEmployeeList(empParser, grid,idInput, nameInput, lNameInput, departmentInput, salaryInput);
+                    } catch (SAXException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }
+            
+        });
         
+        ListView<String> deptList = new ListView<String>();
+        grid.add(deptList, 4, 1, 2, 5);
+        for (int i = 0; i < 10; i++) {
+            deptList.getItems().add("Department " + i);
+        }
+        
+        root.setCenter(grid);
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("styles.css");
+        window.setScene(scene);
+        window.show();
+    }
+    
+    public static void loadEmployeeList(EmployeeParser empParser, GridPane grid, TextField idInput, TextField nameInput, TextField lNameInput, TextField departmentInput, TextField salaryInput) throws SAXException, IOException{
+        ObservableList<Employee> obsList = empParser.readXmlFile();
         ListView<Employee> ls = new ListView<Employee>(obsList);
         grid.add(ls, 0, 1, 2, 10);
        
@@ -143,20 +233,7 @@ public class App extends Application {
             departmentInput.setText(Integer.toString(selectedEmployee.getDeptId()));
             salaryInput.setText(Double.toString(selectedEmployee.getSalary()));
         });
-        
-        ListView<String> deptList = new ListView<String>();
-        grid.add(deptList, 4, 1, 2, 5);
-        for (int i = 0; i < 10; i++) {
-            deptList.getItems().add("Department " + i);
-        }
-
-        root.setCenter(grid);
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add("styles.css");
-        window.setScene(scene);
-        window.show();
-    }
-    
+    };
     public static void main(String[] args) {
         launch();
     }

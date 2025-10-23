@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Employees>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Employees>
     <employee>
         <id>1</id>
         <name>Marcelo</name>
@@ -16,4 +15,12 @@
         <deptName>Design</deptName>
         <salary>1500.00</salary>
     </employee>
-</Employees>
+    <employee>
+        <id>3</id>
+        <name>Loreto</name>
+        <lastName>Brea</lastName>
+        <deptId>0</deptId>
+        <deptName>Finance</deptName>
+        <salary>1500.0</salary>
+    </employee>
+<employee><id>4</id><name>Iago</name><lastName>Brea</lastName><deptId>0</deptId><deptName>Product Design</deptName><salary>2000.0</salary></employee></Employees>

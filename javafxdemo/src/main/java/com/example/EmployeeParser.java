@@ -51,18 +51,24 @@ public class EmployeeParser {
             int deptId = Integer.parseInt(emp.getElementsByTagName("deptId").item(0).getTextContent());
             String deptName = emp.getElementsByTagName("deptName").item(0).getTextContent();
             double salary = Double.parseDouble(emp.getElementsByTagName("salary").item(0).getTextContent());
-            System.out.println(id + ": " + name + " " + lName);
             Employee empItem = new Employee(id, name, lName, deptId, deptName, salary);
             obsList.add(empItem);
         }
         return obsList;
     }
 
-    public void writeToXml() throws SAXException, IOException{
+    public void addNewEmp(int id, String name, String lName, String dept, double salary) throws SAXException, IOException, TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError{
         Document doc = builder.parse(this.getFile());
-        Element newEmp = doc.createElement("empleado");
+        Element newEmp = doc.createElement("employee");
         doc.getDocumentElement().appendChild(newEmp);
-        newEmp.appendChild(doc.createElement("id")).appendChild(doc.createTextNode("data"));
+        newEmp.appendChild(doc.createElement("id")).appendChild(doc.createTextNode(Integer.toString(id)));
+        newEmp.appendChild(doc.createElement("name")).appendChild(doc.createTextNode(name));
+        newEmp.appendChild(doc.createElement("lastName")).appendChild(doc.createTextNode(lName));
+        newEmp.appendChild(doc.createElement("deptId")).appendChild(doc.createTextNode(Integer.toString(0)));
+        newEmp.appendChild(doc.createElement("deptName")).appendChild(doc.createTextNode(dept));
+        newEmp.appendChild(doc.createElement("salary")).appendChild(doc.createTextNode(Double.toString(salary)));
+
+        outputTransformer(doc);
     }
 
     public File getFile() {
