@@ -230,7 +230,7 @@ public class App extends Application {
             idInput.setText(Integer.toString(selectedEmployee.getId()));
             nameInput.setText((String) selectedEmployee.getName());
             lNameInput.setText(selectedEmployee.getlName());
-            departmentInput.setText(Integer.toString(selectedEmployee.getDeptId()));
+            departmentInput.setText(selectedEmployee.getDeptName());
             salaryInput.setText(Double.toString(selectedEmployee.getSalary()));
         });
     };
