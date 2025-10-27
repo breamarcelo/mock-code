@@ -40,12 +40,12 @@ private static final String MIARCHIVO_XML = "./libreria.xml";
     //Se crea Unmarshaller en el cotexto de la clase Libreria
     Unmarshaller unmars = context.createUnmarshaller();
     //Utilizamos el método unmarshal, para obtener datos de un Reader
-    Libreria libreria2 = (Libreria) unmars.unmarshal(new
-    FileReader(MIARCHIVO_XML));
+    Libreria libreria2 = (Libreria) unmars.unmarshal(new FileReader(MIARCHIVO_XML));
     //Recuperamos el array list y visualizamos
     System.out.println("Nombre de librería: "+ libreria2.getNombre());
     System.out.println("Lugar de la librería: "+ libreria2.getLugar());
     System.out.println("Libros de la librería: ");
+    
     ArrayList<Libro> lista = libreria2.getListaLibro();
     for (Libro libro : lista) {
         System.out.println("\tTítulo del libro: " + libro.getNombre() + " , autora: " + libro.getAutor());
