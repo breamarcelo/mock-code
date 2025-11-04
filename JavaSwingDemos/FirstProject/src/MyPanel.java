@@ -2,6 +2,7 @@ import java.awt.Button;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Label;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class MyPanel extends JPanel {
@@ -14,6 +15,9 @@ public class MyPanel extends JPanel {
         Label label1 = new Label("Hello World!");
         label1.setBounds(350, 100, 100, 100);
         add(label1);
+        JButton myBtn = new JButton("Click Me!");
+        myBtn.setBounds(50, 160, 100, 100);
+        add(myBtn);
     }
         
     @Override
