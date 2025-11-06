@@ -7,8 +7,10 @@ public class MyFrame extends JFrame{
         double screenH = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
         setVisible(true);
-        setBounds((int) screenW/4, (int) screenH/4, (int) screenW/2, (int) screenH/2);
-        add(new MyPanel());
+        //setBounds((int) screenW/4, (int) screenH/4, (int) screenW/2, (int) screenH/2);
+        setSize(400, 500);
+        //add(new MyPanel());
+        add(new GridPanel());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
