@@ -9,7 +9,6 @@ import javax.swing.JTextField;
 public class GridPanel extends JPanel {
     public GridPanel(){
         setLayout(new GridLayout(11,1));
-        setSize(100, 200);
         add(new JLabel("Nombre:"));
         add(new JTextField());
         add(new JLabel("Apellidos:"));
