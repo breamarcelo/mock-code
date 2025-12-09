@@ -14,6 +14,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+// need to create classes
+// need to implement Dept-employeeDepart reltaion
+
 public class App {
     static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) throws ParserConfigurationException, TransformerException {
