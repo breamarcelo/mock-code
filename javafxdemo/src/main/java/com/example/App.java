@@ -26,6 +26,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 // needs implementation
+// added comment
 
 public class App extends Application {
 
