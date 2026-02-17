@@ -1,12 +1,10 @@
 package com.hybernatejpademo;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-
-import com.mysql.cj.jdbc.MysqlDataSource;
+import javax.persistence.Persistence;
 
 public class Main {
     public static void main(String[] args) {
+        /* 
         try{
             MysqlDataSource ds = new MysqlDataSource();
             ds.setUrl("jdbc:mysql://192.168.1.20/repasosql");
@@ -15,7 +13,7 @@ public class Main {
             
             Connection con = ds.getConnection();
             ResultSet res = con.createStatement().executeQuery("SELECT * FROM TPersona");
-
+            
             while(res.next()){
                 System.out.println(
                     "ID:" + " " + res.getString("pkID") + " \n" + 
@@ -26,13 +24,23 @@ public class Main {
                     "-----------------------------------------------------"
                 );
             }
-
+            
             System.out.println("Connected!");
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
-        // Persistence.generateSchema("finale", null);
-        // var emf = Persistence.createEntityManagerFactory("finale");
-        // var em = emf.createEntityManager();
+        */
+        
+        Persistence.generateSchema("finale", null);
+        var emf = Persistence.createEntityManagerFactory("finale");
+        var em = emf.createEntityManager();
+        try{
+            System.out.println("It works!!");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        } finally {
+            em.close();
+            emf.close();
+        }
     }
 }
