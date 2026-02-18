@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CSharp-TetrisConsole")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6e8fd6d99b537f4e2b0ee53aa4239b92ee6c7e4d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bd956b0bd650fc88bc540a950c408101770489e0")]
 [assembly: System.Reflection.AssemblyProductAttribute("CSharp-TetrisConsole")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CSharp-TetrisConsole")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
