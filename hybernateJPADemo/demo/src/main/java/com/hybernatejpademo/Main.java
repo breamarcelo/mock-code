@@ -37,17 +37,26 @@ public class Main {
         var emf = Persistence.createEntityManagerFactory("finale");
         var em = emf.createEntityManager();
         try{
-            // em.getTransaction().begin();
-            // em.persist(new Titular("Carlos", "Santana"));
-            // Titular persona = em.find(Titular.class, 1);
-            // if( persona != null){
-            //     System.out.println("Encontrado: " + persona.getNombre() + " " + persona.getApellidos());
-            // }
-            // em.getTransaction().commit();
+            em.getTransaction().begin();
+            // Persistir
+            Titular nuevo = new Titular("Carlos", "Santana");
+            em.persist(nuevo);
+            // Buscar
+            Titular persona = em.find(Titular.class, 1);
+            if( persona != null){
+                System.out.println("Encontrado: " + persona.getNombre() + " " + persona.getApellidos());
+            }
+            // Eliminar
+            em.remove(em.find(Titular.class, 2));
+            // Actualizar
+            Titular cambiar = em.find(Titular.class, 3);
+            cambiar.setNombre("Pedro");
+            em.merge(cambiar);
+            em.getTransaction().commit();
 
             List<Titular> lista = em.createQuery("SELECT t FROM Titular t", Titular.class).getResultList();
             for(Titular t : lista){
-                System.out.println("ID: " + t.getId() + " | Nombre: " + t.getNombre() + " | Apellidos: " + t.getApellidos());
+                System.out.println("ID: " + t.getId() + " | Nombre completo: " + t.getNombre() + " " + t.getApellidos());
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
