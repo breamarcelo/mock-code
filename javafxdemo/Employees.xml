@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Employees>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Employees>
     <employee>
         <id>1</id>
         <name>Marcelo</name>
@@ -32,4 +31,4 @@
         <deptName>Product Design</deptName>
         <salary>2000.0</salary>
     </employee>
-</Employees>
+<employee><id>5</id><name>Juan</name><lastName>Perez</lastName><deptId>0</deptId><deptName>Something</deptName><salary>1200.0</salary></employee></Employees>
