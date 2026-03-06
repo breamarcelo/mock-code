@@ -49,13 +49,13 @@ public class App extends Application {
         for(int i=0; i<6; i++){
             ColumnConstraints col = new ColumnConstraints();
             grid.getColumnConstraints().add(col);
-            col.setPercentWidth(33);
+            col.setPercentWidth(16.66);
         }
 
         for(int i=0; i<12; i++){
             RowConstraints row = new RowConstraints();
             grid.getRowConstraints().add(row);
-            row.setPercentHeight(10);
+            row.setPercentHeight(8.33);
         }
 
         Label empHeader = new Label("Employees");
