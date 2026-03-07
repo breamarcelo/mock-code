@@ -35,7 +35,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException, SAXException, TransformerConfigurationException, ParserConfigurationException, TransformerException {
         Stage window = stage;
-        window.resizableProperty().set(false);
+        window.resizableProperty().set(true);
+        
         window.setTitle("demo");
         BorderPane root = new BorderPane();
 
@@ -45,6 +46,7 @@ public class App extends Application {
         grid.setVgap(10);
         grid.setHgap(10);
         grid.setPrefSize(800, 500);
+        
 
         for(int i=0; i<6; i++){
             ColumnConstraints col = new ColumnConstraints();
