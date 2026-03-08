@@ -44,7 +44,7 @@ CREATE TABLE TServicios_adicionales
     Ciber_proteccion BOOLEAN DEFAULT FALSE,
     Atencion_personalizada BOOLEAN DEFAULT FALSE,
     Centralita VARCHAR(100),
-    Numero_beneficios INT(4) DEFAULT 0,
+    Numero_beneficios INT(4) NOT NULL DEFAULT 0,
     Descuento_beneficios VARCHAR(100)
 );
 
@@ -87,14 +87,14 @@ INSERT INTO TLineas_adicionales(Nombre, Tipo, Num_lineas, Llamadas, Gb, Fibra, P
 INSERT INTO TLineas_adicionales(Nombre, Tipo, Num_lineas, Llamadas, Gb, Fibra, Precio) VALUES("Línea móvil Negocio Base Sin Límites", "Móvil", 1, "Ilimitadas", "Ilimitados", NULL, 11.00);
 INSERT INTO TLineas_adicionales(Nombre, Tipo, Num_lineas, Llamadas, Gb, Fibra, Precio) VALUES("Línea móvil Negocio Base Plus Sin Límites", "Móvil", 1, "Ilimitadas", "Ilimitados", NULL, 15.00);
 INSERT INTO TLineas_adicionales(Nombre, Tipo, Num_lineas, Llamadas, Gb, Fibra, Precio) VALUES("Línea móvil Negocio 250 min", "Móvil", 1, "250 min", NULL, NULL, 12.00);
-INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("45Gb", NULL, FALSE, FALSE, FALSE, FALSE, NULL, NULL, NULL);
-INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("45Gb", NULL, FALSE, FALSE, FALSE, FALSE, NULL, NULL, NULL);
+INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("45Gb", NULL, FALSE, FALSE, FALSE, FALSE, NULL, 0, NULL);
+INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("45Gb", NULL, FALSE, FALSE, FALSE, FALSE, NULL, 0, NULL);
 INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("60Gb", "200 min a fijos y móviles", TRUE, TRUE, FALSE, FALSE, NULL, 1, NULL);
 INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("60Gb", "200 min a fijos y móviles", TRUE, TRUE, TRUE, FALSE, NULL, 2, NULL);
 INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("60Gb", "200 min a fijos y móviles y 1.000 min de fijo a fijo", TRUE, TRUE, TRUE, FALSE, NULL, 3, NULL);
 INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("60Gb", "200 min a fijos y móviles", TRUE, TRUE, TRUE, TRUE, "1 puesto fijo avanzado, IVR y DDIs adicionales", 3, "50% o 100% de descuento");
 INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("60Gb", "200 min a fijos y móviles", TRUE, TRUE, TRUE, TRUE, "2 puestos fijos avanzados, IVR y DDIs adicionales", 3, "50% o 100% de descuento");
-INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("20Gb", NULL, FALSE, FALSE, FALSE, FALSE, NULL, NULL, NULL);
+INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("20Gb", NULL, FALSE, FALSE, FALSE, FALSE, NULL, 0, NULL);
 INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Opcion_fibra1, Opcion_fibra2, Sobrecargo_fibra, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Base", "Captación", 1, "ilimitadas", "100Gb", "600Mb", "10Gb", 8.26, 42.00, 1, FALSE, FALSE);
 INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Opcion_fibra1, Opcion_fibra2, Sobrecargo_fibra, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Base Plus", "Captación", 1, "ilimitadas", "Ilimitados", "1Gb", "10Gb", 8.26, 52.00, 2, TRUE, FALSE);
 INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Opcion_fibra1, Opcion_fibra2, Sobrecargo_fibra, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Extra 1 línea", "Captación", 1, "ilimitadas", "Ilimitados", "1Gb", "10Gb", 8.26, 63.00, 3, TRUE, TRUE);

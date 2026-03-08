@@ -1,0 +1,45 @@
+package com.budgetsgenerator.models;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="TDescuentos")
+public class DescuentosEntity {
+    @Id
+    @Column(name="PK_ID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name="Porciento")
+    private String porciento;
+
+    public DescuentosEntity(){
+    }
+
+    public DescuentosEntity(int id, String porciento) {
+        this.id = id;
+        this.porciento = porciento;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPorciento() {
+        return porciento;
+    }
+
+    public void setPorciento(String porciento) {
+        this.porciento = porciento;
+    };
+
+    
+}

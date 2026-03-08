@@ -12,9 +12,9 @@ import javafx.scene.layout.RowConstraints;
 public class PresupuestosV extends GridPane{
 
     public PresupuestosV() {
-        this.getStylesheets().add(getClass().getResource("presupuestos.css").toExternalForm());
+        this.getStylesheets().add(getClass().getResource("/css/presupuestos.css").toExternalForm());
         this.getStyleClass().add("grid_pane");
-        
+
         for(int i=0; i<4; i++){
             ColumnConstraints col = new ColumnConstraints();
             this.getColumnConstraints().add(col);
