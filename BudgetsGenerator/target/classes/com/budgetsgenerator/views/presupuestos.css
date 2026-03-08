@@ -1,0 +1,31 @@
+.grid_pane {
+    -fx-pref-width: 800;
+    -fx-pref-height: 600;
+    -fx-padding: 20;
+    -fx-vgap: 10;
+    -fx-hgap: 10;
+}
+
+Label {
+    -fx-alignment: bottom-left;
+    -fx-pref-width: 400;
+    -fx-pref-height: 40;
+    -fx-translate-y: 5;
+}
+
+Button,
+ComboBox {
+    -fx-pref-width: 400;
+    -fx-pref-height: 40;
+}
+
+#presupuestos_title {
+    -fx-font-weight: bold;
+    -fx-font-size: 24;
+}
+
+#total_label {
+    -fx-alignment: center-right;
+    -fx-font-weight: bold;
+    -fx-translate-y: 0;
+}
