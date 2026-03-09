@@ -3,16 +3,11 @@ package com.budgetsgenerator;
 import java.io.IOException;
 import java.util.List;
 
-import com.budgetsgenerator.models.CentralitasEntity;
-import com.budgetsgenerator.models.DescuentosEntity;
-import com.budgetsgenerator.models.LineasAdicionalesEntity;
-import com.budgetsgenerator.models.PacksFutbolEntity;
 import com.budgetsgenerator.models.ServiciosAdicionalesEntity;
 import com.budgetsgenerator.models.TarifasEntity;
 import com.budgetsgenerator.views.PresupuestosV;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
