@@ -80,5 +80,23 @@ public abstract class GenericDAOImpl<T, ID> implements GenericDAO<T, ID> {
         }
     }
 
+    @Override
+    public void update(T entity) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(entity);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if(em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            } 
+            throw e;  
+        } finally {
+            em.close();
+        }
+    }
+
+    
     
 }

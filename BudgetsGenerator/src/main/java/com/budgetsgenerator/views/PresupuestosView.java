@@ -9,9 +9,9 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-public class PresupuestosV extends GridPane{
+public class PresupuestosView extends GridPane{
 
-    public PresupuestosV() {
+    public PresupuestosView() {
         this.getStylesheets().add(getClass().getResource("/css/presupuestos.css").toExternalForm());
         this.getStyleClass().add("grid_pane");
 
@@ -33,26 +33,14 @@ public class PresupuestosV extends GridPane{
         Label tarifaLabel = new Label("Tarifa:");
         this.add(tarifaLabel, 0, 1, 2, 1);
 
-        ComboBox tarifaCombo = new ComboBox<>();
-        this.add(tarifaCombo, 0, 2, 2, 1);
-
         Label fibraLabel = new Label("Fibra:");
         this.add(fibraLabel, 0, 3, 1, 1);
-
-        ComboBox fibraCombo = new ComboBox<>();
-        this.add(fibraCombo, 0, 4, 1, 1);
 
         Label streamingLabel = new Label("Streaming:");
         this.add(streamingLabel, 1, 3, 1, 1);
 
-        ComboBox streamingCombo = new ComboBox<>();
-        this.add(streamingCombo, 1, 4, 1, 1);
-
         Label lineasAdicionalesLabel = new Label("Líneas Adicionales:");
         this.add(lineasAdicionalesLabel, 0, 5, 2, 1);
-
-        ComboBox lineasAdicionalesCombo = new ComboBox<>();
-        this.add(lineasAdicionalesCombo, 0, 6, 2, 1);
         
         Button add = new Button("Añadir línea");
         this.add(add, 0, 7, 1, 1);
@@ -70,10 +58,7 @@ public class PresupuestosV extends GridPane{
         this.add(loadButton, 1, 14, 1, 1);
         
         Label descuentoLabel = new Label("Descuento:");
-        this.add(descuentoLabel, 2, 1, 2, 1);
-
-        ComboBox descuentoCombo = new ComboBox<>();
-        this.add(descuentoCombo, 2, 2, 2, 1);
+        this.add(descuentoLabel, 3, 1, 2, 1);
                 
         Label centralitaLabel = new Label("Centralita:");
         this.add(centralitaLabel, 2, 3, 2, 1);

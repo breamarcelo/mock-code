@@ -2,6 +2,7 @@ package com.budgetsgenerator.dto;
 
 public class LineasAdicionalesDTO {
     private int id;
+    private String nombre;
     private String tipo;
     private int numLineas;
     private String llamadas;
@@ -12,9 +13,10 @@ public class LineasAdicionalesDTO {
     public LineasAdicionalesDTO() {
     }
 
-    public LineasAdicionalesDTO(int id, String tipo, int numLineas, String llamadas, String gb, String fibra,
+    public LineasAdicionalesDTO(int id, String nombre, String tipo, int numLineas, String llamadas, String gb, String fibra,
             double precio) {
         this.id = id;
+        this.nombre = nombre;
         this.tipo = tipo;
         this.numLineas = numLineas;
         this.llamadas = llamadas;
@@ -63,5 +65,11 @@ public class LineasAdicionalesDTO {
     }
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }
