@@ -1,7 +1,6 @@
 package com.budgetsgenerator.views;
 
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -62,15 +61,9 @@ public class PresupuestosView extends GridPane{
                 
         Label centralitaLabel = new Label("Centralita:");
         this.add(centralitaLabel, 2, 3, 2, 1);
-
-        ComboBox centralitaCombo = new ComboBox<>();
-        this.add(centralitaCombo, 2, 4, 2, 1);
                 
         Label packFutbolLabel = new Label("Pack Fútbol:");
         this.add(packFutbolLabel, 2, 5, 2, 1);
-
-        ComboBox packFutbolCombo = new ComboBox<>();
-        this.add(packFutbolCombo, 2, 6, 2, 1);
 
         ListView<String> resumenView = new ListView<String>();
         this.add(resumenView, 2, 7, 2, 6);

@@ -15,12 +15,12 @@ public class DescuentosEntity {
     private int id;
 
     @Column(name="Porciento")
-    private double porciento;
+    private int porciento;
 
     public DescuentosEntity(){
     }
 
-    public DescuentosEntity(int id, double porciento) {
+    public DescuentosEntity(int id, int porciento) {
         this.id = id;
         this.porciento = porciento;
     }
@@ -33,11 +33,11 @@ public class DescuentosEntity {
         this.id = id;
     }
 
-    public double getPorciento() {
+    public int getPorciento() {
         return porciento;
     }
 
-    public void setPorciento(double porciento) {
+    public void setPorciento(int porciento) {
         this.porciento = porciento;
     };
 

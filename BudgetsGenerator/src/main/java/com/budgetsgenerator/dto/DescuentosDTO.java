@@ -2,12 +2,12 @@ package com.budgetsgenerator.dto;
 
 public class DescuentosDTO {
     private int id;
-    private double porciento;
+    private int porciento;
     
     public DescuentosDTO() {
     }
     
-    public DescuentosDTO(int id, double porciento) {
+    public DescuentosDTO(int id, int porciento) {
         this.id = id;
         this.porciento = porciento;
     }
@@ -20,11 +20,11 @@ public class DescuentosDTO {
         this.id = id;
     }
 
-    public double getPorciento() {
+    public int getPorciento() {
         return porciento;
     }
 
-    public void setPorciento(double porciento) {
+    public void setPorciento(int porciento) {
         this.porciento = porciento;
     }
 }
