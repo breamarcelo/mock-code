@@ -41,10 +41,6 @@ public class PresupuestosView extends GridPane{
         Label lineasAdicionalesLabel = new Label("Líneas Adicionales:");
         this.add(lineasAdicionalesLabel, 0, 5, 2, 1);
         
-
-        
-        
-        
         Button saveButton = new Button("Guardar Presupuesto");
         this.add(saveButton, 0, 14, 1, 1);
         
