@@ -16,7 +16,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -43,8 +42,9 @@ public class App extends Application {
         p1.setMinSize(500, 400);
         p1.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        GridPane p2 = new PresupuestosView();
+        PresupuestosView p2 = new PresupuestosView();
         PresupuestosController p2v = new PresupuestosController(p2);
+        p2v.loadData();
 
         btn1.setOnAction(new EventHandler<ActionEvent>() {
             @Override

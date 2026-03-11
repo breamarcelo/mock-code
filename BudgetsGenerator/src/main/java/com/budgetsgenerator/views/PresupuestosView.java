@@ -1,6 +1,13 @@
 package com.budgetsgenerator.views;
 
+import com.budgetsgenerator.dto.CentralitasDTO;
+import com.budgetsgenerator.dto.DescuentosDTO;
+import com.budgetsgenerator.dto.LineasAdicionalesDTO;
+import com.budgetsgenerator.dto.PacksFutbolDTO;
+import com.budgetsgenerator.dto.TarifasDTO;
+
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -9,6 +16,31 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
 public class PresupuestosView extends GridPane{
+        private ComboBox<TarifasDTO> tarifasCombo = new ComboBox<>();
+        private ComboBox<String> fibraCombo = new ComboBox<>();
+        private ComboBox<String> streamingCombo = new ComboBox<>();
+        private ComboBox<LineasAdicionalesDTO> lineasAdicionalesCombo = new ComboBox<>();
+        private ComboBox<DescuentosDTO> descuentoCombo = new ComboBox<>();
+        private ComboBox<CentralitasDTO> centralitaCombo = new ComboBox<>();
+        private ComboBox<PacksFutbolDTO> packsFutbolCombo = new ComboBox<>();
+        private ListView<String> lineasAdicionalesView = new ListView<>();
+        private ListView<String> resumenView = new ListView<>();
+        private Button addLineaAdicionalButton = new Button("Añadir línea");
+        private Button deleteLineaAdicionalButton = new Button("Eliminar línea");
+        private Button saveButton = new Button("Guardar Presupuesto");
+        private Button loadButton = new Button("Cargar Presupuesto");
+        private Button limpiarButton = new Button("Limpiar");
+        private Button generarPdfButton = new Button("Generar PDF");
+        private final Label presupuestoLabel = new Label("Presupuestos");
+        private final Label tarifaLabel = new Label("Tarifa:");
+        private final Label fibraLabel = new Label("Fibra:");
+        private final Label streamingLabel = new Label("Streaming:");
+        private final Label lineasAdicionalesLabel = new Label("Líneas Adicionales:");
+        private final Label descuentoLabel = new Label("Descuento:");
+        private final Label centralitaLabel = new Label("Centralita:");
+        private final Label packFutbolLabel = new Label("Pack Fútbol:");
+        private final Label totalLabel = new Label("TOTAL:");
+        private TextField totaField = new TextField();
 
     public PresupuestosView() {
         this.getStylesheets().add(getClass().getResource("/css/presupuestos.css").toExternalForm());
@@ -25,52 +57,161 @@ public class PresupuestosView extends GridPane{
             this.getRowConstraints().add(row);
             row.setPercentHeight(6.66);
         }
-        Label presupuestoLabel = new Label("Presupuestos");
         presupuestoLabel.setId("presupuestos_title");
-        this.add(presupuestoLabel, 0, 0, 1, 1);
-
-        Label tarifaLabel = new Label("Tarifa:");
-        this.add(tarifaLabel, 0, 1, 2, 1);
-
-        Label fibraLabel = new Label("Fibra:");
-        this.add(fibraLabel, 0, 3, 1, 1);
-
-        Label streamingLabel = new Label("Streaming:");
-        this.add(streamingLabel, 1, 3, 1, 1);
-
-        Label lineasAdicionalesLabel = new Label("Líneas Adicionales:");
-        this.add(lineasAdicionalesLabel, 0, 5, 2, 1);
-        
-        Button saveButton = new Button("Guardar Presupuesto");
-        this.add(saveButton, 0, 14, 1, 1);
-        
-        Button loadButton = new Button("Cargar Presupuesto");
-        this.add(loadButton, 1, 14, 1, 1);
-        
-        Label descuentoLabel = new Label("Descuento:");
-        this.add(descuentoLabel, 3, 1, 2, 1);
-                
-        Label centralitaLabel = new Label("Centralita:");
-        this.add(centralitaLabel, 2, 3, 2, 1);
-                
-        Label packFutbolLabel = new Label("Pack Fútbol:");
-        this.add(packFutbolLabel, 2, 5, 2, 1);
-
-        ListView<String> resumenView = new ListView<>();
-        this.add(resumenView, 2, 7, 2, 6);
-
-        Label totalLabel = new Label("TOTAL:");
         totalLabel.setId("total_label");
-        this.add(totalLabel, 2, 13, 1, 1);
-
-        TextField totaField = new TextField();
-        this.add(totaField, 3, 13, 1, 1);
-
-        Button limpiarButton = new Button("Limpiar");
-        this.add(limpiarButton, 2, 14, 1, 1);
         
-        Button generarPdfButton = new Button("Generar PDF");
+        this.add(presupuestoLabel, 0, 0, 1, 1);
+        this.add(tarifaLabel, 0, 1, 2, 1);
+        this.add(fibraLabel, 0, 3, 1, 1);
+        this.add(streamingLabel, 1, 3, 1, 1);
+        this.add(lineasAdicionalesLabel, 0, 5, 2, 1);
+        this.add(saveButton, 0, 14, 1, 1);
+        this.add(loadButton, 1, 14, 1, 1);
+        this.add(descuentoLabel, 3, 1, 2, 1);
+        this.add(centralitaLabel, 2, 3, 2, 1);
+        this.add(packFutbolLabel, 2, 5, 2, 1);
+        this.add(resumenView, 2, 7, 2, 6);
+        this.add(totalLabel, 2, 13, 1, 1);
+        this.add(totaField, 3, 13, 1, 1);
+        this.add(limpiarButton, 2, 14, 1, 1);
         this.add(generarPdfButton, 3, 14, 1, 1);
+        this.add(tarifasCombo, 0, 2, 2, 1);
+        this.add(fibraCombo, 0, 4, 1, 1);
+        this.add(streamingCombo, 1, 4, 1, 1);
+        this.add(lineasAdicionalesCombo, 0, 6, 2, 1);
+        this.add(descuentoCombo, 3, 2, 1, 1);
+        this.add(centralitaCombo, 2, 4, 2, 1);
+        this.add(packsFutbolCombo, 2, 6, 2, 1);
+        this.add(lineasAdicionalesView, 0, 8, 2, 6);
+        this.add(addLineaAdicionalButton, 0, 7, 1, 1);
+        this.add(deleteLineaAdicionalButton, 1, 7, 1, 1);
     }
-     
+
+    public ComboBox<TarifasDTO> getTarifasCombo() {
+        return tarifasCombo;
+    }
+
+    public void setTarifasCombo(ComboBox<TarifasDTO> tarifasCombo) {
+        this.tarifasCombo = tarifasCombo;
+    }
+
+    public ComboBox<String> getFibraCombo() {
+        return fibraCombo;
+    }
+
+    public void setFibraCombo(ComboBox<String> fibraCombo) {
+        this.fibraCombo = fibraCombo;
+    }
+
+    public ComboBox<String> getStreamingCombo() {
+        return streamingCombo;
+    }
+
+    public void setStreamingCombo(ComboBox<String> streamingCombo) {
+        this.streamingCombo = streamingCombo;
+    }
+
+    public ComboBox<LineasAdicionalesDTO> getLineasAdicionalesCombo() {
+        return lineasAdicionalesCombo;
+    }
+
+    public void setLineasAdicionalesCombo(ComboBox<LineasAdicionalesDTO> lineasAdicionalesCombo) {
+        this.lineasAdicionalesCombo = lineasAdicionalesCombo;
+    }
+
+    public ComboBox<DescuentosDTO> getDescuentoCombo() {
+        return descuentoCombo;
+    }
+
+    public void setDescuentoCombo(ComboBox<DescuentosDTO> descuentoCombo) {
+        this.descuentoCombo = descuentoCombo;
+    }
+
+    public ComboBox<CentralitasDTO> getCentralitaCombo() {
+        return centralitaCombo;
+    }
+
+    public void setCentralitaCombo(ComboBox<CentralitasDTO> centralitaCombo) {
+        this.centralitaCombo = centralitaCombo;
+    }
+
+    public ComboBox<PacksFutbolDTO> getPacksFutbolCombo() {
+        return packsFutbolCombo;
+    }
+
+    public void setPacksFutbolCombo(ComboBox<PacksFutbolDTO> packsFutbolCombo) {
+        this.packsFutbolCombo = packsFutbolCombo;
+    }
+
+    public ListView<String> getLineasAdicionalesView() {
+        return lineasAdicionalesView;
+    }
+
+    public void setLineasAdicionalesView(ListView<String> lineasAdicionalesView) {
+        this.lineasAdicionalesView = lineasAdicionalesView;
+    }
+
+    public Button getAddLineaAdicionalButton() {
+        return addLineaAdicionalButton;
+    }
+
+    public void setAddLineaAdicionalButton(Button addLineaAdicionalButton) {
+        this.addLineaAdicionalButton = addLineaAdicionalButton;
+    }
+
+    public Button getDeleteLineaAdicionalButton() {
+        return deleteLineaAdicionalButton;
+    }
+
+    public void setDeleteLineaAdicionalButton(Button deleteLineaAdicionalButton) {
+        this.deleteLineaAdicionalButton = deleteLineaAdicionalButton;
+    }
+
+    public Button getSaveButton() {
+        return saveButton;
+    }
+
+    public void setSaveButton(Button saveButton) {
+        this.saveButton = saveButton;
+    }
+
+    public Button getLoadButton() {
+        return loadButton;
+    }
+
+    public void setLoadButton(Button loadButton) {
+        this.loadButton = loadButton;
+    }
+
+    public ListView<String> getResumenView() {
+        return resumenView;
+    }
+
+    public void setResumenView(ListView<String> resumenView) {
+        this.resumenView = resumenView;
+    }
+
+    public String getTotaFieldText() {
+        return totaField.getText();
+    }
+
+    public void setTotaField(TextField totaField) {
+        this.totaField = totaField;
+    }
+
+    public Button getLimpiarButton() {
+        return limpiarButton;
+    }
+
+    public void setLimpiarButton(Button limpiarButton) {
+        this.limpiarButton = limpiarButton;
+    }
+
+    public Button getGenerarPdfButton() {
+        return generarPdfButton;
+    }
+
+    public void setGenerarPdfButton(Button generarPdfButton) {
+        this.generarPdfButton = generarPdfButton;
+    }   
 }
