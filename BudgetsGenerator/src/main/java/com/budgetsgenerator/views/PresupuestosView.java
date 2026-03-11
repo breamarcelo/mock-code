@@ -41,14 +41,9 @@ public class PresupuestosView extends GridPane{
         Label lineasAdicionalesLabel = new Label("Líneas Adicionales:");
         this.add(lineasAdicionalesLabel, 0, 5, 2, 1);
         
-        Button add = new Button("Añadir línea");
-        this.add(add, 0, 7, 1, 1);
+
         
-        Button delete = new Button("Eliminar línea");
-        this.add(delete, 1, 7, 1, 1);
         
-        ListView<String> lineasAdicionalesView = new ListView<String>();
-        this.add(lineasAdicionalesView, 0, 8, 2, 6);
         
         Button saveButton = new Button("Guardar Presupuesto");
         this.add(saveButton, 0, 14, 1, 1);
@@ -65,7 +60,7 @@ public class PresupuestosView extends GridPane{
         Label packFutbolLabel = new Label("Pack Fútbol:");
         this.add(packFutbolLabel, 2, 5, 2, 1);
 
-        ListView<String> resumenView = new ListView<String>();
+        ListView<String> resumenView = new ListView<>();
         this.add(resumenView, 2, 7, 2, 6);
 
         Label totalLabel = new Label("TOTAL:");

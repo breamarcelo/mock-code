@@ -22,7 +22,11 @@ import com.budgetsgenerator.repository.impl.PackFutbolDAO;
 import com.budgetsgenerator.repository.impl.ServiciosAdicionalesDAO;
 import com.budgetsgenerator.repository.impl.TarifasDAO;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
 
@@ -52,6 +56,24 @@ public class PresupuestosController {
         ComboBox<CentralitasDTO> centralitaCombo = new ComboBox<>();
         ComboBox<PacksFutbolDTO> packsFutbolCombo = new ComboBox<>();
         
+        ListView<String> lineasAdicionalesView = new ListView<>();
+
+        Button addLineaAdicionalButton = new Button("Añadir línea");
+        addLineaAdicionalButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                LineasAdicionalesDTO selectedLineaAdicional = lineasAdicionalesCombo.getSelectionModel().getSelectedItem();
+                lineasAdicionalesView.getItems().add(selectedLineaAdicional.getNombre());
+            }
+        });
+        Button deleteLineaAdicionalButton = new Button("Eliminar línea");
+        deleteLineaAdicionalButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                int selectedIndex = lineasAdicionalesView.getSelectionModel().getSelectedIndex();
+                lineasAdicionalesView.getItems().remove(selectedIndex);
+            }
+        });
         
         List<TarifasDTO> tarifas = getTarifas();
         for(TarifasDTO tarifa : tarifas) {
@@ -149,6 +171,11 @@ public class PresupuestosController {
         this.view.add(descuentoCombo, 3, 2, 1, 1);
         this.view.add(centralitaCombo, 2, 4, 2, 1);
         this.view.add(packsFutbolCombo, 2, 6, 2, 1);
+
+        this.view.add(lineasAdicionalesView, 0, 8, 2, 6);
+
+        this.view.add(addLineaAdicionalButton, 0, 7, 1, 1);
+        this.view.add(deleteLineaAdicionalButton, 1, 7, 1, 1);
     }
 
     public ServiciosAdicionalesDTO mapServiciosAdicionalesToDTO(ServiciosAdicionalesEntity entity) {
