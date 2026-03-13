@@ -1,7 +1,9 @@
+* {
+    -fx-my-color: red;
+}
+
 .grid_pane {
-    -fx-pref-width: 800;
-    -fx-pref-height: 600;
-    -fx-padding: 20;
+    -fx-padding: 30;
     -fx-vgap: 10;
     -fx-hgap: 10;
 }
@@ -28,4 +30,36 @@ ComboBox {
     -fx-alignment: center-right;
     -fx-font-weight: bold;
     -fx-translate-y: 0;
+}
+
+.view_id {
+    -fx-pref-width: 10;
+}
+
+.view_label {
+    -fx-alignment: center-left;
+    -fx-pref-height: 30;
+}
+
+.view_label,
+.view_qt {
+    -fx-translate-y: -0.5;
+}
+
+.view_btn,
+.view_qt {
+    -fx-alignment: center;
+    -fx-pref-width: 20;
+    -fx-pref-height: 30;
+}
+
+HBox {
+    -fx-background-insets: 0;
+    -fx-pref-height: 30;
+    -fx-padding: 0;
+}
+
+ListView .list-cell {
+    -fx-padding: 0;
+    -fx-background-insets: 0;
 }

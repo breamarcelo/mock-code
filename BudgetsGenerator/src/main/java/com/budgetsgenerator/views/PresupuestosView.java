@@ -13,6 +13,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 
 public class PresupuestosView extends GridPane{
@@ -23,7 +24,7 @@ public class PresupuestosView extends GridPane{
         private ComboBox<DescuentosDTO> descuentoCombo = new ComboBox<>();
         private ComboBox<CentralitasDTO> centralitaCombo = new ComboBox<>();
         private ComboBox<PacksFutbolDTO> packsFutbolCombo = new ComboBox<>();
-        private ListView<String> lineasAdicionalesView = new ListView<>();
+        private ListView<HBox> lineasAdicionalesView = new ListView<>();
         private ListView<String> resumenView = new ListView<>();
         private Button addLineaAdicionalButton = new Button("Añadir línea");
         private Button deleteLineaAdicionalButton = new Button("Eliminar línea");
@@ -62,29 +63,29 @@ public class PresupuestosView extends GridPane{
         
         this.add(presupuestoLabel, 0, 0, 1, 1);
         this.add(tarifaLabel, 0, 1, 2, 1);
+        this.add(tarifasCombo, 0, 2, 2, 1);
         this.add(fibraLabel, 0, 3, 1, 1);
-        this.add(streamingLabel, 1, 3, 1, 1);
+        this.add(fibraCombo, 0, 4, 1, 1);
         this.add(lineasAdicionalesLabel, 0, 5, 2, 1);
+        this.add(lineasAdicionalesCombo, 0, 6, 2, 1);
+        this.add(addLineaAdicionalButton, 0, 7, 1, 1);
+        this.add(lineasAdicionalesView, 0, 8, 2, 6);
         this.add(saveButton, 0, 14, 1, 1);
+        this.add(streamingLabel, 1, 3, 1, 1);
+        this.add(streamingCombo, 1, 4, 1, 1);
+        this.add(deleteLineaAdicionalButton, 1, 7, 1, 1);
         this.add(loadButton, 1, 14, 1, 1);
-        this.add(descuentoLabel, 3, 1, 2, 1);
         this.add(centralitaLabel, 2, 3, 2, 1);
+        this.add(centralitaCombo, 2, 4, 2, 1);
         this.add(packFutbolLabel, 2, 5, 2, 1);
+        this.add(packsFutbolCombo, 2, 6, 2, 1);
         this.add(resumenView, 2, 7, 2, 6);
         this.add(totalLabel, 2, 13, 1, 1);
-        this.add(totaField, 3, 13, 1, 1);
         this.add(limpiarButton, 2, 14, 1, 1);
-        this.add(generarPdfButton, 3, 14, 1, 1);
-        this.add(tarifasCombo, 0, 2, 2, 1);
-        this.add(fibraCombo, 0, 4, 1, 1);
-        this.add(streamingCombo, 1, 4, 1, 1);
-        this.add(lineasAdicionalesCombo, 0, 6, 2, 1);
+        this.add(descuentoLabel, 3, 1, 2, 1);
         this.add(descuentoCombo, 3, 2, 1, 1);
-        this.add(centralitaCombo, 2, 4, 2, 1);
-        this.add(packsFutbolCombo, 2, 6, 2, 1);
-        this.add(lineasAdicionalesView, 0, 8, 2, 6);
-        this.add(addLineaAdicionalButton, 0, 7, 1, 1);
-        this.add(deleteLineaAdicionalButton, 1, 7, 1, 1);
+        this.add(totaField, 3, 13, 1, 1);
+        this.add(generarPdfButton, 3, 14, 1, 1);
     }
 
     public ComboBox<TarifasDTO> getTarifasCombo() {
@@ -143,11 +144,11 @@ public class PresupuestosView extends GridPane{
         this.packsFutbolCombo = packsFutbolCombo;
     }
 
-    public ListView<String> getLineasAdicionalesView() {
+    public ListView<HBox> getLineasAdicionalesView() {
         return lineasAdicionalesView;
     }
 
-    public void setLineasAdicionalesView(ListView<String> lineasAdicionalesView) {
+    public void setLineasAdicionalesView(ListView<HBox> lineasAdicionalesView) {
         this.lineasAdicionalesView = lineasAdicionalesView;
     }
 

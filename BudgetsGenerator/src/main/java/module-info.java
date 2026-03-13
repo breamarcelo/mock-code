@@ -6,6 +6,7 @@ module com.budgetsgenerator {
     requires org.hibernate.orm.core;
 
     opens com.budgetsgenerator to javafx.fxml;
+    opens com.budgetsgenerator.dto to javafx.base;
     opens com.budgetsgenerator.models to org.hibernate.orm.core;
     exports com.budgetsgenerator;
 }
