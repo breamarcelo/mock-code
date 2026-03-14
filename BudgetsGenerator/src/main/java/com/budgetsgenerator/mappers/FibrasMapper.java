@@ -12,7 +12,7 @@ public class FibrasMapper implements EntityMapper<FibrasEntity, FibrasDTO>{
     private static final FibrasMapper instance = new FibrasMapper();
     private static final FibrasDAO fibrasDAO = new FibrasDAO(FibrasEntity.class);
 
-    public FibrasMapper() {
+    private FibrasMapper() {
     }
 
     public static FibrasMapper getInstance(){

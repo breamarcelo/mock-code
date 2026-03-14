@@ -1,0 +1,75 @@
+package com.budgetsgenerator.models;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="TLineas_adicionales_presupuesto")
+public class LineasPresupuestoEntity {
+    @Id
+    @Column(name="PK_ID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name="Cantidad")
+    private int cantidad;
+
+    @ManyToOne
+    @JoinColumn(name="FK_LineasAdicionales_ID")
+    private LineasAdicionalesEntity lineaAdicional;
+
+    @ManyToOne
+    @JoinColumn(name="FK_Presupuesto_ID")
+    private PresupuestosEntity presupuesto;
+
+    public LineasPresupuestoEntity() {
+    }
+
+    public LineasPresupuestoEntity(int id, int cantidad, LineasAdicionalesEntity lineaAdicional,
+            PresupuestosEntity presupuesto) {
+        this.id = id;
+        this.cantidad = cantidad;
+        this.lineaAdicional = lineaAdicional;
+        this.presupuesto = presupuesto;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public LineasAdicionalesEntity getLineaAdicional() {
+        return lineaAdicional;
+    }
+
+    public void setLineaAdicional(LineasAdicionalesEntity lineaAdicional) {
+        this.lineaAdicional = lineaAdicional;
+    }
+
+    public PresupuestosEntity getPresupuesto() {
+        return presupuesto;
+    }
+
+    public void setPresupuesto(PresupuestosEntity presupuesto) {
+        this.presupuesto = presupuesto;
+    }
+
+    
+}

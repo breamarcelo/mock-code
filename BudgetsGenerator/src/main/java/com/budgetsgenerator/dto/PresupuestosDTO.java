@@ -5,17 +5,20 @@ import java.util.List;
 public class PresupuestosDTO {
     private int id;
     private String nombre;
-    private int tarifa;
-    private int fibra;
-    private int streaming;
-    private int centralita;
-    private int packFutbol;
-    private int descuento;
-    private List<LineasAdicionalesPresupuestoDTO> lineasAdicionales;
+    private TarifasDTO tarifa;
+    private FibrasDTO fibra;
+    private StreamingDTO streaming;
+    private CentralitasDTO centralita;
+    private PacksFutbolDTO packFutbol;
+    private DescuentosDTO descuento;
+    private List<LineasPresupuestoDTO> lineasAdicionales;
+    
     public PresupuestosDTO() {
     }
-    public PresupuestosDTO(int id, String nombre, int tarifa, int fibra, int streaming, int centralita, int packFutbol,
-            int descuento, List<LineasAdicionalesPresupuestoDTO> lineasAdicionales) {
+
+    public PresupuestosDTO(int id, String nombre, TarifasDTO tarifa, FibrasDTO fibra, StreamingDTO streaming,
+            CentralitasDTO centralita, PacksFutbolDTO packFutbol, DescuentosDTO descuento,
+            List<LineasPresupuestoDTO> lineasAdicionales) {
         this.id = id;
         this.nombre = nombre;
         this.tarifa = tarifa;
@@ -26,58 +29,77 @@ public class PresupuestosDTO {
         this.descuento = descuento;
         this.lineasAdicionales = lineasAdicionales;
     }
+
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public int getTarifa() {
+
+    public TarifasDTO getTarifa() {
         return tarifa;
     }
-    public void setTarifa(int tarifa) {
+
+    public void setTarifa(TarifasDTO tarifa) {
         this.tarifa = tarifa;
     }
-    public int getFibra() {
+
+    public FibrasDTO getFibra() {
         return fibra;
     }
-    public void setFibra(int fibra) {
+
+    public void setFibra(FibrasDTO fibra) {
         this.fibra = fibra;
     }
-    public int getStreaming() {
+
+    public StreamingDTO getStreaming() {
         return streaming;
     }
-    public void setStreaming(int streaming) {
+
+    public void setStreaming(StreamingDTO streaming) {
         this.streaming = streaming;
     }
-    public int getCentralita() {
+
+    public CentralitasDTO getCentralita() {
         return centralita;
     }
-    public void setCentralita(int centralita) {
+
+    public void setCentralita(CentralitasDTO centralita) {
         this.centralita = centralita;
     }
-    public int getPackFutbol() {
+
+    public PacksFutbolDTO getPackFutbol() {
         return packFutbol;
     }
-    public void setPackFutbol(int packFutbol) {
+
+    public void setPackFutbol(PacksFutbolDTO packFutbol) {
         this.packFutbol = packFutbol;
     }
-    public int getDescuento() {
+
+    public DescuentosDTO getDescuento() {
         return descuento;
     }
-    public void setDescuento(int descuento) {
+
+    public void setDescuento(DescuentosDTO descuento) {
         this.descuento = descuento;
     }
-    public List<LineasAdicionalesPresupuestoDTO> getLineasAdicionales() {
+
+    public List<LineasPresupuestoDTO> getLineasAdicionales() {
         return lineasAdicionales;
     }
-    public void setLineasAdicionales(List<LineasAdicionalesPresupuestoDTO> lineasAdicionales) {
+
+    public void setLineasAdicionales(List<LineasPresupuestoDTO> lineasAdicionales) {
         this.lineasAdicionales = lineasAdicionales;
     }
+    
 }

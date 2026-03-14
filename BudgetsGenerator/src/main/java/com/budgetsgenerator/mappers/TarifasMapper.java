@@ -44,14 +44,13 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO>{
         entity.setLineasMoviles(dto.getLineasMoviles());
         entity.setLlamadasMovil(dto.getLlamadasMovil());
         entity.setGbMovil(dto.getGbMovil());
-        //entity.setFibras(dto.getFibras());
+        entity.setFibras(tarifasDAO.findByIdWithFibras(dto.getId()).getFibras());
         entity.setPrecio(dto.getPrecio());
         entity.setServiciosAdicionales(ServiciosAdicionalesMapper.getInstance().toEntity(dto.getServiciosAdicionales()));
         entity.setTv(dto.isTv());
         entity.setStreaming(dto.isStreaming());
         return entity;
     }
-
     
     @Override
     public List<TarifasEntity> toEntityList(GenericDAO dao) {

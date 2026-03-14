@@ -4,6 +4,7 @@ import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.dto.DescuentosDTO;
 import com.budgetsgenerator.dto.FibrasDTO;
 import com.budgetsgenerator.dto.PacksFutbolDTO;
+import com.budgetsgenerator.dto.StreamingDTO;
 import com.budgetsgenerator.dto.TarifasDTO;
 
 import javafx.scene.control.Button;
@@ -25,7 +26,7 @@ public class PresupuestosView extends GridPane{
 
     private ComboBox<TarifasDTO> tarifasCombo = new ComboBox<>();
     private ComboBox<FibrasDTO> fibraCombo = new ComboBox<>();
-    private ComboBox<String> streamingCombo = new ComboBox<>();
+    private ComboBox<StreamingDTO> streamingCombo = new ComboBox<>();
     private ComboBox<DescuentosDTO> descuentoCombo = new ComboBox<>();
     private ComboBox<CentralitasDTO> centralitaCombo = new ComboBox<>();
     private ComboBox<PacksFutbolDTO> packsFutbolCombo = new ComboBox<>();
@@ -111,11 +112,11 @@ public class PresupuestosView extends GridPane{
         this.fibraCombo = fibraCombo;
     }
 
-    public ComboBox<String> getStreamingCombo() {
+    public ComboBox<StreamingDTO> getStreamingCombo() {
         return streamingCombo;
     }
 
-    public void setStreamingCombo(ComboBox<String> streamingCombo) {
+    public void setStreamingCombo(ComboBox<StreamingDTO> streamingCombo) {
         this.streamingCombo = streamingCombo;
     }
     

@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,6 +21,9 @@ public class PacksFutbolEntity {
 
     @Column(name="Precio")
     private double precio;
+
+    @OneToOne(mappedBy="packFutbol")
+    private PresupuestosEntity presupuesto;
 
     public PacksFutbolEntity() {
     }

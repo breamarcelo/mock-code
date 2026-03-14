@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,6 +27,9 @@ public class FibrasEntity {
     @ManyToOne
     @JoinColumn(name="FK_Tarifas_ID")
     private TarifasEntity tarifa;
+
+    @OneToOne(mappedBy="fibra")
+    private PresupuestosEntity presupuesto;
 
     public FibrasEntity() {
     }

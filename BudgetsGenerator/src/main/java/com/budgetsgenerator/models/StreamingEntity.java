@@ -1,4 +1,5 @@
 package com.budgetsgenerator.models;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,25 +9,25 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="TDescuentos")
-public class DescuentosEntity {
+@Table(name="TStreaming")
+public class StreamingEntity {
     @Id
     @Column(name="PK_ID")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="Porciento")
-    private int porciento;
+    @Column(name="Nombre")
+    private String nombre;
 
-    @OneToOne(mappedBy="descuento")
+    @OneToOne(mappedBy="streaming")
     private PresupuestosEntity presupuesto;
 
-    public DescuentosEntity(){
+    public StreamingEntity() {
     }
 
-    public DescuentosEntity(int id, int porciento) {
+    public StreamingEntity(int id, String nombre) {
         this.id = id;
-        this.porciento = porciento;
+        this.nombre = nombre;
     }
 
     public int getId() {
@@ -37,13 +38,13 @@ public class DescuentosEntity {
         this.id = id;
     }
 
-    public int getPorciento() {
-        return porciento;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setPorciento(int porciento) {
-        this.porciento = porciento;
-    };
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
     
 }

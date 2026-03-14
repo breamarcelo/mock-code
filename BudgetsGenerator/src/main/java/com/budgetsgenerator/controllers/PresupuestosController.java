@@ -9,11 +9,13 @@ import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.dto.DescuentosDTO;
 import com.budgetsgenerator.dto.LineasAdicionalesDTO;
 import com.budgetsgenerator.dto.PacksFutbolDTO;
+import com.budgetsgenerator.dto.StreamingDTO;
 import com.budgetsgenerator.dto.TarifasDTO;
 import com.budgetsgenerator.mappers.CentralitasMapper;
 import com.budgetsgenerator.mappers.DescuentosMapper;
 import com.budgetsgenerator.mappers.LineasAdicionalesMapper;
 import com.budgetsgenerator.mappers.PacksFutbolMapper;
+import com.budgetsgenerator.mappers.StreamingMapper;
 import com.budgetsgenerator.mappers.TarifasMapper;
 import com.budgetsgenerator.views.PresupuestosView;
 
@@ -37,15 +39,22 @@ public class PresupuestosController {
         List<DescuentosDTO> descuentosList = DescuentosMapper.getInstance().toDTOList(null);
         List<CentralitasDTO> centralitasList = CentralitasMapper.getInstance().toDTOList(null);
         List<PacksFutbolDTO> packsFutbolList = PacksFutbolMapper.getInstance().toDTOList(null);
-        
+        List<StreamingDTO> streamingList = StreamingMapper.getInstance().toDTOList(null);
         
         view.getTarifasCombo().getItems().setAll(tarifasList);
         view.getDescuentoCombo().getItems().setAll(descuentosList);
         view.getCentralitaCombo().getItems().setAll(centralitasList);
         view.getPacksFutbolCombo().getItems().setAll(packsFutbolList);
         view.getStreamingCombo().setDisable(true);
-        view.getStreamingCombo().getItems().setAll("Amazon Prime", "Disney+", "Netflix");
+        view.getStreamingCombo().getItems().setAll(streamingList);
         
+        view.getTarifasCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
+        view.getDescuentoCombo().setConverter(UIUtils.createConverter(dto -> dto.getPorciento() + "%"));
+        view.getCentralitaCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
+        view.getFibraCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
+        view.getPacksFutbolCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
+        view.getStreamingCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
+
         view.getTarifasCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             view.getFibraCombo().getItems().clear();
             view.getFibraCombo().getItems().setAll(newValue.getFibras());
@@ -56,11 +65,6 @@ public class PresupuestosController {
         UIUtils.populateVBox(view.getProductosAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getProductosAdicioanelesVBoxLabel(), view.getCentralitaLabel(), view.getCentralitaCombo(), view.getPackFutbolLabel(), view.getPacksFutbolCombo())));
         UIUtils.populateVBox(view.getLineasAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getLineasAdicionalesVBoxLabel(), view.getLineasAdicionalesView())));
         
-        view.getTarifasCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
-        view.getDescuentoCombo().setConverter(UIUtils.createConverter(dto -> dto.getPorciento() + "%"));
-        view.getCentralitaCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
-        view.getFibraCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
-        view.getPacksFutbolCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
 
         view.getTarifasCombo().setOnAction(e -> {
             System.out.println(e.getSource().toString());

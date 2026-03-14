@@ -12,6 +12,9 @@
         <class>com.budgetsgenerator.models.ServiciosAdicionalesEntity</class>
         <class>com.budgetsgenerator.models.TarifasEntity</class>
         <class>com.budgetsgenerator.models.FibrasEntity</class>
+        <class>com.budgetsgenerator.models.StreamingEntity</class>
+        <class>com.budgetsgenerator.models.PresupuestosEntity</class>
+        <class>com.budgetsgenerator.models.LineasPresupuestoEntity</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
             <property name="jakarta.persistence.jdbc.user" value="marcelo" />
