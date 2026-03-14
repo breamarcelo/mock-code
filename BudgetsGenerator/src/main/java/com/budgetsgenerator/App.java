@@ -9,6 +9,7 @@ import com.budgetsgenerator.views.PresupuestosView;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -39,7 +40,6 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         BorderPane root = new BorderPane();
         AnchorPane sideBar = new AnchorPane();
-        sideBar.setMinSize(100, 400);
         sideBar.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         Button btn1 = new Button("Panel 1");
         btn1.setLayoutY(0);
@@ -50,17 +50,13 @@ public class App extends Application {
         AnchorPane p1 = new AnchorPane();
         p1.setMinSize(800, 400);
         p1.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-        TableView<LineasAdicionalesDTO> t1 = new TableView<>();
         
-        // for(LineasAdicionalesDTO l : LineasAdicionalesMapper.getInstance().toDTOList()) {
-        //     t1.getItems().add(l);
-        // }
-
+        TableView<LineasAdicionalesDTO> t1 = new TableView<>();
         t1.setItems(FXCollections.observableArrayList(LineasAdicionalesMapper.getInstance().toDTOList()));
 
         TableColumn<LineasAdicionalesDTO, String> idTableColumn = new TableColumn<>("Id");
         idTableColumn.minWidthProperty().set(20);
-        idTableColumn.setCellValueFactory(new PropertyValueFactory<LineasAdicionalesDTO, String>("id"));
+        idTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         TableColumn<LineasAdicionalesDTO, String> nombreTableColumn = new TableColumn<>("Nombre");
         nombreTableColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         TableColumn<LineasAdicionalesDTO, String> tipoTableColumn = new TableColumn<>("Tipo");
@@ -70,6 +66,26 @@ public class App extends Application {
         t1.getColumns().add(tipoTableColumn);
         t1.prefWidth(300);
         t1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        t1.setLayoutX(500);
+        
+        
+        ObservableList<Item> rows = FXCollections.observableArrayList(
+            new Item(
+                "This is-----------------------\n" + 
+                "a multiline-------------------\n" + 
+                "textfield---------------------\n" + 
+                "for testing-------------------\n" +
+                "table rows.-------------------")
+            );
+            
+        TableView<Item> t2 = new TableView<>();
+        TableColumn<Item, String> col1 = new TableColumn<>("Name");
+        col1.setCellValueFactory(new PropertyValueFactory<>("name"));
+        
+        t2.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        t2.getColumns().add(col1);
+        t2.setItems(rows);
+        p1.getChildren().add(t2);
 
         Label l1 = new Label("");
         Label l2 = new Label("");
@@ -95,7 +111,8 @@ public class App extends Application {
         line1.getChildren().addAll(line1s1, line1b1, line1s2, line1b2);
         
         lv.getItems().add(line1);
-        p1.getChildren().add(lv);
+        // p1.getChildren().add(lv);
+        // p1.getChildren().add(t1);
         
         
         PresupuestosView p2 = new PresupuestosView();
@@ -116,16 +133,28 @@ public class App extends Application {
         });
         root.setLeft(sideBar);
         root.setCenter(p1);
-        root.setPrefSize(1920, 1080);
+        //root.setPrefSize(1920, 1080);
+        
         Scene scene = new Scene(root);
         //scene.getStylesheets().add("styles.css");
         stage.setTitle("Multiple panes demo");
         stage.setScene(scene);
+        stage.setMaximized(true);;
         stage.show();
+        
     }
 
     public static void main(String[] args) {
         launch();
     }
 
+    public static class Item {
+        private String name;
+        public Item(String name) {
+            this.name = name;
+        }
+        public String getName(){
+            return name;
+        }
+    }
 }

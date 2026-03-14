@@ -56,14 +56,20 @@ CREATE TABLE TTarifas
     Lineas_moviles INT(4) NOT NULL DEFAULT 1,
     Llamadas_movil VARCHAR(20) NOT NULL DEFAULT "Ilimitadas",
     Gb_movil VARCHAR(20) NOT NULL DEFAULT "Ilimitados",
-    Opcion_fibra1 VARCHAR(20) NOT NULL,
-    Opcion_fibra2 VARCHAR(20) NOT NULL,
-    Sobrecargo_fibra DECIMAL(10,2) NOT NULL,
     Precio DECIMAL(10,2) NOT NULL,
     FK_Servicios_ID INT(4) NOT NULL,
     Tv BOOLEAN DEFAULT FALSE,
     Servicio_streaming BOOLEAN DEFAULT FALSE,
     FOREIGN KEY(FK_Servicios_ID) REFERENCES TServicios_adicionales(PK_ID)
+);
+
+CREATE TABLE TFibras
+(
+    PK_ID INT(4) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL,
+    Sobrecargo DECIMAL(10,2) NOT NULL,
+    FK_Tarifas_ID INT(4) NOT NULL,
+    FOREIGN KEY(FK_Tarifas_ID) REFERENCES TTarifas(PK_ID)
 );
 
 INSERT INTO TPacks_futbol(Nombre, Precio) VALUES("Orange TV con más de 90 canales y todo el fútbol", 31.00);
@@ -95,11 +101,21 @@ INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Cib
 INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("60Gb", "200 min a fijos y móviles", TRUE, TRUE, TRUE, TRUE, "1 puesto fijo avanzado, IVR y DDIs adicionales", 3, "50% o 100% de descuento");
 INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("60Gb", "200 min a fijos y móviles", TRUE, TRUE, TRUE, TRUE, "2 puestos fijos avanzados, IVR y DDIs adicionales", 3, "50% o 100% de descuento");
 INSERT INTO TServicios_adicionales(Roaming, Internacional, Legalitas, Cloud, Ciber_proteccion, Atencion_personalizada, Centralita, Numero_beneficios, Descuento_beneficios) VALUES("20Gb", NULL, FALSE, FALSE, FALSE, FALSE, NULL, 0, NULL);
-INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Opcion_fibra1, Opcion_fibra2, Sobrecargo_fibra, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Base", "Captación", 1, "ilimitadas", "100Gb", "600Mb", "10Gb", 8.26, 42.00, 1, FALSE, FALSE);
-INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Opcion_fibra1, Opcion_fibra2, Sobrecargo_fibra, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Base Plus", "Captación", 1, "ilimitadas", "Ilimitados", "1Gb", "10Gb", 8.26, 52.00, 2, TRUE, FALSE);
-INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Opcion_fibra1, Opcion_fibra2, Sobrecargo_fibra, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Extra 1 línea", "Captación", 1, "ilimitadas", "Ilimitados", "1Gb", "10Gb", 8.26, 63.00, 3, TRUE, TRUE);
-INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Opcion_fibra1, Opcion_fibra2, Sobrecargo_fibra, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Extra 3 línea", "Captación", 3, "ilimitadas", "Ilimitados", "1Gb", "10Gb", 8.26, 91.00, 4, TRUE, TRUE);
-INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Opcion_fibra1, Opcion_fibra2, Sobrecargo_fibra, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Extra 5 línea", "Captación", 5, "ilimitadas", "Ilimitados", "1Gb", "10Gb", 8.26, 122.00, 5, TRUE, TRUE);
-INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Opcion_fibra1, Opcion_fibra2, Sobrecargo_fibra, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Extra 10 línea", "Captación", 10, "ilimitadas", "Ilimitados", "2Gb", "10Gb", 8.26, 238.00, 6, FALSE, FALSE);
-INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Opcion_fibra1, Opcion_fibra2, Sobrecargo_fibra, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Extra 20 línea", "Captación", 20, "ilimitadas", "Ilimitados", "2Gb", "10Gb", 8.26, 378.00, 7, FALSE, FALSE);
-INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Opcion_fibra1, Opcion_fibra2, Sobrecargo_fibra, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Love Empresa Smart", "Cartera", 1, "ilimitadas", "Ilimitados", "ADSL/Fibra1Gb", "Fibra ONO 100Mb", 2.40, 31.00, 8, FALSE, FALSE);
+INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Base", "Captación", 1, "ilimitadas", "100Gb", 42.00, 1, FALSE, FALSE);
+INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Base Plus", "Captación", 1, "ilimitadas", "Ilimitados", 52.00, 2, TRUE, FALSE);
+INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Extra 1 línea", "Captación", 1, "ilimitadas", "Ilimitados", 63.00, 3, TRUE, TRUE);
+INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Extra 3 línea", "Captación", 3, "ilimitadas", "Ilimitados", 91.00, 4, TRUE, TRUE);
+INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Extra 5 línea", "Captación", 5, "ilimitadas", "Ilimitados", 122.00, 5, TRUE, TRUE);
+INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Extra 10 línea", "Captación", 10, "ilimitadas", "Ilimitados", "2Gb", "10Gb", 8.26, 238.00, 6, FALSE, FALSE);
+INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Negocio Extra 20 línea", "Captación", 20, "ilimitadas", "Ilimitados", "2Gb", "10Gb", 8.26, 378.00, 7, FALSE, FALSE);
+INSERT INTO TTarifas(Nombre, Tipo, Lineas_moviles, Llamadas_movil, Gb_movil, Precio, FK_Servicios_ID, Tv, Servicio_streaming) VALUES("Love Empresa Smart", "Cartera", 1, "ilimitadas", "Ilimitados", "ADSL/Fibra1Gb", "Fibra ONO 100Mb", 2.40, 31.00, 8, FALSE, FALSE);
+INSERT INTO TFibras(Nombre, Sobrecargo, FK_Tarifas_ID) VALUES("600Mb", 0, 1);
+INSERT INTO TFibras(Nombre, Sobrecargo, FK_Tarifas_ID) VALUES("10Gb", 8.26, 1);
+INSERT INTO TFibras(Nombre, Sobrecargo, FK_Tarifas_ID) VALUES("1Gb", 0, 2);
+INSERT INTO TFibras(Nombre, Sobrecargo, FK_Tarifas_ID) VALUES("10Gb", 8.26, 2);
+INSERT INTO TFibras(Nombre, Sobrecargo, FK_Tarifas_ID) VALUES("1Gb", 0, 3);
+INSERT INTO TFibras(Nombre, Sobrecargo, FK_Tarifas_ID) VALUES("10Gb", 8.26, 3);
+INSERT INTO TFibras(Nombre, Sobrecargo, FK_Tarifas_ID) VALUES("1Gb", 0, 4);
+INSERT INTO TFibras(Nombre, Sobrecargo, FK_Tarifas_ID) VALUES("10Gb", 8.26, 4);
+INSERT INTO TFibras(Nombre, Sobrecargo, FK_Tarifas_ID) VALUES("1Gb", 0, 5);
+INSERT INTO TFibras(Nombre, Sobrecargo, FK_Tarifas_ID) VALUES("10Gb", 8.26, 5);

@@ -1,10 +1,11 @@
 package com.budgetsgenerator.config;
 
+import java.util.List;
 import java.util.function.Function;
 
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.util.Callback;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
 
@@ -22,13 +23,15 @@ public class UIUtils {
         };
     }
 
-    public static <T> Callback<ListView<T>, ListCell<T>> simpleCellFactory(Function<T, String> extractor) {
-        return lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(T item, boolean empty) {
-                super.updateItem(item, empty);
-                setText((empty || item == null) ? null : extractor.apply(item));
+    public static void populateVBox(VBox box, List<Control> controls) {
+        box.getChildren().addAll(controls);
+        controls.get(0).getStyleClass().add("VBox-Label");
+        for(Control c : controls) {
+            if(c.getClass().getSimpleName().toString().equals("ComboBox")) {
+                box.setMargin(c, new Insets(5,0,10,0));
+                c.setPrefWidth(Double.MAX_VALUE);
             }
-        };
+        }
+        box.setPrefWidth(800);
     }
 }
