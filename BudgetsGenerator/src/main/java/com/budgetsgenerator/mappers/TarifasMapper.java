@@ -28,9 +28,7 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO>{
         dto.setLineasMoviles(entity.getLineasMoviles());
         dto.setLlamadasMovil(entity.getLlamadasMovil());
         dto.setGbMovil(entity.getGbMovil());
-        dto.setOpcionFibra1(entity.getOpcionFibra1());
-        dto.setOpcionFibra2(entity.getOpcionFibra2());
-        dto.setSobrecargoFibra(entity.getSobrecargoFibra());
+        dto.setFibras(FibrasMapper.getInstance().toDTOList(tarifasDAO.findByIdWithFibras(entity.getId()).getFibras()));
         dto.setPrecio(entity.getPrecio());
         dto.setServiciosAdicionales(ServiciosAdicionalesMapper.getInstance().toDTO(entity.getServiciosAdicionales()));
         dto.setTv(entity.isTv());
@@ -46,9 +44,7 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO>{
         entity.setLineasMoviles(dto.getLineasMoviles());
         entity.setLlamadasMovil(dto.getLlamadasMovil());
         entity.setGbMovil(dto.getGbMovil());
-        entity.setOpcionFibra1(dto.getOpcionFibra1());
-        entity.setOpcionFibra2(dto.getOpcionFibra2());
-        entity.setSobrecargoFibra(dto.getSobrecargoFibra());
+        //entity.setFibras(dto.getFibras());
         entity.setPrecio(dto.getPrecio());
         entity.setServiciosAdicionales(ServiciosAdicionalesMapper.getInstance().toEntity(dto.getServiciosAdicionales()));
         entity.setTv(dto.isTv());
@@ -63,9 +59,12 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO>{
     }
     
     @Override
-    public List<TarifasDTO> toDTOList() {
+    public List<TarifasDTO> toDTOList(List<TarifasEntity> entities) {
+        if(entities == null) {
+            entities = tarifasDAO.findall();
+        }
         List<TarifasDTO> dtos = new ArrayList<>();
-        for(TarifasEntity entity : toEntityList(tarifasDAO)) {
+        for(TarifasEntity entity : entities) {
             dtos.add(toDTO(entity));
         }
         return dtos;

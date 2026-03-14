@@ -43,9 +43,12 @@ public class PacksFutbolMapper implements EntityMapper<PacksFutbolEntity, PacksF
     }
 
     @Override
-    public List<PacksFutbolDTO> toDTOList() {
+    public List<PacksFutbolDTO> toDTOList(List<PacksFutbolEntity> entities) {
+        if(entities == null) {
+            entities = packsFutbolDAO.findall();
+        }
         List<PacksFutbolDTO> dtos = new ArrayList<>();
-        for(PacksFutbolEntity entity : toEntityList(packsFutbolDAO)) {
+        for(PacksFutbolEntity entity : entities) {
             dtos.add(toDTO(entity));
         }
         return dtos;

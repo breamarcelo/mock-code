@@ -8,5 +8,5 @@ public interface EntityMapper<E, D> {
     D toDTO(E entity);
     E toEntity(D dto);
     List<E> toEntityList(GenericDAO dao);
-    List<D> toDTOList();
+    List<D> toDTOList(List<E> entities);
 }

@@ -53,9 +53,12 @@ public class LineasAdicionalesMapper implements EntityMapper<LineasAdicionalesEn
     }
 
     @Override
-    public List<LineasAdicionalesDTO> toDTOList() {
+    public List<LineasAdicionalesDTO> toDTOList(List<LineasAdicionalesEntity> entities) {
+        if(entities == null){
+            entities = lineasAdicionalesDAO.findall();
+        }
         List<LineasAdicionalesDTO> dtos = new ArrayList<>();
-        for(LineasAdicionalesEntity entity : toEntityList(lineasAdicionalesDAO)) {
+        for(LineasAdicionalesEntity entity : entities) {
             dtos.add(toDTO(entity));
         }
         return dtos;

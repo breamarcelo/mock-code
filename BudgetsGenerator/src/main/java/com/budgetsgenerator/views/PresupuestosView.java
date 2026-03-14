@@ -2,6 +2,7 @@ package com.budgetsgenerator.views;
 
 import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.dto.DescuentosDTO;
+import com.budgetsgenerator.dto.FibrasDTO;
 import com.budgetsgenerator.dto.PacksFutbolDTO;
 import com.budgetsgenerator.dto.TarifasDTO;
 
@@ -23,7 +24,7 @@ public class PresupuestosView extends GridPane{
     private Label productosAdicioanelesVBoxLabel = new Label("SERVICIOS ADICIONALES");
 
     private ComboBox<TarifasDTO> tarifasCombo = new ComboBox<>();
-    private ComboBox<String> fibraCombo = new ComboBox<>();
+    private ComboBox<FibrasDTO> fibraCombo = new ComboBox<>();
     private ComboBox<String> streamingCombo = new ComboBox<>();
     private ComboBox<DescuentosDTO> descuentoCombo = new ComboBox<>();
     private ComboBox<CentralitasDTO> centralitaCombo = new ComboBox<>();
@@ -102,11 +103,11 @@ public class PresupuestosView extends GridPane{
         this.tarifasCombo = tarifasCombo;
     }
 
-    public ComboBox<String> getFibraCombo() {
+    public ComboBox<FibrasDTO> getFibraCombo() {
         return fibraCombo;
     }
 
-    public void setFibraCombo(ComboBox<String> fibraCombo) {
+    public void setFibraCombo(ComboBox<FibrasDTO> fibraCombo) {
         this.fibraCombo = fibraCombo;
     }
 

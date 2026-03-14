@@ -57,9 +57,12 @@ public class ServiciosAdicionalesMapper implements EntityMapper<ServiciosAdicion
     }
 
     @Override
-    public List<ServiciosAdicionalesDTO> toDTOList() {
+    public List<ServiciosAdicionalesDTO> toDTOList(List<ServiciosAdicionalesEntity> entities) {
+        if(entities == null) {
+            entities = serviciosAdicionalesDAO.findall();
+        }
         List<ServiciosAdicionalesDTO> dtos = new ArrayList<>();
-        for(ServiciosAdicionalesEntity entity : toEntityList(serviciosAdicionalesDAO)) {
+        for(ServiciosAdicionalesEntity entity : entities) {
             dtos.add(toDTO(entity));
         }
         return dtos;

@@ -9,7 +9,7 @@ import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.CentralitasDAO;
 
 public class CentralitasMapper implements EntityMapper<CentralitasEntity, CentralitasDTO>{
-private static final CentralitasMapper instance = new CentralitasMapper();
+    private static final CentralitasMapper instance = new CentralitasMapper();
     private static final CentralitasDAO centralitasDAO = new CentralitasDAO(CentralitasEntity.class);
 
     private CentralitasMapper(){
@@ -43,9 +43,12 @@ private static final CentralitasMapper instance = new CentralitasMapper();
     }
 
     @Override
-    public List<CentralitasDTO> toDTOList() {
+    public List<CentralitasDTO> toDTOList(List<CentralitasEntity> entities) {
+        if(entities == null) {
+            entities = centralitasDAO.findall();
+        }
         List<CentralitasDTO> dtos = new ArrayList<>();
-        for(CentralitasEntity entity : toEntityList(centralitasDAO)) {
+        for(CentralitasEntity entity : entities) {
             dtos.add(toDTO(entity));
         }
         return dtos;

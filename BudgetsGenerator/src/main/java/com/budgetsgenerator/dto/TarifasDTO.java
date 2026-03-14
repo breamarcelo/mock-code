@@ -1,5 +1,7 @@
 package com.budgetsgenerator.dto;
 
+import java.util.List;
+
 public class TarifasDTO {
     private int id;
     private String nombre;
@@ -7,9 +9,7 @@ public class TarifasDTO {
     private int lineasMoviles;
     private String llamadasMovil;
     private String gbMovil;
-    private String opcionFibra1;
-    private String opcionFibra2;
-    private double sobrecargoFibra;
+    private List<FibrasDTO> fibras;
     private double precio;
     private ServiciosAdicionalesDTO serviciosAdicionales;
     private boolean tv;
@@ -19,7 +19,7 @@ public class TarifasDTO {
     }
 
     public TarifasDTO(int id, String nombre, String tipo, int lineasMoviles, String llamadasMovil, String gbMovil,
-            String opcionFibra1, String opcionFibra2, double sobrecargoFibra, double precio,
+            List<FibrasDTO> fibras, double precio,
             ServiciosAdicionalesDTO serviciosAdicionales, boolean tv, boolean streaming) {
         this.id = id;
         this.nombre = nombre;
@@ -27,9 +27,7 @@ public class TarifasDTO {
         this.lineasMoviles = lineasMoviles;
         this.llamadasMovil = llamadasMovil;
         this.gbMovil = gbMovil;
-        this.opcionFibra1 = opcionFibra1;
-        this.opcionFibra2 = opcionFibra2;
-        this.sobrecargoFibra = sobrecargoFibra;
+        this.fibras = fibras;
         this.precio = precio;
         this.serviciosAdicionales = serviciosAdicionales;
         this.tv = tv;
@@ -84,30 +82,6 @@ public class TarifasDTO {
         this.gbMovil = gbMovil;
     }
 
-    public String getOpcionFibra1() {
-        return opcionFibra1;
-    }
-
-    public void setOpcionFibra1(String opcionFibra1) {
-        this.opcionFibra1 = opcionFibra1;
-    }
-
-    public String getOpcionFibra2() {
-        return opcionFibra2;
-    }
-
-    public void setOpcionFibra2(String opcionFibra2) {
-        this.opcionFibra2 = opcionFibra2;
-    }
-
-    public double getSobrecargoFibra() {
-        return sobrecargoFibra;
-    }
-
-    public void setSobrecargoFibra(double sobrecargoFibra) {
-        this.sobrecargoFibra = sobrecargoFibra;
-    }
-
     public double getPrecio() {
         return precio;
     }
@@ -139,4 +113,12 @@ public class TarifasDTO {
     public void setStreaming(boolean streaming) {
         this.streaming = streaming;
     }    
+
+    public List<FibrasDTO> getFibras() {
+        return fibras;
+    }
+
+    public void setFibras(List<FibrasDTO> fibras) {
+        this.fibras = fibras;
+    }
 }

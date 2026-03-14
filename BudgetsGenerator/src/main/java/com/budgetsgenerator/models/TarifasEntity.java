@@ -1,11 +1,16 @@
 package com.budgetsgenerator.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -32,14 +37,8 @@ public class TarifasEntity {
     @Column(name="Gb_movil")
     private String gbMovil;
 
-    @Column(name="Opcion_fibra1")
-    private String opcionFibra1;
-
-    @Column(name="Opcion_fibra2")
-    private String opcionFibra2;
-
-    @Column(name="Sobrecargo_fibra")
-    private double sobrecargoFibra;
+    @OneToMany(mappedBy="tarifa", cascade=CascadeType.ALL, orphanRemoval=true)
+    private List<FibrasEntity> fibras = new ArrayList<>();
 
     @Column(name="Precio")
     private double precio;
@@ -58,7 +57,7 @@ public class TarifasEntity {
     }
 
     public TarifasEntity(int id, String nombre, String tipo, int lineasMoviles, String llamadasMovil, String gbMovil,
-            String opcionFibra1, String opcionFibra2, double sobrecargoFibra, double precio,
+            List<FibrasEntity> fibras, double precio,
             ServiciosAdicionalesEntity serviciosAdicionales, boolean tv, boolean streaming) {
         this.id = id;
         this.nombre = nombre;
@@ -66,13 +65,16 @@ public class TarifasEntity {
         this.lineasMoviles = lineasMoviles;
         this.llamadasMovil = llamadasMovil;
         this.gbMovil = gbMovil;
-        this.opcionFibra1 = opcionFibra1;
-        this.opcionFibra2 = opcionFibra2;
-        this.sobrecargoFibra = sobrecargoFibra;
+        this.fibras = fibras;
         this.precio = precio;
         this.serviciosAdicionales = serviciosAdicionales;
         this.tv = tv;
         this.streaming = streaming;
+    }
+
+    public void addFibra(FibrasEntity fibra) {
+        fibras.add(fibra);
+        fibra.setTarifa(this);
     }
 
     public int getId() {
@@ -123,30 +125,6 @@ public class TarifasEntity {
         this.gbMovil = gbMovil;
     }
 
-    public String getOpcionFibra1() {
-        return opcionFibra1;
-    }
-
-    public void setOpcionFibra1(String opcionFibra1) {
-        this.opcionFibra1 = opcionFibra1;
-    }
-
-    public String getOpcionFibra2() {
-        return opcionFibra2;
-    }
-
-    public void setOpcionFibra2(String opcionFibra2) {
-        this.opcionFibra2 = opcionFibra2;
-    }
-
-    public double getSobrecargoFibra() {
-        return sobrecargoFibra;
-    }
-
-    public void setSobrecargoFibra(double sobrecargoFibra) {
-        this.sobrecargoFibra = sobrecargoFibra;
-    }
-
     public double getPrecio() {
         return precio;
     }
@@ -177,6 +155,14 @@ public class TarifasEntity {
 
     public void setStreaming(boolean streaming) {
         this.streaming = streaming;
+    }
+
+    public List<FibrasEntity> getFibras() {
+        return fibras;
+    }
+
+    public void setFibras(List<FibrasEntity> fibras) {
+        this.fibras = fibras;
     }
 
 }

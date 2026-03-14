@@ -4,7 +4,8 @@ import java.io.IOException;
 
 import com.budgetsgenerator.controllers.PresupuestosController;
 import com.budgetsgenerator.dto.LineasAdicionalesDTO;
-import com.budgetsgenerator.mappers.LineasAdicionalesMapper;
+import com.budgetsgenerator.models.TarifasEntity;
+import com.budgetsgenerator.repository.impl.TarifasDAO;
 import com.budgetsgenerator.views.PresupuestosView;
 
 import javafx.application.Application;
@@ -52,7 +53,7 @@ public class App extends Application {
         p1.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         
         TableView<LineasAdicionalesDTO> t1 = new TableView<>();
-        t1.setItems(FXCollections.observableArrayList(LineasAdicionalesMapper.getInstance().toDTOList()));
+        //t1.setItems(FXCollections.observableArrayList(LineasAdicionalesMapper.getInstance().toDTOList()));
 
         TableColumn<LineasAdicionalesDTO, String> idTableColumn = new TableColumn<>("Id");
         idTableColumn.minWidthProperty().set(20);
@@ -141,6 +142,12 @@ public class App extends Application {
         stage.setScene(scene);
         stage.setMaximized(true);;
         stage.show();
+        
+        TarifasDAO tarifasDAO = new TarifasDAO(TarifasEntity.class);
+        TarifasEntity found = tarifasDAO.findByIdWithFibras(1);
+        for(var e : found.getFibras()){
+            System.out.println(e.getNombre());
+        }
         
     }
 

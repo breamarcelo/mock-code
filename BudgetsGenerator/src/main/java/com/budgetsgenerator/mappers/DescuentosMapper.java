@@ -41,10 +41,12 @@ public class DescuentosMapper implements EntityMapper<DescuentosEntity, Descuent
     }
 
     @Override
-    public List<DescuentosDTO> toDTOList() {
-        List<DescuentosEntity> entities = descuentosDAO.findall();
+    public List<DescuentosDTO> toDTOList(List<DescuentosEntity> entities) {
+        if(entities == null){
+            entities = descuentosDAO.findall();
+        }
         List<DescuentosDTO> dtos = new ArrayList<>();
-        for(DescuentosEntity entity : toEntityList(descuentosDAO)) {
+        for(DescuentosEntity entity : entities) {
             dtos.add(toDTO(entity));
         }
         return dtos;
