@@ -8,6 +8,7 @@ import com.budgetsgenerator.config.UIUtils;
 import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.dto.DescuentosDTO;
 import com.budgetsgenerator.dto.LineasAdicionalesDTO;
+import com.budgetsgenerator.dto.LineasPresupuestoDTO;
 import com.budgetsgenerator.dto.PacksFutbolDTO;
 import com.budgetsgenerator.dto.PresupuestosDTO;
 import com.budgetsgenerator.dto.StreamingDTO;
@@ -35,6 +36,7 @@ import javafx.scene.layout.Priority;
 public class PresupuestosController {
     private PresupuestosView view = new PresupuestosView();
     private PresupuestosDTO presupuesto = new PresupuestosDTO();
+    private List<LineasPresupuestoDTO> lineasPresupuestoList = new ArrayList<>();
 
     public PresupuestosController(PresupuestosView view) {
         this.view = view;
@@ -71,9 +73,21 @@ public class PresupuestosController {
             view.getFibraCombo().getItems().setAll(newValue.getFibras());
             view.getStreamingCombo().setDisable(!newValue.isStreaming());
             presupuesto.setTarifa(newValue);
+            System.out.println("Presupuesto tarifa: " + presupuesto.getTarifa().getNombre() + "\n" + 
+            presupuesto.getTarifa().getLineasMoviles() + " linea(s) móvil(es) " + presupuesto.getTarifa().getLlamadasMovil() + " " + presupuesto.getTarifa().getGbMovil());
             ResumenItem updated = new ResumenItem("1", presupuesto.getTarifa().getNombre(), Double.toString(presupuesto.getTarifa().getPrecio()));
             resumenPresupuesto.set(0, updated);
             view.getResumenView().refresh();
+        });
+
+        view.getFibraCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            presupuesto.setFibra(newValue);
+            System.out.println(presupuesto.getFibra().getNombre() + " " + presupuesto.getFibra().getSobrecargo());
+        });
+
+        view.getStreamingCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            presupuesto.setStreaming(newValue);
+            System.out.println(presupuesto.getStreaming().getNombre());
         });
         
         UIUtils.populateVBox(view.getTarifasVBox(), new ArrayList<>(Arrays.asList(view.getTarifasVBoxLabel(), view.getTarifaLabel(), view.getTarifasCombo(), view.getFibraLabel(), view.getFibraCombo(), view.getStreamingLabel(), view.getStreamingCombo())));
@@ -113,15 +127,60 @@ public class PresupuestosController {
             Button deleteItemButton = new Button("-");
             deleteItemButton.getStyleClass().add("view_btn");
 
+            
             addItemButton.setOnAction(e -> {
                 int quantity = Integer.decode(itemQuantityLabel.getText());
-                itemQuantityLabel.setText(Integer.toString(quantity+1));
-                System.out.println("ID: " + itemId.getText() + " QT: " + itemQuantityLabel.getText());
+                quantity += 1;
+                itemQuantityLabel.setText(Integer.toString(quantity));
+
+                int index = 0;
+                boolean exist = false;
+                for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
+                    if(linea.getLineasAdicional().getId() == dto.getId()){
+                        index = lineasPresupuestoList.indexOf(linea);
+                        exist = true;
+                    }
+                }
+                if(exist){
+                    lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto));
+                } else {
+                    lineasPresupuestoList.add(new LineasPresupuestoDTO(index, quantity, dto));
+                }
+                
+                for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
+                    System.out.println(linea.getCantidad() + " | " + linea.getLineasAdicional().getNombre() + " | " + linea.getLineasAdicional().getPrecio()*linea.getCantidad());
+                }
+                System.out.println("list size: " + lineasPresupuestoList.size());
+                System.out.println("-----------------------------");
             });
             
             deleteItemButton.setOnAction(e -> {
                 int quantity = Integer.decode(itemQuantityLabel.getText());
-                itemQuantityLabel.setText(Integer.toString(quantity >= 1 ? quantity - 1 : 0));
+                quantity -= 1;
+                itemQuantityLabel.setText(Integer.toString(quantity >= 1 ? quantity : 0));
+
+                if(lineasPresupuestoList.size() > 0){
+
+                    int index = 0;
+                    for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
+                        if(linea.getLineasAdicional().getId() == dto.getId()){
+                            index = lineasPresupuestoList.indexOf(linea);
+                        }
+                    }
+                    
+                    if(quantity > 0) {
+                        lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto));
+                    } else {
+                        lineasPresupuestoList.remove(index);
+                    }
+                }
+
+                
+                for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
+                    System.out.println(linea.getCantidad() + " | " + linea.getLineasAdicional().getNombre() + " | " + linea.getLineasAdicional().getPrecio()*linea.getCantidad());
+                }
+                System.out.println("list size: " + lineasPresupuestoList.size());
+                System.out.println("-----------------------------");
             });
             listViewItem.setHgrow(itemName, Priority.ALWAYS);
             listViewItem.setAlignment(Pos.CENTER_RIGHT);

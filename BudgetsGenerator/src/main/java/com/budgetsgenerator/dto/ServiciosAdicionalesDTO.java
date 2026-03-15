@@ -4,7 +4,7 @@ public class ServiciosAdicionalesDTO {
     private int id;
     private String roaming;
     private String internacional;
-    private boolean Legalitas;
+    private boolean legalitas;
     private boolean cloud;
     private boolean ciberProteccion;
     private boolean atencionPersonalizada;
@@ -21,7 +21,7 @@ public class ServiciosAdicionalesDTO {
         this.id = id;
         this.roaming = roaming;
         this.internacional = internacional;
-        Legalitas = legalitas;
+        this.legalitas = legalitas;
         this.cloud = cloud;
         this.ciberProteccion = ciberProteccion;
         this.atencionPersonalizada = atencionPersonalizada;
@@ -48,10 +48,10 @@ public class ServiciosAdicionalesDTO {
         this.internacional = internacional;
     }
     public boolean isLegalitas() {
-        return Legalitas;
+        return this.legalitas;
     }
     public void setLegalitas(boolean legalitas) {
-        Legalitas = legalitas;
+        this.legalitas = legalitas;
     }
     public boolean isCloud() {
         return cloud;
