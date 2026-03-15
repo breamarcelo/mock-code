@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import com.budgetsgenerator.controllers.PresupuestosController;
 import com.budgetsgenerator.dto.LineasAdicionalesDTO;
-import com.budgetsgenerator.models.TarifasEntity;
-import com.budgetsgenerator.repository.impl.TarifasDAO;
 import com.budgetsgenerator.views.PresupuestosView;
 
 import javafx.application.Application;
@@ -143,11 +141,7 @@ public class App extends Application {
         stage.setMaximized(true);;
         stage.show();
         
-        TarifasDAO tarifasDAO = new TarifasDAO(TarifasEntity.class);
-        TarifasEntity found = tarifasDAO.findByIdWithFibras(1);
-        for(var e : found.getFibras()){
-            System.out.println(e.getNombre());
-        }
+        
         
     }
 

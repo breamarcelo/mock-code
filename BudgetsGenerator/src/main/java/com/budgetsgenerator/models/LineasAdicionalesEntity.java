@@ -1,5 +1,7 @@
 package com.budgetsgenerator.models;
 
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,7 +41,7 @@ public class LineasAdicionalesEntity {
     private double precio;
 
     @OneToMany(mappedBy="lineaAdicional", cascade=CascadeType.ALL, orphanRemoval=true)
-    private LineasPresupuestoEntity lineasPresupuesto;
+    private List<LineasPresupuestoEntity> lineasPresupuesto;
 
     public LineasAdicionalesEntity() {
     }
@@ -118,6 +120,14 @@ public class LineasAdicionalesEntity {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public List<LineasPresupuestoEntity> getLineasPresupuesto() {
+        return lineasPresupuesto;
+    }
+
+    public void setLineasPresupuesto(List<LineasPresupuestoEntity> lineasPresupuesto) {
+        this.lineasPresupuesto = lineasPresupuesto;
     }
     
 }

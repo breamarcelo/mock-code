@@ -1,5 +1,6 @@
 package com.budgetsgenerator.views;
 
+import com.budgetsgenerator.controllers.PresupuestosController;
 import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.dto.DescuentosDTO;
 import com.budgetsgenerator.dto.FibrasDTO;
@@ -11,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -23,6 +25,8 @@ public class PresupuestosView extends GridPane{
     private Label lineasAdicionalesVBoxLabel = new Label("LÍNEAS ADICIONALES");
     private VBox productosAdicionalesVBox = new VBox();
     private Label productosAdicioanelesVBoxLabel = new Label("SERVICIOS ADICIONALES");
+    private VBox resumenVBox = new VBox();
+    private Label resumenVBoxLabel = new Label("RESUMEN");
 
     private ComboBox<TarifasDTO> tarifasCombo = new ComboBox<>();
     private ComboBox<FibrasDTO> fibraCombo = new ComboBox<>();
@@ -31,7 +35,7 @@ public class PresupuestosView extends GridPane{
     private ComboBox<CentralitasDTO> centralitaCombo = new ComboBox<>();
     private ComboBox<PacksFutbolDTO> packsFutbolCombo = new ComboBox<>();
     private ListView<HBox> lineasAdicionalesView = new ListView<>();
-    private ListView<String> resumenView = new ListView<>();
+    private TableView<PresupuestosController.ResumenItem> resumenView = new TableView<>();
     private Button saveButton = new Button("Guardar Presupuesto");
     private Button loadButton = new Button("Cargar Presupuesto");
     private Button limpiarButton = new Button("Limpiar");
@@ -69,6 +73,7 @@ public class PresupuestosView extends GridPane{
         this.add(tarifasVBox, 0, 1, 1, 1);
         this.add(productosAdicionalesVBox, 0, 2, 1, 1);
         this.add(lineasAdicionalesVBox, 0, 3, 1, 1);
+        this.add(resumenVBox, 1, 1, 1, 3);
         // this.add(tarifaLabel, 0, 1, 2, 1);
         // this.add(tarifasCombo, 0, 2, 2, 1);
         // this.add(fibraLabel, 0, 3, 1, 1);
@@ -168,11 +173,11 @@ public class PresupuestosView extends GridPane{
         this.loadButton = loadButton;
     }
 
-    public ListView<String> getResumenView() {
+    public TableView<PresupuestosController.ResumenItem> getResumenView() {
         return resumenView;
     }
 
-    public void setResumenView(ListView<String> resumenView) {
+    public void setResumenView(TableView<PresupuestosController.ResumenItem> resumenView) {
         this.resumenView = resumenView;
     }
 
@@ -283,4 +288,20 @@ public class PresupuestosView extends GridPane{
     public void setProductosAdicioanelesVBoxLabel(Label productosAdicioanelesVBoxLabel) {
         this.productosAdicioanelesVBoxLabel = productosAdicioanelesVBoxLabel;
     }   
+
+    public VBox getResumenVBox() {
+        return resumenVBox;
+    }
+
+    public void setResumenVBox(VBox resumenVBox) {
+        this.resumenVBox = resumenVBox;
+    }
+
+    public Label getResumenVBoxLabel() {
+        return resumenVBoxLabel;
+    }
+
+    public void setResumenVBoxLabel(Label resumenVBoxLabel) {
+        this.resumenVBoxLabel = resumenVBoxLabel;
+    }
 }

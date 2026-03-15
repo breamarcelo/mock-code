@@ -9,6 +9,7 @@ import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.dto.DescuentosDTO;
 import com.budgetsgenerator.dto.LineasAdicionalesDTO;
 import com.budgetsgenerator.dto.PacksFutbolDTO;
+import com.budgetsgenerator.dto.PresupuestosDTO;
 import com.budgetsgenerator.dto.StreamingDTO;
 import com.budgetsgenerator.dto.TarifasDTO;
 import com.budgetsgenerator.mappers.CentralitasMapper;
@@ -19,15 +20,21 @@ import com.budgetsgenerator.mappers.StreamingMapper;
 import com.budgetsgenerator.mappers.TarifasMapper;
 import com.budgetsgenerator.views.PresupuestosView;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 public class PresupuestosController {
     private PresupuestosView view = new PresupuestosView();
+    private PresupuestosDTO presupuesto = new PresupuestosDTO();
 
     public PresupuestosController(PresupuestosView view) {
         this.view = view;
@@ -54,18 +61,39 @@ public class PresupuestosController {
         view.getFibraCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
         view.getPacksFutbolCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
         view.getStreamingCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
-
+        
+        ObservableList<ResumenItem> resumenPresupuesto = FXCollections.observableArrayList(
+            new ResumenItem(),
+            new ResumenItem()
+        );
         view.getTarifasCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             view.getFibraCombo().getItems().clear();
             view.getFibraCombo().getItems().setAll(newValue.getFibras());
             view.getStreamingCombo().setDisable(!newValue.isStreaming());
+            presupuesto.setTarifa(newValue);
+            ResumenItem updated = new ResumenItem("1", presupuesto.getTarifa().getNombre(), Double.toString(presupuesto.getTarifa().getPrecio()));
+            resumenPresupuesto.set(0, updated);
+            view.getResumenView().refresh();
         });
-
+        
         UIUtils.populateVBox(view.getTarifasVBox(), new ArrayList<>(Arrays.asList(view.getTarifasVBoxLabel(), view.getTarifaLabel(), view.getTarifasCombo(), view.getFibraLabel(), view.getFibraCombo(), view.getStreamingLabel(), view.getStreamingCombo())));
         UIUtils.populateVBox(view.getProductosAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getProductosAdicioanelesVBoxLabel(), view.getCentralitaLabel(), view.getCentralitaCombo(), view.getPackFutbolLabel(), view.getPacksFutbolCombo())));
         UIUtils.populateVBox(view.getLineasAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getLineasAdicionalesVBoxLabel(), view.getLineasAdicionalesView())));
+        UIUtils.populateVBox(view.getResumenVBox(), new ArrayList<>(Arrays.asList(view.getResumenVBoxLabel(), view.getDescuentoLabel(), view.getDescuentoCombo(), view.getResumenView())));
         
-
+        TableColumn<ResumenItem, String> cantidadTableColumn = new TableColumn<>("Cantidad");
+        cantidadTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getCantidad() == null ? "" : cellData.getValue().getCantidad())));
+        TableColumn<ResumenItem, String> descripcionTableColumn = new TableColumn<>("Descripción");
+        descripcionTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescripcion()));
+        TableColumn<ResumenItem, String> precioTableColumn = new TableColumn<>("Importe");
+        precioTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getPrecio() == null ? "" : cellData.getValue().getPrecio())));
+        
+        view.getResumenView().getColumns().clear();
+        view.getResumenView().getColumns().addAll(cantidadTableColumn, descripcionTableColumn, precioTableColumn); 
+        view.getResumenView().setItems(resumenPresupuesto);
+        view.getResumenVBox().setVgrow(view.getResumenView(), Priority.ALWAYS);
+        view.getResumenView().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        
         view.getTarifasCombo().setOnAction(e -> {
             System.out.println(e.getSource().toString());
         });
@@ -102,5 +130,38 @@ public class PresupuestosController {
             view.getLineasAdicionalesView().getItems().add(listViewItem);
         }
         view.getLineasAdicionalesView().setPadding(Insets.EMPTY);
+    }
+
+    public static class ResumenItem {
+        private String cantidad;
+        private String descripcion;
+        private String precio;
+
+        public ResumenItem(){}
+
+        public ResumenItem(String cantidad, String descripcion, String precio) {
+            this.cantidad = cantidad;
+            this.descripcion = descripcion;
+            this.precio = precio;
+        }
+
+        public String getCantidad(){
+            return cantidad;
+        }
+        public void setCantidad(String cantidad){
+            this.cantidad = cantidad;
+        }
+        public String getDescripcion(){
+            return descripcion;
+        }
+        public void setDescripcion(String descripcion){
+            this.descripcion = descripcion;
+        }
+        public String getPrecio(){
+            return precio;
+        }
+        public void setPrecio(String precio){
+            this.precio = precio;
+        }
     }
 }
