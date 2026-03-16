@@ -89,6 +89,18 @@ public class PresupuestosController {
             presupuesto.setStreaming(newValue);
             System.out.println(presupuesto.getStreaming().getNombre());
         });
+
+        view.getCentralitaCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            presupuesto.setCentralita(newValue);
+        });
+
+        view.getPacksFutbolCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            presupuesto.setPackFutbol(newValue);
+        });
+
+        view.getDescuentoCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            presupuesto.setDescuento(newValue);
+        });
         
         UIUtils.populateVBox(view.getTarifasVBox(), new ArrayList<>(Arrays.asList(view.getTarifasVBoxLabel(), view.getTarifaLabel(), view.getTarifasCombo(), view.getFibraLabel(), view.getFibraCombo(), view.getStreamingLabel(), view.getStreamingCombo())));
         UIUtils.populateVBox(view.getProductosAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getProductosAdicioanelesVBoxLabel(), view.getCentralitaLabel(), view.getCentralitaCombo(), view.getPackFutbolLabel(), view.getPacksFutbolCombo())));
@@ -127,7 +139,6 @@ public class PresupuestosController {
             Button deleteItemButton = new Button("-");
             deleteItemButton.getStyleClass().add("view_btn");
 
-            
             addItemButton.setOnAction(e -> {
                 int quantity = Integer.decode(itemQuantityLabel.getText());
                 quantity += 1;
@@ -146,6 +157,8 @@ public class PresupuestosController {
                 } else {
                     lineasPresupuestoList.add(new LineasPresupuestoDTO(index, quantity, dto));
                 }
+
+                presupuesto.setLineasAdicionales(lineasPresupuestoList);
                 
                 for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
                     System.out.println(linea.getCantidad() + " | " + linea.getLineasAdicional().getNombre() + " | " + linea.getLineasAdicional().getPrecio()*linea.getCantidad());
@@ -173,9 +186,10 @@ public class PresupuestosController {
                     } else {
                         lineasPresupuestoList.remove(index);
                     }
+
+                    presupuesto.setLineasAdicionales(lineasPresupuestoList);
                 }
 
-                
                 for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
                     System.out.println(linea.getCantidad() + " | " + linea.getLineasAdicional().getNombre() + " | " + linea.getLineasAdicional().getPrecio()*linea.getCantidad());
                 }
