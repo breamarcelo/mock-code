@@ -19,6 +19,7 @@ import com.budgetsgenerator.mappers.LineasAdicionalesMapper;
 import com.budgetsgenerator.mappers.PacksFutbolMapper;
 import com.budgetsgenerator.mappers.StreamingMapper;
 import com.budgetsgenerator.mappers.TarifasMapper;
+import com.budgetsgenerator.viewmodels.ResumentTableItem;
 import com.budgetsgenerator.views.PresupuestosView;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -64,9 +65,9 @@ public class PresupuestosController {
         view.getPacksFutbolCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
         view.getStreamingCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
         
-        ObservableList<ResumenItem> resumenPresupuesto = FXCollections.observableArrayList(
-            new ResumenItem(),
-            new ResumenItem()
+        ObservableList<ResumentTableItem> resumenPresupuesto = FXCollections.observableArrayList(
+            new ResumentTableItem(),
+            new ResumentTableItem()
         );
         view.getTarifasCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             view.getFibraCombo().getItems().clear();
@@ -75,7 +76,7 @@ public class PresupuestosController {
             presupuesto.setTarifa(newValue);
             System.out.println("Presupuesto tarifa: " + presupuesto.getTarifa().getNombre() + "\n" + 
             presupuesto.getTarifa().getLineasMoviles() + " linea(s) móvil(es) " + presupuesto.getTarifa().getLlamadasMovil() + " " + presupuesto.getTarifa().getGbMovil());
-            ResumenItem updated = new ResumenItem("1", presupuesto.getTarifa().getNombre(), Double.toString(presupuesto.getTarifa().getPrecio()));
+            ResumentTableItem updated = new ResumentTableItem("1", presupuesto.getTarifa().getNombre(), Double.toString(presupuesto.getTarifa().getPrecio()));
             resumenPresupuesto.set(0, updated);
             view.getResumenView().refresh();
         });
@@ -106,12 +107,12 @@ public class PresupuestosController {
         UIUtils.populateVBox(view.getProductosAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getProductosAdicioanelesVBoxLabel(), view.getCentralitaLabel(), view.getCentralitaCombo(), view.getPackFutbolLabel(), view.getPacksFutbolCombo())));
         UIUtils.populateVBox(view.getLineasAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getLineasAdicionalesVBoxLabel(), view.getLineasAdicionalesView())));
         UIUtils.populateVBox(view.getResumenVBox(), new ArrayList<>(Arrays.asList(view.getResumenVBoxLabel(), view.getDescuentoLabel(), view.getDescuentoCombo(), view.getResumenView())));
-        
-        TableColumn<ResumenItem, String> cantidadTableColumn = new TableColumn<>("Cantidad");
+    
+        TableColumn<ResumentTableItem, String> cantidadTableColumn = new TableColumn<>("Cantidad");
         cantidadTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getCantidad() == null ? "" : cellData.getValue().getCantidad())));
-        TableColumn<ResumenItem, String> descripcionTableColumn = new TableColumn<>("Descripción");
+        TableColumn<ResumentTableItem, String> descripcionTableColumn = new TableColumn<>("Descripción");
         descripcionTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescripcion()));
-        TableColumn<ResumenItem, String> precioTableColumn = new TableColumn<>("Importe");
+        TableColumn<ResumentTableItem, String> precioTableColumn = new TableColumn<>("Importe");
         precioTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getPrecio() == null ? "" : cellData.getValue().getPrecio())));
         
         view.getResumenView().getColumns().clear();
@@ -203,38 +204,5 @@ public class PresupuestosController {
             view.getLineasAdicionalesView().getItems().add(listViewItem);
         }
         view.getLineasAdicionalesView().setPadding(Insets.EMPTY);
-    }
-
-    public static class ResumenItem {
-        private String cantidad;
-        private String descripcion;
-        private String precio;
-
-        public ResumenItem(){}
-
-        public ResumenItem(String cantidad, String descripcion, String precio) {
-            this.cantidad = cantidad;
-            this.descripcion = descripcion;
-            this.precio = precio;
-        }
-
-        public String getCantidad(){
-            return cantidad;
-        }
-        public void setCantidad(String cantidad){
-            this.cantidad = cantidad;
-        }
-        public String getDescripcion(){
-            return descripcion;
-        }
-        public void setDescripcion(String descripcion){
-            this.descripcion = descripcion;
-        }
-        public String getPrecio(){
-            return precio;
-        }
-        public void setPrecio(String precio){
-            this.precio = precio;
-        }
     }
 }

@@ -5,6 +5,7 @@ import java.util.function.Function;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
@@ -27,7 +28,7 @@ public class UIUtils {
         box.getChildren().addAll(controls);
         controls.get(0).getStyleClass().add("VBox-Label");
         for(Control c : controls) {
-            if(c.getClass().getSimpleName().toString().equals("ComboBox")) {
+            if(c instanceof ComboBox) {
                 box.setMargin(c, new Insets(5,0,10,0));
                 c.setPrefWidth(Double.MAX_VALUE);
             }

@@ -1,12 +1,12 @@
 package com.budgetsgenerator.views;
 
-import com.budgetsgenerator.controllers.PresupuestosController;
 import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.dto.DescuentosDTO;
 import com.budgetsgenerator.dto.FibrasDTO;
 import com.budgetsgenerator.dto.PacksFutbolDTO;
 import com.budgetsgenerator.dto.StreamingDTO;
 import com.budgetsgenerator.dto.TarifasDTO;
+import com.budgetsgenerator.viewmodels.ResumentTableItem;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -35,7 +35,7 @@ public class PresupuestosView extends GridPane{
     private ComboBox<CentralitasDTO> centralitaCombo = new ComboBox<>();
     private ComboBox<PacksFutbolDTO> packsFutbolCombo = new ComboBox<>();
     private ListView<HBox> lineasAdicionalesView = new ListView<>();
-    private TableView<PresupuestosController.ResumenItem> resumenView = new TableView<>();
+    private TableView<ResumentTableItem> resumenView = new TableView<>();
     private Button saveButton = new Button("Guardar Presupuesto");
     private Button loadButton = new Button("Cargar Presupuesto");
     private Button limpiarButton = new Button("Limpiar");
@@ -173,11 +173,11 @@ public class PresupuestosView extends GridPane{
         this.loadButton = loadButton;
     }
 
-    public TableView<PresupuestosController.ResumenItem> getResumenView() {
+    public TableView<ResumentTableItem> getResumenView() {
         return resumenView;
     }
 
-    public void setResumenView(TableView<PresupuestosController.ResumenItem> resumenView) {
+    public void setResumenView(TableView<ResumentTableItem> resumenView) {
         this.resumenView = resumenView;
     }
 
