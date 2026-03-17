@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -68,6 +69,10 @@ public class PresupuestosView extends GridPane{
         // }
         presupuestoLabel.setId("presupuestos_title");
         totalLabel.setId("total_label");
+        
+        this.getColumnConstraints().addAll(new ColumnConstraints(), new ColumnConstraints());
+        this.getColumnConstraints().get(0).setPercentWidth(50);
+        this.getColumnConstraints().get(1).setPercentWidth(50);
         
         this.add(presupuestoLabel, 0, 0, 1, 1);
         this.add(tarifasVBox, 0, 1, 1, 1);

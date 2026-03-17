@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.budgetsgenerator.config.UIUtils;
+import com.budgetsgenerator.config.UIUtil;
 import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.dto.DescuentosDTO;
 import com.budgetsgenerator.dto.LineasAdicionalesDTO;
@@ -13,12 +13,12 @@ import com.budgetsgenerator.dto.PacksFutbolDTO;
 import com.budgetsgenerator.dto.PresupuestosDTO;
 import com.budgetsgenerator.dto.StreamingDTO;
 import com.budgetsgenerator.dto.TarifasDTO;
-import com.budgetsgenerator.mappers.CentralitasMapper;
-import com.budgetsgenerator.mappers.DescuentosMapper;
-import com.budgetsgenerator.mappers.LineasAdicionalesMapper;
-import com.budgetsgenerator.mappers.PacksFutbolMapper;
-import com.budgetsgenerator.mappers.StreamingMapper;
-import com.budgetsgenerator.mappers.TarifasMapper;
+import com.budgetsgenerator.services.impl.CentralitasService;
+import com.budgetsgenerator.services.impl.DescuentosService;
+import com.budgetsgenerator.services.impl.LineasAdicionalesService;
+import com.budgetsgenerator.services.impl.PacksFutbolService;
+import com.budgetsgenerator.services.impl.StreamingService;
+import com.budgetsgenerator.services.impl.TarifasService;
 import com.budgetsgenerator.viewmodels.ResumentTableItem;
 import com.budgetsgenerator.views.PresupuestosView;
 
@@ -44,12 +44,12 @@ public class PresupuestosController {
     }
     
     public void loadData(){
-        List<TarifasDTO> tarifasList = TarifasMapper.getInstance().toDTOList(null);
-        List<LineasAdicionalesDTO> lineasAdicionalesList = LineasAdicionalesMapper.getInstance().toDTOList(null);
-        List<DescuentosDTO> descuentosList = DescuentosMapper.getInstance().toDTOList(null);
-        List<CentralitasDTO> centralitasList = CentralitasMapper.getInstance().toDTOList(null);
-        List<PacksFutbolDTO> packsFutbolList = PacksFutbolMapper.getInstance().toDTOList(null);
-        List<StreamingDTO> streamingList = StreamingMapper.getInstance().toDTOList(null);
+        List<TarifasDTO> tarifasList = TarifasService.getInstance().getAll();
+        List<LineasAdicionalesDTO> lineasAdicionalesList = LineasAdicionalesService.getInstance().getAll();
+        List<DescuentosDTO> descuentosList = DescuentosService.getInstance().getAll();
+        List<CentralitasDTO> centralitasList = CentralitasService.getInstance().getAll();
+        List<PacksFutbolDTO> packsFutbolList = PacksFutbolService.getInstance().getAll();
+        List<StreamingDTO> streamingList = StreamingService.getInstance().getAll();
         
         view.getTarifasCombo().getItems().setAll(tarifasList);
         view.getDescuentoCombo().getItems().setAll(descuentosList);
@@ -58,12 +58,12 @@ public class PresupuestosController {
         view.getStreamingCombo().setDisable(true);
         view.getStreamingCombo().getItems().setAll(streamingList);
         
-        view.getTarifasCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
-        view.getDescuentoCombo().setConverter(UIUtils.createConverter(dto -> dto.getPorciento() + "%"));
-        view.getCentralitaCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
-        view.getFibraCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
-        view.getPacksFutbolCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
-        view.getStreamingCombo().setConverter(UIUtils.createConverter(dto -> dto.getNombre()));
+        view.getTarifasCombo().setConverter(UIUtil.createConverter(dto -> dto.getNombre()));
+        view.getDescuentoCombo().setConverter(UIUtil.createConverter(dto -> dto.getPorciento() + "%"));
+        view.getCentralitaCombo().setConverter(UIUtil.createConverter(dto -> dto.getNombre()));
+        view.getFibraCombo().setConverter(UIUtil.createConverter(dto -> dto.getNombre()));
+        view.getPacksFutbolCombo().setConverter(UIUtil.createConverter(dto -> dto.getNombre()));
+        view.getStreamingCombo().setConverter(UIUtil.createConverter(dto -> dto.getNombre()));
         
         ObservableList<ResumentTableItem> resumenPresupuesto = FXCollections.observableArrayList(
             new ResumentTableItem(),
@@ -103,10 +103,10 @@ public class PresupuestosController {
             presupuesto.setDescuento(newValue);
         });
         
-        UIUtils.populateVBox(view.getTarifasVBox(), new ArrayList<>(Arrays.asList(view.getTarifasVBoxLabel(), view.getTarifaLabel(), view.getTarifasCombo(), view.getFibraLabel(), view.getFibraCombo(), view.getStreamingLabel(), view.getStreamingCombo())));
-        UIUtils.populateVBox(view.getProductosAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getProductosAdicioanelesVBoxLabel(), view.getCentralitaLabel(), view.getCentralitaCombo(), view.getPackFutbolLabel(), view.getPacksFutbolCombo())));
-        UIUtils.populateVBox(view.getLineasAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getLineasAdicionalesVBoxLabel(), view.getLineasAdicionalesView())));
-        UIUtils.populateVBox(view.getResumenVBox(), new ArrayList<>(Arrays.asList(view.getResumenVBoxLabel(), view.getDescuentoLabel(), view.getDescuentoCombo(), view.getResumenView())));
+        UIUtil.populateVBox(view.getTarifasVBox(), new ArrayList<>(Arrays.asList(view.getTarifasVBoxLabel(), view.getTarifaLabel(), view.getTarifasCombo(), view.getFibraLabel(), view.getFibraCombo(), view.getStreamingLabel(), view.getStreamingCombo())));
+        UIUtil.populateVBox(view.getProductosAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getProductosAdicioanelesVBoxLabel(), view.getCentralitaLabel(), view.getCentralitaCombo(), view.getPackFutbolLabel(), view.getPacksFutbolCombo())));
+        UIUtil.populateVBox(view.getLineasAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getLineasAdicionalesVBoxLabel(), view.getLineasAdicionalesView())));
+        UIUtil.populateVBox(view.getResumenVBox(), new ArrayList<>(Arrays.asList(view.getResumenVBoxLabel(), view.getDescuentoLabel(), view.getDescuentoCombo(), view.getResumenView())));
     
         TableColumn<ResumentTableItem, String> cantidadTableColumn = new TableColumn<>("Cantidad");
         cantidadTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getCantidad() == null ? "" : cellData.getValue().getCantidad())));

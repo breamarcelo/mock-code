@@ -2,6 +2,7 @@ package com.budgetsgenerator.repository.impl;
 
 import com.budgetsgenerator.config.JPAUtil;
 import com.budgetsgenerator.models.PresupuestosEntity;
+import com.budgetsgenerator.repository.GenericDAOImpl;
 
 import jakarta.persistence.EntityManager;
 
