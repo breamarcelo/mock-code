@@ -7,10 +7,9 @@ import java.util.List;
 import com.budgetsgenerator.config.UIUtil;
 import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.dto.DescuentosDTO;
+import com.budgetsgenerator.dto.FibrasDTO;
 import com.budgetsgenerator.dto.LineasAdicionalesDTO;
-import com.budgetsgenerator.dto.LineasPresupuestoDTO;
 import com.budgetsgenerator.dto.PacksFutbolDTO;
-import com.budgetsgenerator.dto.PresupuestosDTO;
 import com.budgetsgenerator.dto.StreamingDTO;
 import com.budgetsgenerator.dto.TarifasDTO;
 import com.budgetsgenerator.services.impl.CentralitasService;
@@ -22,7 +21,6 @@ import com.budgetsgenerator.services.impl.TarifasService;
 import com.budgetsgenerator.viewmodels.ResumentTableItem;
 import com.budgetsgenerator.views.PresupuestosView;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -36,14 +34,15 @@ import javafx.scene.layout.Priority;
 
 public class PresupuestosController {
     private PresupuestosView view = new PresupuestosView();
-    private PresupuestosDTO presupuesto = new PresupuestosDTO();
-    private List<LineasPresupuestoDTO> lineasPresupuestoList = new ArrayList<>();
+    private ResumentTableItem tarifaRow;
 
     public PresupuestosController(PresupuestosView view) {
         this.view = view;
     }
     
     public void loadData(){
+        tarifaRow = new ResumentTableItem();
+
         List<TarifasDTO> tarifasList = TarifasService.getInstance().getAll();
         List<LineasAdicionalesDTO> lineasAdicionalesList = LineasAdicionalesService.getInstance().getAll();
         List<DescuentosDTO> descuentosList = DescuentosService.getInstance().getAll();
@@ -73,34 +72,33 @@ public class PresupuestosController {
             view.getFibraCombo().getItems().clear();
             view.getFibraCombo().getItems().setAll(newValue.getFibras());
             view.getStreamingCombo().setDisable(!newValue.isStreaming());
-            presupuesto.setTarifa(newValue);
-            System.out.println("Presupuesto tarifa: " + presupuesto.getTarifa().getNombre() + "\n" + 
-            presupuesto.getTarifa().getLineasMoviles() + " linea(s) móvil(es) " + presupuesto.getTarifa().getLlamadasMovil() + " " + presupuesto.getTarifa().getGbMovil());
-            ResumentTableItem updated = new ResumentTableItem("1", presupuesto.getTarifa().getNombre(), Double.toString(presupuesto.getTarifa().getPrecio()));
-            resumenPresupuesto.set(0, updated);
-            view.getResumenView().refresh();
+            updateTarifaRow();
+            // presupuesto.setTarifa(newValue);
+            // System.out.println("Presupuesto tarifa: " + presupuesto.getTarifa().getNombre() + "\n" + 
+            // presupuesto.getTarifa().getLineasMoviles() + " linea(s) móvil(es) " + presupuesto.getTarifa().getLlamadasMovil() + " " + presupuesto.getTarifa().getGbMovil());
+            // ResumentTableItem updated = new ResumentTableItem("1", presupuesto.getTarifa().getNombre(), Double.toString(presupuesto.getTarifa().getPrecio()));
+            // resumenPresupuesto.set(0, updated);
+            // view.getResumenView().refresh();
         });
 
         view.getFibraCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            presupuesto.setFibra(newValue);
-            System.out.println(presupuesto.getFibra().getNombre() + " " + presupuesto.getFibra().getSobrecargo());
+            
         });
-
+        
         view.getStreamingCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            presupuesto.setStreaming(newValue);
-            System.out.println(presupuesto.getStreaming().getNombre());
+            
         });
 
         view.getCentralitaCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            presupuesto.setCentralita(newValue);
+            
         });
 
         view.getPacksFutbolCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            presupuesto.setPackFutbol(newValue);
+            
         });
 
         view.getDescuentoCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            presupuesto.setDescuento(newValue);
+            
         });
         
         UIUtil.populateVBox(view.getTarifasVBox(), new ArrayList<>(Arrays.asList(view.getTarifasVBoxLabel(), view.getTarifaLabel(), view.getTarifasCombo(), view.getFibraLabel(), view.getFibraCombo(), view.getStreamingLabel(), view.getStreamingCombo())));
@@ -109,15 +107,25 @@ public class PresupuestosController {
         UIUtil.populateVBox(view.getResumenVBox(), new ArrayList<>(Arrays.asList(view.getResumenVBoxLabel(), view.getDescuentoLabel(), view.getDescuentoCombo(), view.getResumenView())));
     
         TableColumn<ResumentTableItem, String> cantidadTableColumn = new TableColumn<>("Cantidad");
-        cantidadTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getCantidad() == null ? "" : cellData.getValue().getCantidad())));
         TableColumn<ResumentTableItem, String> descripcionTableColumn = new TableColumn<>("Descripción");
-        descripcionTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescripcion()));
-        TableColumn<ResumentTableItem, String> precioTableColumn = new TableColumn<>("Importe");
-        precioTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getPrecio() == null ? "" : cellData.getValue().getPrecio())));
+        TableColumn<ResumentTableItem, Double> precioTableColumn = new TableColumn<>("Importe");
+
+        cantidadTableColumn.setCellValueFactory(cellData -> cellData.getValue().cantidadProperty().asString());
+        descripcionTableColumn.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
+        precioTableColumn.setCellValueFactory(cellData -> cellData.getValue().importeProperty().asObject());
+
+        cantidadTableColumn.setMinWidth(60);
+        cantidadTableColumn.setMaxWidth(60);
+        
+        precioTableColumn.setMinWidth(100);
+        precioTableColumn.setMaxWidth(100);
+
+        descripcionTableColumn.setMaxWidth(Double.MAX_VALUE);
+        descripcionTableColumn.resizableProperty().set(true);
         
         view.getResumenView().getColumns().clear();
         view.getResumenView().getColumns().addAll(cantidadTableColumn, descripcionTableColumn, precioTableColumn); 
-        view.getResumenView().setItems(resumenPresupuesto);
+        view.getResumenView().getItems().add(tarifaRow);
         view.getResumenVBox().setVgrow(view.getResumenView(), Priority.ALWAYS);
         view.getResumenView().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         
@@ -145,27 +153,27 @@ public class PresupuestosController {
                 quantity += 1;
                 itemQuantityLabel.setText(Integer.toString(quantity));
 
-                int index = 0;
-                boolean exist = false;
-                for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
-                    if(linea.getLineasAdicional().getId() == dto.getId()){
-                        index = lineasPresupuestoList.indexOf(linea);
-                        exist = true;
-                    }
-                }
-                if(exist){
-                    lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto));
-                } else {
-                    lineasPresupuestoList.add(new LineasPresupuestoDTO(index, quantity, dto));
-                }
+                // int index = 0;
+                // boolean exist = false;
+                // for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
+                //     if(linea.getLineasAdicional().getId() == dto.getId()){
+                //         index = lineasPresupuestoList.indexOf(linea);
+                //         exist = true;
+                //     }
+                // }
+                // if(exist){
+                //     lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto));
+                // } else {
+                //     lineasPresupuestoList.add(new LineasPresupuestoDTO(index, quantity, dto));
+                // }
 
-                presupuesto.setLineasAdicionales(lineasPresupuestoList);
+                // presupuesto.setLineasAdicionales(lineasPresupuestoList);
                 
-                for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
-                    System.out.println(linea.getCantidad() + " | " + linea.getLineasAdicional().getNombre() + " | " + linea.getLineasAdicional().getPrecio()*linea.getCantidad());
-                }
-                System.out.println("list size: " + lineasPresupuestoList.size());
-                System.out.println("-----------------------------");
+                // for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
+                //     System.out.println(linea.getCantidad() + " | " + linea.getLineasAdicional().getNombre() + " | " + linea.getLineasAdicional().getPrecio()*linea.getCantidad());
+                // }
+                // System.out.println("list size: " + lineasPresupuestoList.size());
+                // System.out.println("-----------------------------");
             });
             
             deleteItemButton.setOnAction(e -> {
@@ -173,29 +181,29 @@ public class PresupuestosController {
                 quantity -= 1;
                 itemQuantityLabel.setText(Integer.toString(quantity >= 1 ? quantity : 0));
 
-                if(lineasPresupuestoList.size() > 0){
+                // if(lineasPresupuestoList.size() > 0){
 
-                    int index = 0;
-                    for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
-                        if(linea.getLineasAdicional().getId() == dto.getId()){
-                            index = lineasPresupuestoList.indexOf(linea);
-                        }
-                    }
+                //     int index = 0;
+                //     for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
+                //         if(linea.getLineasAdicional().getId() == dto.getId()){
+                //             index = lineasPresupuestoList.indexOf(linea);
+                //         }
+                //     }
                     
-                    if(quantity > 0) {
-                        lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto));
-                    } else {
-                        lineasPresupuestoList.remove(index);
-                    }
+                //     if(quantity > 0) {
+                //         lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto));
+                //     } else {
+                //         lineasPresupuestoList.remove(index);
+                //     }
 
-                    presupuesto.setLineasAdicionales(lineasPresupuestoList);
-                }
+                //     presupuesto.setLineasAdicionales(lineasPresupuestoList);
+                // }
 
-                for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
-                    System.out.println(linea.getCantidad() + " | " + linea.getLineasAdicional().getNombre() + " | " + linea.getLineasAdicional().getPrecio()*linea.getCantidad());
-                }
-                System.out.println("list size: " + lineasPresupuestoList.size());
-                System.out.println("-----------------------------");
+                // for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
+                //     System.out.println(linea.getCantidad() + " | " + linea.getLineasAdicional().getNombre() + " | " + linea.getLineasAdicional().getPrecio()*linea.getCantidad());
+                // }
+                // System.out.println("list size: " + lineasPresupuestoList.size());
+                // System.out.println("-----------------------------");
             });
             listViewItem.setHgrow(itemName, Priority.ALWAYS);
             listViewItem.setAlignment(Pos.CENTER_RIGHT);
@@ -204,5 +212,30 @@ public class PresupuestosController {
             view.getLineasAdicionalesView().getItems().add(listViewItem);
         }
         view.getLineasAdicionalesView().setPadding(Insets.EMPTY);
+    }
+
+    private void updateTarifaRow(){
+        TarifasDTO tarifa = view.getTarifasCombo().getValue();
+        FibrasDTO fibra = view.getFibraCombo().getValue();
+        StreamingDTO streaming = view.getStreamingCombo().getValue();
+
+        String descripcion = 
+            "Pack " + tarifa.getNombre() + 
+            "\n" + tarifa.getLineasMoviles() + (tarifa.getLineasMoviles() > 1 ? " líneas móviles " : " línea móvil ") + 
+            " con " + (tarifa.getLlamadasMovil() == "ilimitadas" ? "llamadas ilimitadas " : tarifa.getLlamadasMovil()) + 
+            "y " + (tarifa.getGbMovil() == "ilimitados" ? "Gb ilimitados" : tarifa.getGbMovil());
+
+        double precio = tarifa.getPrecio();
+        
+        if(tarifa.isTv()) {
+            descripcion += "\nTV con más de 90 canales";
+        } 
+
+        if(fibra != null) {
+            descripcion += "\nFibra de " + fibra.getNombre();
+            precio += fibra.getSobrecargo();
+        }
+
+        tarifaRow.setDescripcion(descripcion);
     }
 }

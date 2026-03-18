@@ -120,3 +120,7 @@ HBox {
     -fx-background-color: black;
     -fx-text-fill: white;
 }
+
+TableView .table-row-cell {
+    -fx-cell-size: 100px;
+}
