@@ -72,7 +72,7 @@ public class PresupuestosController {
             view.getFibraCombo().getItems().clear();
             view.getFibraCombo().getItems().setAll(newValue.getFibras());
             view.getStreamingCombo().setDisable(!newValue.isStreaming());
-            updateTarifaRow();
+            updateTarifaRow(newValue);
             // presupuesto.setTarifa(newValue);
             // System.out.println("Presupuesto tarifa: " + presupuesto.getTarifa().getNombre() + "\n" + 
             // presupuesto.getTarifa().getLineasMoviles() + " linea(s) móvil(es) " + presupuesto.getTarifa().getLlamadasMovil() + " " + presupuesto.getTarifa().getGbMovil());
@@ -80,13 +80,13 @@ public class PresupuestosController {
             // resumenPresupuesto.set(0, updated);
             // view.getResumenView().refresh();
         });
-
+        
         view.getFibraCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            
+            updateTarifaRow(newValue);
         });
         
         view.getStreamingCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            
+            updateTarifaRow(newValue);
         });
 
         view.getCentralitaCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -214,28 +214,40 @@ public class PresupuestosController {
         view.getLineasAdicionalesView().setPadding(Insets.EMPTY);
     }
 
-    private void updateTarifaRow(){
-        TarifasDTO tarifa = view.getTarifasCombo().getValue();
-        FibrasDTO fibra = view.getFibraCombo().getValue();
-        StreamingDTO streaming = view.getStreamingCombo().getValue();
+    private void refreshTarifaRow(int cantidad, String descripcion, double importe) {
+        tarifaRow.setCantidadProperty(cantidad);
+        tarifaRow.setDescripcion(descripcion);
+        tarifaRow.setImporteProperty(importe);
+    }
 
-        String descripcion = 
-            "Pack " + tarifa.getNombre() + 
-            "\n" + tarifa.getLineasMoviles() + (tarifa.getLineasMoviles() > 1 ? " líneas móviles " : " línea móvil ") + 
-            " con " + (tarifa.getLlamadasMovil() == "ilimitadas" ? "llamadas ilimitadas " : tarifa.getLlamadasMovil()) + 
-            "y " + (tarifa.getGbMovil() == "ilimitados" ? "Gb ilimitados" : tarifa.getGbMovil());
-
-        double precio = tarifa.getPrecio();
+    private <T> void updateTarifaRow(T dto){
+        String descripcion = tarifaRow.getDescripcion().isEmpty() ? "" : tarifaRow.getDescripcion();
+        double precio = 0.0;
         
-        if(tarifa.isTv()) {
-            descripcion += "\nTV con más de 90 canales";
-        } 
-
-        if(fibra != null) {
-            descripcion += "\nFibra de " + fibra.getNombre();
-            precio += fibra.getSobrecargo();
+        if(dto instanceof TarifasDTO) {
+            descripcion = 
+                "Pack " + ((TarifasDTO) dto).getNombre() + 
+                "\n" + ((TarifasDTO) dto).getLineasMoviles() + (((TarifasDTO) dto).getLineasMoviles() > 1 ? " líneas móviles " : " línea móvil ") + 
+                " con " + (((TarifasDTO) dto).getLlamadasMovil() == "ilimitadas" ? "llamadas ilimitadas " : ((TarifasDTO) dto).getLlamadasMovil()) + 
+                "y " + (((TarifasDTO) dto).getGbMovil() == "ilimitados" ? "Gb ilimitados" : ((TarifasDTO) dto).getGbMovil());
+                if(((TarifasDTO) dto).isTv()) {
+                    descripcion += "\nTV con más de 90 canales" + "\n ";
+                } 
+                precio += ((TarifasDTO) dto).getPrecio();
+        }
+        
+        if(dto instanceof FibrasDTO) {
+            ArrayList<String> list = new ArrayList<>(Arrays.asList(descripcion.split("\n")));
+            
+            list.set(list.size()-1, "Fibra de " + ((FibrasDTO) dto).getNombre());
+            descripcion = String.join("\n", list);
+            precio += ((FibrasDTO) dto).getSobrecargo();
+        }
+        
+        if(dto instanceof StreamingDTO) {
+            descripcion += "\n" + ((StreamingDTO) dto).getNombre() + " inlcuído";
         }
 
-        tarifaRow.setDescripcion(descripcion);
+        refreshTarifaRow(1, descripcion, precio);
     }
 }

@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -25,6 +26,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -109,10 +111,17 @@ public class App extends Application {
         line1b2.setPrefWidth(20);
         line1.getChildren().addAll(line1s1, line1b1, line1s2, line1b2);
         
+        lv.translateXProperty().set(400);
+        lv.translateYProperty().set(400);
         lv.getItems().add(line1);
-        // p1.getChildren().add(lv);
-        // p1.getChildren().add(t1);
-        
+        p1.getChildren().add(lv);
+        p1.getChildren().add(t1);
+
+        HBox newBox = new HBox();
+        newBox.getChildren().addAll(new TitledPane("Cantidad", new VBox()), new TitledPane("Descripcion", new VBox(new Label("Hola"))), new TitledPane("Importe", new VBox()));
+        newBox.translateXProperty().set(800);
+        newBox.translateYProperty().set(500);
+        p1.getChildren().add(newBox);
         
         PresupuestosView p2 = new PresupuestosView();
         PresupuestosController p2v = new PresupuestosController(p2);
