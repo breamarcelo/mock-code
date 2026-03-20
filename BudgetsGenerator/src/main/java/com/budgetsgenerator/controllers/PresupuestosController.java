@@ -21,20 +21,21 @@ import com.budgetsgenerator.services.impl.TarifasService;
 import com.budgetsgenerator.viewmodels.ResumentTableItem;
 import com.budgetsgenerator.views.PresupuestosView;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 public class PresupuestosController {
     private PresupuestosView view = new PresupuestosView();
     private ResumentTableItem tarifaRow;
+    private ResumentTableItem centralitaRow;
 
     public PresupuestosController(PresupuestosView view) {
         this.view = view;
@@ -42,6 +43,7 @@ public class PresupuestosController {
     
     public void loadData(){
         tarifaRow = new ResumentTableItem();
+        centralitaRow = new ResumentTableItem();
 
         List<TarifasDTO> tarifasList = TarifasService.getInstance().getAll();
         List<LineasAdicionalesDTO> lineasAdicionalesList = LineasAdicionalesService.getInstance().getAll();
@@ -64,29 +66,20 @@ public class PresupuestosController {
         view.getPacksFutbolCombo().setConverter(UIUtil.createConverter(dto -> dto.getNombre()));
         view.getStreamingCombo().setConverter(UIUtil.createConverter(dto -> dto.getNombre()));
         
-        ObservableList<ResumentTableItem> resumenPresupuesto = FXCollections.observableArrayList(
-            new ResumentTableItem(),
-            new ResumentTableItem()
-        );
         view.getTarifasCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             view.getFibraCombo().getItems().clear();
             view.getFibraCombo().getItems().setAll(newValue.getFibras());
             view.getStreamingCombo().setDisable(!newValue.isStreaming());
-            updateTarifaRow(newValue);
-            // presupuesto.setTarifa(newValue);
-            // System.out.println("Presupuesto tarifa: " + presupuesto.getTarifa().getNombre() + "\n" + 
-            // presupuesto.getTarifa().getLineasMoviles() + " linea(s) móvil(es) " + presupuesto.getTarifa().getLlamadasMovil() + " " + presupuesto.getTarifa().getGbMovil());
-            // ResumentTableItem updated = new ResumentTableItem("1", presupuesto.getTarifa().getNombre(), Double.toString(presupuesto.getTarifa().getPrecio()));
-            // resumenPresupuesto.set(0, updated);
-            // view.getResumenView().refresh();
+            view.getStreamingCombo().valueProperty().set(null);
+            updateTarifaRow();
         });
         
         view.getFibraCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            updateTarifaRow(newValue);
+            updateTarifaRow();
         });
         
         view.getStreamingCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            updateTarifaRow(newValue);
+            updateTarifaRow();
         });
 
         view.getCentralitaCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -106,13 +99,13 @@ public class PresupuestosController {
         UIUtil.populateVBox(view.getLineasAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getLineasAdicionalesVBoxLabel(), view.getLineasAdicionalesView())));
         UIUtil.populateVBox(view.getResumenVBox(), new ArrayList<>(Arrays.asList(view.getResumenVBoxLabel(), view.getDescuentoLabel(), view.getDescuentoCombo(), view.getResumenView())));
     
-        TableColumn<ResumentTableItem, String> cantidadTableColumn = new TableColumn<>("Cantidad");
-        TableColumn<ResumentTableItem, String> descripcionTableColumn = new TableColumn<>("Descripción");
+        TableColumn<ResumentTableItem, Integer> cantidadTableColumn = new TableColumn<>("Cantidad");
+        TableColumn<ResumentTableItem, ListView<String>> descripcionTableColumn = new TableColumn<>("Descripción");
         TableColumn<ResumentTableItem, Double> precioTableColumn = new TableColumn<>("Importe");
 
-        cantidadTableColumn.setCellValueFactory(cellData -> cellData.getValue().cantidadProperty().asString());
-        descripcionTableColumn.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
-        precioTableColumn.setCellValueFactory(cellData -> cellData.getValue().importeProperty().asObject());
+        cantidadTableColumn.setCellValueFactory(new PropertyValueFactory<ResumentTableItem, Integer>("cantidad"));
+        descripcionTableColumn.setCellValueFactory(new PropertyValueFactory<ResumentTableItem, ListView<String>>("descripcion"));
+        precioTableColumn.setCellValueFactory(new PropertyValueFactory<ResumentTableItem, Double>("importe"));
 
         cantidadTableColumn.setMinWidth(60);
         cantidadTableColumn.setMaxWidth(60);
@@ -126,12 +119,8 @@ public class PresupuestosController {
         view.getResumenView().getColumns().clear();
         view.getResumenView().getColumns().addAll(cantidadTableColumn, descripcionTableColumn, precioTableColumn); 
         view.getResumenView().getItems().add(tarifaRow);
-        view.getResumenVBox().setVgrow(view.getResumenView(), Priority.ALWAYS);
+        // view.getResumenVBox().setVgrow(view.getResumenView(), Priority.ALWAYS);
         view.getResumenView().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        
-        view.getTarifasCombo().setOnAction(e -> {
-            System.out.println(e.getSource().toString());
-        });
 
         for(LineasAdicionalesDTO dto : lineasAdicionalesList) {
             HBox listViewItem = new HBox();
@@ -214,40 +203,37 @@ public class PresupuestosController {
         view.getLineasAdicionalesView().setPadding(Insets.EMPTY);
     }
 
-    private void refreshTarifaRow(int cantidad, String descripcion, double importe) {
-        tarifaRow.setCantidadProperty(cantidad);
-        tarifaRow.setDescripcion(descripcion);
-        tarifaRow.setImporteProperty(importe);
-    }
+    private void updateTarifaRow(){
+        TarifasDTO tarifasDTO = view.getTarifasCombo().getValue();
+        FibrasDTO fibrasDTO = view.getFibraCombo().getValue();
+        StreamingDTO streamingDTO = view.getStreamingCombo().getValue();
 
-    private <T> void updateTarifaRow(T dto){
-        String descripcion = tarifaRow.getDescripcion().isEmpty() ? "" : tarifaRow.getDescripcion();
-        double precio = 0.0;
+        double importe = tarifasDTO.getPrecio();
+        ListView<String> descripcionList = new ListView<>();
+        descripcionList.setPrefHeight(125);
         
-        if(dto instanceof TarifasDTO) {
-            descripcion = 
-                "Pack " + ((TarifasDTO) dto).getNombre() + 
-                "\n" + ((TarifasDTO) dto).getLineasMoviles() + (((TarifasDTO) dto).getLineasMoviles() > 1 ? " líneas móviles " : " línea móvil ") + 
-                " con " + (((TarifasDTO) dto).getLlamadasMovil() == "ilimitadas" ? "llamadas ilimitadas " : ((TarifasDTO) dto).getLlamadasMovil()) + 
-                "y " + (((TarifasDTO) dto).getGbMovil() == "ilimitados" ? "Gb ilimitados" : ((TarifasDTO) dto).getGbMovil());
-                if(((TarifasDTO) dto).isTv()) {
-                    descripcion += "\nTV con más de 90 canales" + "\n ";
-                } 
-                precio += ((TarifasDTO) dto).getPrecio();
+        descripcionList.getItems().add("Pack " + tarifasDTO.getNombre());
+        descripcionList.getItems().add(tarifasDTO.getLineasMoviles() + (tarifasDTO.getLineasMoviles() > 1 ? " líneas móviles " : " línea móvil ") + 
+        " con " + (tarifasDTO.getLlamadasMovil() == "ilimitadas" ? "llamadas ilimitadas " : tarifasDTO.getLlamadasMovil()) + 
+        "y " + (tarifasDTO.getGbMovil() == "ilimitados" ? "Gb ilimitados" : tarifasDTO.getGbMovil()));
+        
+        if(tarifasDTO.isTv()) {
+                descripcionList.getItems().add("Pack " + tarifasDTO.getNombre());
+        } 
+        
+        if(fibrasDTO != null) {
+            descripcionList.getItems().add("Fibra " + fibrasDTO.getNombre());
+            importe += fibrasDTO.getSobrecargo();
         }
         
-        if(dto instanceof FibrasDTO) {
-            ArrayList<String> list = new ArrayList<>(Arrays.asList(descripcion.split("\n")));
-            
-            list.set(list.size()-1, "Fibra de " + ((FibrasDTO) dto).getNombre());
-            descripcion = String.join("\n", list);
-            precio += ((FibrasDTO) dto).getSobrecargo();
-        }
-        
-        if(dto instanceof StreamingDTO) {
-            descripcion += "\n" + ((StreamingDTO) dto).getNombre() + " inlcuído";
+        if(streamingDTO != null) {
+            descripcionList.getItems().add(tarifasDTO.isStreaming() ? "Con " + streamingDTO.getNombre() : "");
         }
 
-        refreshTarifaRow(1, descripcion, precio);
+        tarifaRow.setCantidad(1);
+        tarifaRow.setDescripcion(descripcionList);
+        tarifaRow.setImporte(importe);
+
+        view.getResumenView().refresh();
     }
 }

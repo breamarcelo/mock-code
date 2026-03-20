@@ -1,24 +1,36 @@
 package com.budgetsgenerator.viewmodels;
 
-
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.control.ListView;
 
 public class ResumentTableItem {
-    private SimpleIntegerProperty cantidad = new SimpleIntegerProperty(0);
-    private SimpleStringProperty descripcion = new SimpleStringProperty("");
-    private SimpleDoubleProperty importe = new SimpleDoubleProperty(0.0);
+    private int cantidad;
+    private ListView<String> descripcion;
+    private double importe;
+    public ResumentTableItem() {
+    }
+    public ResumentTableItem(int cantidad, ListView<String> descripcion, double importe) {
+        this.cantidad = cantidad;
+        this.descripcion = descripcion;
+        this.importe = importe;
+    }
+    public int getCantidad() {
+        return cantidad;
+    }
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+    public ListView<String> getDescripcion() {
+        return descripcion;
+    }
+    public void setDescripcion(ListView<String> descripcion) {
+        this.descripcion = descripcion;
+    }
+    public double getImporte() {
+        return importe;
+    }
+    public void setImporte(double importe) {
+        this.importe = importe;
+    }
 
-    public SimpleIntegerProperty cantidadProperty() { return cantidad; }
-    public void setCantidadProperty(int value) { this.cantidad.set(value); }
-    public int getDescripcionProperty() { return cantidad.get(); }
     
-    public SimpleStringProperty descripcionProperty() { return descripcion; }
-    public void setDescripcion(String value) { this.descripcion.set(value); }
-    public String getDescripcion() { return descripcion.get(); }
-
-    public SimpleDoubleProperty importeProperty(){ return importe; }
-    public void setImporteProperty(double value){ this.importe.set(value); }
-    public Double getImporteProperty() { return importe.get(); }
 }

@@ -7,6 +7,7 @@ module com.budgetsgenerator {
 
     opens com.budgetsgenerator to javafx.fxml;
     opens com.budgetsgenerator.dto to javafx.base;
+    opens com.budgetsgenerator.viewmodels to javafx.base;
     opens com.budgetsgenerator.models to org.hibernate.orm.core;
     opens com.budgetsgenerator.controllers to java.base, javafx.fxml;
     exports com.budgetsgenerator;
