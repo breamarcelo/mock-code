@@ -28,6 +28,9 @@ public class PresupuestosView extends GridPane{
     private Label productosAdicioanelesVBoxLabel = new Label("SERVICIOS ADICIONALES");
     private VBox resumenVBox = new VBox();
     private Label resumenVBoxLabel = new Label("RESUMEN");
+    private HBox totalHBox = new HBox();
+    private final Label totalLabel = new Label("TOTAL:");
+    private TextField totalField = new TextField();
 
     private ComboBox<TarifasDTO> tarifasCombo = new ComboBox<>();
     private ComboBox<FibrasDTO> fibraCombo = new ComboBox<>();
@@ -49,8 +52,6 @@ public class PresupuestosView extends GridPane{
     private final Label descuentoLabel = new Label("Descuento:");
     private final Label centralitaLabel = new Label("Centralita:");
     private final Label packFutbolLabel = new Label("Pack Fútbol:");
-    private final Label totalLabel = new Label("TOTAL:");
-    private TextField totaField = new TextField();
 
     public PresupuestosView() {
         this.getStylesheets().add(getClass().getResource("/css/presupuestos.css").toExternalForm());
@@ -186,12 +187,12 @@ public class PresupuestosView extends GridPane{
         this.resumenView = resumenView;
     }
 
-    public String getTotaFieldText() {
-        return totaField.getText();
+    public String getTotalFieldText() {
+        return totalField.getText();
     }
 
-    public void setTotaField(TextField totaField) {
-        this.totaField = totaField;
+    public void setTotalField(TextField totaField) {
+        this.totalField = totaField;
     }
 
     public Button getLimpiarButton() {
@@ -270,8 +271,8 @@ public class PresupuestosView extends GridPane{
         return totalLabel;
     }
 
-    public TextField getTotaField() {
-        return totaField;
+    public TextField getTotalField() {
+        return totalField;
     }
 
     public Label getTarifasVBoxLabel() {
@@ -308,5 +309,13 @@ public class PresupuestosView extends GridPane{
 
     public void setResumenVBoxLabel(Label resumenVBoxLabel) {
         this.resumenVBoxLabel = resumenVBoxLabel;
+    }
+
+    public HBox getTotalHBox() {
+        return totalHBox;
+    }
+
+    public void setTotalHBox(HBox totalHBox) {
+        this.totalHBox = totalHBox;
     }
 }

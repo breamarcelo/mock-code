@@ -37,6 +37,7 @@ import javafx.scene.layout.Priority;
 public class PresupuestosController {
     private PresupuestosView view = new PresupuestosView();
     private List<LineasPresupuestoDTO> lineasPresupuestoList;
+    private double total;
 
     public PresupuestosController(PresupuestosView view) {
         this.view = view;
@@ -96,12 +97,20 @@ public class PresupuestosController {
         view.getDescuentoCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             updateResumenTable();
         });
+
+        
+        view.getTotalHBox().getChildren().addAll(view.getTotalLabel(), view.getTotalField());
+        view.getTotalHBox().setAlignment(Pos.CENTER_RIGHT);
+        view.getTotalHBox().setMargin(view.getTotalLabel(), new Insets(0, 10, 0, 0));
+        view.getTotalField().setEditable(false);
+        view.getTotalField().setBorder(null);
+        
         
         UIUtil.populateVBox(view.getTarifasVBox(), new ArrayList<>(Arrays.asList(view.getTarifasVBoxLabel(), view.getTarifaLabel(), view.getTarifasCombo(), view.getFibraLabel(), view.getFibraCombo(), view.getStreamingLabel(), view.getStreamingCombo())));
         UIUtil.populateVBox(view.getProductosAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getProductosAdicioanelesVBoxLabel(), view.getCentralitaLabel(), view.getCentralitaCombo(), view.getPackFutbolLabel(), view.getPacksFutbolCombo())));
         UIUtil.populateVBox(view.getLineasAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getLineasAdicionalesVBoxLabel(), view.getLineasAdicionalesView())));
-        UIUtil.populateVBox(view.getResumenVBox(), new ArrayList<>(Arrays.asList(view.getResumenVBoxLabel(), view.getDescuentoLabel(), view.getDescuentoCombo(), view.getResumenView())));
-    
+        UIUtil.populateVBox(view.getResumenVBox(), new ArrayList<>(Arrays.asList(view.getResumenVBoxLabel(), view.getDescuentoLabel(), view.getDescuentoCombo(), view.getResumenView(), view.getTotalHBox())));
+
         TableColumn<ResumentTableItem, Integer> cantidadTableColumn = new TableColumn<>("Cantidad");
         TableColumn<ResumentTableItem, ListView<String>> descripcionTableColumn = new TableColumn<>("Descripción");
         TableColumn<ResumentTableItem, Double> precioTableColumn = new TableColumn<>("Importe");
@@ -165,6 +174,7 @@ public class PresupuestosController {
     }
 
     private void updateResumenTable() {
+        total = 0.0;
         view.getResumenView().getItems().clear();
         if(view.getTarifasCombo().getValue() != null) {
             updateTarifaRow();
@@ -186,9 +196,11 @@ public class PresupuestosController {
                 descripcion.setPrefHeight(30);
                 descripcion.getItems().add(linea.getLineasAdicional().getNombre());
                 
+                double importe = (double) linea.getLineasAdicional().getPrecio() * linea.getCantidad();
                 row.setCantidad(linea.getCantidad());
                 row.setDescripcion(descripcion);
-                row.setImporte((double) linea.getLineasAdicional().getPrecio() * linea.getCantidad());
+                row.setImporte(importe);
+                total += importe;
                 view.getResumenView().getItems().add(row);
             }
         }
@@ -198,6 +210,8 @@ public class PresupuestosController {
         }
 
         view.getResumenView().refresh();
+
+        view.getTotalField().setText(String.valueOf(total));
     }
 
     private void updateTarifaRow(){
@@ -231,6 +245,7 @@ public class PresupuestosController {
         row.setCantidad(1);
         row.setDescripcion(descripcionList);
         row.setImporte(importe);
+        total += importe;
         view.getResumenView().getItems().add(row);
     }
 
@@ -241,9 +256,11 @@ public class PresupuestosController {
         descripcion.setPrefHeight(30);
         descripcion.getItems().add("Centralita " + centralitasDTO.getNombre());
         
+        double importe = centralitasDTO.getPrecio();
         row.setCantidad(1);
         row.setDescripcion(descripcion);
-        row.setImporte(centralitasDTO.getPrecio());
+        row.setImporte(importe);
+        total += importe;
         view.getResumenView().getItems().add(row);
     }
     
@@ -257,9 +274,11 @@ public class PresupuestosController {
             descripcion.getItems().add("Pack " + dto.getNombre());
         }
         
+        double importe = dto.getPrecio();
         row.setCantidad(1);
         row.setDescripcion(descripcion);
-        row.setImporte(dto.getPrecio());
+        row.setImporte(importe);
+        total += importe;
         view.getResumenView().getItems().add(row);
     }
 
@@ -273,9 +292,11 @@ public class PresupuestosController {
             descripcion.getItems().add("Descuento " + dto.getPorciento() + "%");
         }
         
+        double importe = (double) (view.getResumenView().getItems().get(0).getImporte() * dto.getPorciento())/-100;
         row.setCantidad(1);
         row.setDescripcion(descripcion);
-        row.setImporte((double) (view.getResumenView().getItems().get(0).getImporte() * dto.getPorciento())/-100);
+        row.setImporte(importe);
+        total += importe;
         view.getResumenView().getItems().add(row);
     }
     

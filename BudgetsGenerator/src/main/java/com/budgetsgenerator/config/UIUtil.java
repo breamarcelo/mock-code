@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -24,13 +25,13 @@ public class UIUtil {
         };
     }
 
-    public static void populateVBox(VBox box, List<Control> controls) {
+    public static void populateVBox(VBox box, List<Node> controls) {
         box.getChildren().addAll(controls);
         controls.get(0).getStyleClass().add("VBox-Label");
-        for(Control c : controls) {
+        for(Node c : controls) {
             if(c instanceof ComboBox) {
                 box.setMargin(c, new Insets(5,0,10,0));
-                c.setPrefWidth(Double.MAX_VALUE);
+                ((ComboBox) c).setPrefWidth(Double.MAX_VALUE);
             }
         }
     }
