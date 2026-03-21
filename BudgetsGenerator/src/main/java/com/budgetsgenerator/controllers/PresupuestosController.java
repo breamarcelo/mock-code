@@ -9,7 +9,9 @@ import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.dto.DescuentosDTO;
 import com.budgetsgenerator.dto.FibrasDTO;
 import com.budgetsgenerator.dto.LineasAdicionalesDTO;
+import com.budgetsgenerator.dto.LineasPresupuestoDTO;
 import com.budgetsgenerator.dto.PacksFutbolDTO;
+import com.budgetsgenerator.dto.ServiciosAdicionalesDTO;
 import com.budgetsgenerator.dto.StreamingDTO;
 import com.budgetsgenerator.dto.TarifasDTO;
 import com.budgetsgenerator.services.impl.CentralitasService;
@@ -34,16 +36,14 @@ import javafx.scene.layout.Priority;
 
 public class PresupuestosController {
     private PresupuestosView view = new PresupuestosView();
-    private ResumentTableItem tarifaRow;
-    private ResumentTableItem centralitaRow;
+    private List<LineasPresupuestoDTO> lineasPresupuestoList;
 
     public PresupuestosController(PresupuestosView view) {
         this.view = view;
     }
     
     public void loadData(){
-        tarifaRow = new ResumentTableItem();
-        centralitaRow = new ResumentTableItem();
+        lineasPresupuestoList  = new ArrayList<>();
 
         List<TarifasDTO> tarifasList = TarifasService.getInstance().getAll();
         List<LineasAdicionalesDTO> lineasAdicionalesList = LineasAdicionalesService.getInstance().getAll();
@@ -54,6 +54,7 @@ public class PresupuestosController {
         
         view.getTarifasCombo().getItems().setAll(tarifasList);
         view.getDescuentoCombo().getItems().setAll(descuentosList);
+        view.getDescuentoCombo().setDisable(true);
         view.getCentralitaCombo().getItems().setAll(centralitasList);
         view.getPacksFutbolCombo().getItems().setAll(packsFutbolList);
         view.getStreamingCombo().setDisable(true);
@@ -71,27 +72,29 @@ public class PresupuestosController {
             view.getFibraCombo().getItems().setAll(newValue.getFibras());
             view.getStreamingCombo().setDisable(!newValue.isStreaming());
             view.getStreamingCombo().valueProperty().set(null);
-            updateTarifaRow();
+            view.getDescuentoCombo().setDisable(newValue == null);
+            view.getDescuentoCombo().valueProperty().set(null);
+            updateResumenTable();
         });
         
         view.getFibraCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            updateTarifaRow();
+            updateResumenTable();
         });
         
         view.getStreamingCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            updateTarifaRow();
+            updateResumenTable();
         });
-
+        
         view.getCentralitaCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            
+            updateResumenTable();
         });
-
+        
         view.getPacksFutbolCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            
+            updateResumenTable();
         });
-
+        
         view.getDescuentoCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            
+            updateResumenTable();
         });
         
         UIUtil.populateVBox(view.getTarifasVBox(), new ArrayList<>(Arrays.asList(view.getTarifasVBoxLabel(), view.getTarifaLabel(), view.getTarifasCombo(), view.getFibraLabel(), view.getFibraCombo(), view.getStreamingLabel(), view.getStreamingCombo())));
@@ -118,8 +121,7 @@ public class PresupuestosController {
         
         view.getResumenView().getColumns().clear();
         view.getResumenView().getColumns().addAll(cantidadTableColumn, descripcionTableColumn, precioTableColumn); 
-        view.getResumenView().getItems().add(tarifaRow);
-        // view.getResumenVBox().setVgrow(view.getResumenView(), Priority.ALWAYS);
+        view.getResumenVBox().setVgrow(view.getResumenView(), Priority.ALWAYS);
         view.getResumenView().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
 
         for(LineasAdicionalesDTO dto : lineasAdicionalesList) {
@@ -141,59 +143,18 @@ public class PresupuestosController {
                 int quantity = Integer.decode(itemQuantityLabel.getText());
                 quantity += 1;
                 itemQuantityLabel.setText(Integer.toString(quantity));
-
-                // int index = 0;
-                // boolean exist = false;
-                // for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
-                //     if(linea.getLineasAdicional().getId() == dto.getId()){
-                //         index = lineasPresupuestoList.indexOf(linea);
-                //         exist = true;
-                //     }
-                // }
-                // if(exist){
-                //     lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto));
-                // } else {
-                //     lineasPresupuestoList.add(new LineasPresupuestoDTO(index, quantity, dto));
-                // }
-
-                // presupuesto.setLineasAdicionales(lineasPresupuestoList);
-                
-                // for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
-                //     System.out.println(linea.getCantidad() + " | " + linea.getLineasAdicional().getNombre() + " | " + linea.getLineasAdicional().getPrecio()*linea.getCantidad());
-                // }
-                // System.out.println("list size: " + lineasPresupuestoList.size());
-                // System.out.println("-----------------------------");
+                addLineasAdicionales(dto, quantity);
+                updateResumenTable();
             });
             
             deleteItemButton.setOnAction(e -> {
                 int quantity = Integer.decode(itemQuantityLabel.getText());
                 quantity -= 1;
                 itemQuantityLabel.setText(Integer.toString(quantity >= 1 ? quantity : 0));
-
-                // if(lineasPresupuestoList.size() > 0){
-
-                //     int index = 0;
-                //     for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
-                //         if(linea.getLineasAdicional().getId() == dto.getId()){
-                //             index = lineasPresupuestoList.indexOf(linea);
-                //         }
-                //     }
-                    
-                //     if(quantity > 0) {
-                //         lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto));
-                //     } else {
-                //         lineasPresupuestoList.remove(index);
-                //     }
-
-                //     presupuesto.setLineasAdicionales(lineasPresupuestoList);
-                // }
-
-                // for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
-                //     System.out.println(linea.getCantidad() + " | " + linea.getLineasAdicional().getNombre() + " | " + linea.getLineasAdicional().getPrecio()*linea.getCantidad());
-                // }
-                // System.out.println("list size: " + lineasPresupuestoList.size());
-                // System.out.println("-----------------------------");
+                removeLineasAdicionales(dto, quantity);
+                updateResumenTable();
             });
+
             listViewItem.setHgrow(itemName, Priority.ALWAYS);
             listViewItem.setAlignment(Pos.CENTER_RIGHT);
             listViewItem.getChildren().addAll(itemId, itemName, addItemButton, itemQuantityLabel, deleteItemButton);
@@ -203,7 +164,44 @@ public class PresupuestosController {
         view.getLineasAdicionalesView().setPadding(Insets.EMPTY);
     }
 
+    private void updateResumenTable() {
+        view.getResumenView().getItems().clear();
+        if(view.getTarifasCombo().getValue() != null) {
+            updateTarifaRow();
+        }
+        if(view.getDescuentoCombo().getValue() != null) {
+            updateDescuentoRow();
+        }
+        if(view.getCentralitaCombo().getValue() != null){
+            updateCentralitaRow();
+        }
+        if(view.getPacksFutbolCombo().getValue() != null) {
+            updatePackFutbolRow();
+        }
+
+        if(lineasPresupuestoList != null) {
+            for(LineasPresupuestoDTO linea : lineasPresupuestoList) {    
+                ResumentTableItem row = new ResumentTableItem();
+                ListView<String> descripcion = new ListView<>();
+                descripcion.setPrefHeight(30);
+                descripcion.getItems().add(linea.getLineasAdicional().getNombre());
+                
+                row.setCantidad(linea.getCantidad());
+                row.setDescripcion(descripcion);
+                row.setImporte((double) linea.getLineasAdicional().getPrecio() * linea.getCantidad());
+                view.getResumenView().getItems().add(row);
+            }
+        }
+
+        if(view.getTarifasCombo().getValue().getServiciosAdicionales() != null) {
+            updateServiciosAdicionalesRow();
+        }
+
+        view.getResumenView().refresh();
+    }
+
     private void updateTarifaRow(){
+        ResumentTableItem row = new ResumentTableItem();
         TarifasDTO tarifasDTO = view.getTarifasCombo().getValue();
         FibrasDTO fibrasDTO = view.getFibraCombo().getValue();
         StreamingDTO streamingDTO = view.getStreamingCombo().getValue();
@@ -212,10 +210,10 @@ public class PresupuestosController {
         ListView<String> descripcionList = new ListView<>();
         descripcionList.setPrefHeight(125);
         
-        descripcionList.getItems().add("Pack " + tarifasDTO.getNombre());
+        descripcionList.getItems().add("Tarifa " + tarifasDTO.getNombre());
         descripcionList.getItems().add(tarifasDTO.getLineasMoviles() + (tarifasDTO.getLineasMoviles() > 1 ? " líneas móviles " : " línea móvil ") + 
-        " con " + (tarifasDTO.getLlamadasMovil() == "ilimitadas" ? "llamadas ilimitadas " : tarifasDTO.getLlamadasMovil()) + 
-        "y " + (tarifasDTO.getGbMovil() == "ilimitados" ? "Gb ilimitados" : tarifasDTO.getGbMovil()));
+        " con " + (tarifasDTO.getLlamadasMovil().toLowerCase().contains("ilimitadas") ? "llamadas ilimitadas " : tarifasDTO.getLlamadasMovil()) + 
+        "y " + (tarifasDTO.getGbMovil().toLowerCase().contains("ilimitados") ? "Gb ilimitados" : tarifasDTO.getGbMovil()));
         
         if(tarifasDTO.isTv()) {
                 descripcionList.getItems().add("Pack " + tarifasDTO.getNombre());
@@ -230,10 +228,114 @@ public class PresupuestosController {
             descripcionList.getItems().add(tarifasDTO.isStreaming() ? "Con " + streamingDTO.getNombre() : "");
         }
 
-        tarifaRow.setCantidad(1);
-        tarifaRow.setDescripcion(descripcionList);
-        tarifaRow.setImporte(importe);
+        row.setCantidad(1);
+        row.setDescripcion(descripcionList);
+        row.setImporte(importe);
+        view.getResumenView().getItems().add(row);
+    }
 
-        view.getResumenView().refresh();
+    private void updateCentralitaRow() {
+        ResumentTableItem row = new ResumentTableItem();
+        CentralitasDTO centralitasDTO = view.getCentralitaCombo().getValue();
+        ListView<String> descripcion = new ListView<>();
+        descripcion.setPrefHeight(30);
+        descripcion.getItems().add("Centralita " + centralitasDTO.getNombre());
+        
+        row.setCantidad(1);
+        row.setDescripcion(descripcion);
+        row.setImporte(centralitasDTO.getPrecio());
+        view.getResumenView().getItems().add(row);
+    }
+    
+    public void updatePackFutbolRow() {
+        ResumentTableItem row = new ResumentTableItem();
+        PacksFutbolDTO dto = view.getPacksFutbolCombo().getValue();
+        ListView<String> descripcion = new ListView<>();
+        descripcion.setPrefHeight(30);
+        
+        if(dto != null) {
+            descripcion.getItems().add("Pack " + dto.getNombre());
+        }
+        
+        row.setCantidad(1);
+        row.setDescripcion(descripcion);
+        row.setImporte(dto.getPrecio());
+        view.getResumenView().getItems().add(row);
+    }
+
+    private void updateDescuentoRow() {
+        ResumentTableItem row = new ResumentTableItem();
+        DescuentosDTO dto = view.getDescuentoCombo().getValue();
+        ListView<String> descripcion = new ListView<>();
+        descripcion.setPrefHeight(30);
+        
+        if(dto != null) {
+            descripcion.getItems().add("Descuento " + dto.getPorciento() + "%");
+        }
+        
+        row.setCantidad(1);
+        row.setDescripcion(descripcion);
+        row.setImporte((double) (view.getResumenView().getItems().get(0).getImporte() * dto.getPorciento())/-100);
+        view.getResumenView().getItems().add(row);
+    }
+    
+    private void addLineasAdicionales(LineasAdicionalesDTO dto, int quantity) {
+        int index = 0;
+        boolean exist = false;
+        for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
+            if(linea.getLineasAdicional().getId() == dto.getId()){
+                index = lineasPresupuestoList.indexOf(linea);
+                exist = true;
+            }
+        }
+        if(exist){
+            lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto));
+        } else {
+            lineasPresupuestoList.add(new LineasPresupuestoDTO(index, quantity, dto));
+        }
+    }
+
+    public void removeLineasAdicionales(LineasAdicionalesDTO dto, int quantity) {
+        if(lineasPresupuestoList.size() > 0){
+            int index = 0;
+            for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
+                if(linea.getLineasAdicional().getId() == dto.getId()){
+                    index = lineasPresupuestoList.indexOf(linea);
+                }
+            }
+            
+            if(quantity > 0) {
+                lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto));
+            } else {
+                lineasPresupuestoList.remove(index);
+            }
+        }
+    }
+
+    private void updateServiciosAdicionalesRow() {
+        ServiciosAdicionalesDTO dto = view.getTarifasCombo().getValue().getServiciosAdicionales();
+        ResumentTableItem row = new ResumentTableItem();
+        ListView<String> descripcion = new ListView<>();
+        descripcion.setPrefHeight(197);
+        descripcion.getItems().add("Roaming: llamadas y " + dto.getRoaming() + " en Zona Roaming UE");
+        if(dto.getInternacional() != null){
+            descripcion.getItems().add("Llamadas internacionales: " + dto.getInternacional());
+        }
+        if(dto.isLegalitas()) {descripcion.getItems().add("Legálitas Protección Jurídica Negocios Orange");}
+        if(dto.isCloud()) {descripcion.getItems().add("Cloud y Protección Dispositivos");}
+        if(dto.isCiberProteccion()) {descripcion.getItems().add("Ciber Protección Red Móvil");}
+        if(dto.isAtencionPersonalizada()) {descripcion.getItems().add("Atención personalizada");}
+        if(dto.getCentralita() != null){
+            descripcion.getItems().add("Centralita Negocio: " + dto.getInternacional());
+        }
+        if(dto.getNumBeneficios() > 0) {
+            descripcion.getItems().add(dto.getNumBeneficios() + " beneficios a elegir para tu negocio" + 
+            (dto.getDescuentoBeneficios() != null ? "con " + dto.getDescuentoBeneficios() : ""));
+        }
+
+        row.setCantidad(1);
+        row.setDescripcion(descripcion);
+        row.setImporte(0.0);
+        view.getResumenView().getItems().add(row);
     }
 }

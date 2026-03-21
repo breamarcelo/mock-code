@@ -117,7 +117,6 @@ INSERT INTO TDescuentos(Porciento) VALUES(40);
 INSERT INTO TLineas_adicionales(Nombre, Tipo, Num_lineas, Llamadas, Gb, Fibra, Precio) VALUES("Línea Smartphone Negocio Sin Límites", "Móvil", 1, "Ilimitadas", "Acceso al bono de GB compartido con la línea principal", NULL, 11.00);
 INSERT INTO TLineas_adicionales(Nombre, Tipo, Num_lineas, Llamadas, Gb, Fibra, Precio) VALUES("Línea Smartphone Negocio 250 min", "Móvil", 1, "250 min", "Acceso al bono de GB compartido con la línea principal", NULL, 12.00);
 INSERT INTO TLineas_adicionales(Nombre, Tipo, Num_lineas, Llamadas, Gb, Fibra, Precio) VALUES("Línea adicional Smartphone Negocio 2Gb", "Móvil", 1, "Ilimitadas", "2Gb", NULL, 8.00);
-INSERT INTO TLineas_adicionales(Nombre, Tipo, Num_lineas, Llamadas, Gb, Fibra, Precio) VALUES("Línea Negocio Datos", "Datos", 1, "Ilimitadas", "Acceso al bono de GB compartido con la línea principal", NULL, 8.00);
 INSERT INTO TLineas_adicionales(Nombre, Tipo, Num_lineas, Llamadas, Gb, Fibra, Precio) VALUES("Línea Negocio Datos", "Datos", 1, NULL, "Acceso al bono de GB compartido con la línea principal", NULL, 8.00);
 INSERT INTO TLineas_adicionales(Nombre, Tipo, Num_lineas, Llamadas, Gb, Fibra, Precio) VALUES("Línea adicional Multisede con velocidad de 10Gb", "Fijo", 2, "Ilimitadas", NULL, "10Gb", 35.76);
 INSERT INTO TLineas_adicionales(Nombre, Tipo, Num_lineas, Llamadas, Gb, Fibra, Precio) VALUES("Línea adicional Multisede con velocidad de 1Gb", "Fijo", 2, "Ilimitadas", NULL, "ADSL/1Gb", 27.50);

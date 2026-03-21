@@ -33,6 +33,5 @@ public class UIUtil {
                 c.setPrefWidth(Double.MAX_VALUE);
             }
         }
-        // box.setPrefWidth(800);
     }
 }
