@@ -50,7 +50,7 @@ public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, Pres
         //     entity.setLineasPresupuesto(presupuestosDAO.findByIdWithLineasPresupuesto(dto.getId()).getLineasPresupuesto());
         // } else {
         // }
-        entity.setLineasPresupuesto(LineasPresupuestoMapper.getInstance().toEntityListFromDTOs(dto.getLineasAdicionales()));
+        // entity.setLineasPresupuesto(LineasPresupuestoMapper.getInstance().toEntityListFromDTOs(dto.getLineasAdicionales()));
         
         return entity;
     }

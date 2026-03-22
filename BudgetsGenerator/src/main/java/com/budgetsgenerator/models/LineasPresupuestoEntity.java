@@ -15,7 +15,7 @@ public class LineasPresupuestoEntity {
     @Id
     @Column(name="PK_ID")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name="Cantidad")
     private int cantidad;
@@ -39,11 +39,11 @@ public class LineasPresupuestoEntity {
         this.presupuesto = presupuesto;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

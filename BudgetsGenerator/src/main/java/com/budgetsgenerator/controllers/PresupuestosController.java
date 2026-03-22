@@ -138,12 +138,13 @@ public class PresupuestosController {
             presupuesto.setNombre(dialog.getResult());
             presupuesto.setLineasAdicionales(lineasPresupuestoList);
             
+            PresupuestosDTO guardado = PresupuestosService.getInstance().save(presupuesto);
             
             for(LineasPresupuestoDTO dto : lineasPresupuestoList) {
-                dto.setPresupuesto(presupuesto);
+                dto.setPresupuesto(guardado);
+                dto.setId(null);
                 LineasPresupuestoService.getInstance().save(dto);
             }
-            PresupuestosService.getInstance().save(presupuesto);
         });
 
         for(LineasAdicionalesDTO dto : lineasAdicionalesList) {
@@ -320,7 +321,7 @@ public class PresupuestosController {
     }
     
     private void addLineasAdicionales(LineasAdicionalesDTO dto, int quantity) {
-        int index = 0;
+        Integer index = 0;
         boolean exist = false;
         for(LineasPresupuestoDTO linea : lineasPresupuestoList) {
             if(linea.getLineasAdicional().getId() == dto.getId()){
@@ -329,9 +330,9 @@ public class PresupuestosController {
             }
         }
         if(exist){
-            lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto, presupuesto));
+            lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto));
         } else {
-            lineasPresupuestoList.add(new LineasPresupuestoDTO(index, quantity, dto, presupuesto));
+            lineasPresupuestoList.add(new LineasPresupuestoDTO(index, quantity, dto));
         }
     }
 

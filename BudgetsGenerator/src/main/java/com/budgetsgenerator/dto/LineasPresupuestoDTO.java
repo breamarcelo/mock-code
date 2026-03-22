@@ -1,28 +1,22 @@
 package com.budgetsgenerator.dto;
 
 public class LineasPresupuestoDTO {
-    private int id;
+    private Integer id;
     private int cantidad;
     private LineasAdicionalesDTO lineasAdicional;
     private PresupuestosDTO presupuesto;
     
     public LineasPresupuestoDTO() {
     }
-    public LineasPresupuestoDTO(int id, int cantidad, LineasAdicionalesDTO lineasAdicional) {
+    public LineasPresupuestoDTO(Integer id, int cantidad, LineasAdicionalesDTO lineasAdicional) {
         this.id = id;
         this.cantidad = cantidad;
         this.lineasAdicional = lineasAdicional;
     }
-    public LineasPresupuestoDTO(int id, int cantidad, LineasAdicionalesDTO lineasAdicional, PresupuestosDTO presupuesto) {
-        this.id = id;
-        this.cantidad = cantidad;
-        this.lineasAdicional = lineasAdicional;
-        this.presupuesto = presupuesto;
-    }
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public int getCantidad() {

@@ -5,16 +5,14 @@ import java.util.List;
 
 import com.budgetsgenerator.dto.LineasPresupuestoDTO;
 import com.budgetsgenerator.mappers.EntityMapper;
-import com.budgetsgenerator.models.LineasAdicionalesEntity;
 import com.budgetsgenerator.models.LineasPresupuestoEntity;
+import com.budgetsgenerator.models.PresupuestosEntity;
 import com.budgetsgenerator.repository.GenericDAO;
-import com.budgetsgenerator.repository.impl.LineasAdicionalesDAO;
-import com.budgetsgenerator.repository.impl.LineasPresupuestoDAO;
+import com.budgetsgenerator.repository.impl.PresupuestosDAO;
 
 public class LineasPresupuestoMapper implements EntityMapper<LineasPresupuestoEntity, LineasPresupuestoDTO> {
     private static final LineasPresupuestoMapper instance = new LineasPresupuestoMapper();
-    private static final LineasPresupuestoDAO lineasPresupuestoDAO = new LineasPresupuestoDAO(LineasPresupuestoEntity.class);
-    private static final LineasAdicionalesDAO lineasAdicionalesDAO = new LineasAdicionalesDAO(LineasAdicionalesEntity.class);
+    private static final PresupuestosDAO presupuestosDAO = new PresupuestosDAO(PresupuestosEntity.class);
 
     private LineasPresupuestoMapper() {
     }
@@ -37,11 +35,7 @@ public class LineasPresupuestoMapper implements EntityMapper<LineasPresupuestoEn
         LineasPresupuestoEntity entity = new LineasPresupuestoEntity();
         entity.setId(dto.getId());
         entity.setCantidad(dto.getCantidad());
-        entity.setPresupuesto(PresupuestosMapper.getInstance().toEntity(dto.getPresupuesto()));
-        // if(dto.getPresupuesto() != null) {
-        // } else {
-        //     entity.setPresupuesto(new PresupuestosEntity());
-        // }
+        entity.setPresupuesto(presupuestosDAO.findBy(dto.getPresupuesto().getId()));
         entity.setLineaAdicional(LineasAdicionalesMapper.getInstance().toEntity(dto.getLineasAdicional()));
         return entity;
     }

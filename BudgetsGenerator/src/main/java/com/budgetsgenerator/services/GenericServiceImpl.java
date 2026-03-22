@@ -28,8 +28,10 @@ public abstract class GenericServiceImpl<DTO, M, E, DAO, ID> implements GenericS
     }
 
     @Override
-    public void save(DTO dto) {
-        dao.save(mapper.toEntity(dto));
+    public DTO save(DTO dto) {
+        E entity = mapper.toEntity(dto);
+        entity = dao.save(entity);
+        return mapper.toDTO(entity);
     }
 
     @Override
