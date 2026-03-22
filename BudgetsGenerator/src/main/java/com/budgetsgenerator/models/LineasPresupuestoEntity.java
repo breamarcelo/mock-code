@@ -21,7 +21,7 @@ public class LineasPresupuestoEntity {
     private int cantidad;
 
     @ManyToOne
-    @JoinColumn(name="FK_LineasAdicionales_ID")
+    @JoinColumn(name="FK_LineaAdicional_ID")
     private LineasAdicionalesEntity lineaAdicional;
 
     @ManyToOne

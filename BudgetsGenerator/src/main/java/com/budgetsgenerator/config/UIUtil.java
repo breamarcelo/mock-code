@@ -6,7 +6,6 @@ import java.util.function.Function;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
@@ -30,8 +29,8 @@ public class UIUtil {
         controls.get(0).getStyleClass().add("VBox-Label");
         for(Node c : controls) {
             if(c instanceof ComboBox) {
-                box.setMargin(c, new Insets(5,0,10,0));
                 ((ComboBox) c).setPrefWidth(Double.MAX_VALUE);
+                box.setMargin(c, new Insets(5,0,10,0));
             }
         }
     }

@@ -3,6 +3,7 @@ package com.budgetsgenerator.controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import com.budgetsgenerator.config.UIUtil;
 import com.budgetsgenerator.dto.CentralitasDTO;
@@ -11,13 +12,16 @@ import com.budgetsgenerator.dto.FibrasDTO;
 import com.budgetsgenerator.dto.LineasAdicionalesDTO;
 import com.budgetsgenerator.dto.LineasPresupuestoDTO;
 import com.budgetsgenerator.dto.PacksFutbolDTO;
+import com.budgetsgenerator.dto.PresupuestosDTO;
 import com.budgetsgenerator.dto.ServiciosAdicionalesDTO;
 import com.budgetsgenerator.dto.StreamingDTO;
 import com.budgetsgenerator.dto.TarifasDTO;
 import com.budgetsgenerator.services.impl.CentralitasService;
 import com.budgetsgenerator.services.impl.DescuentosService;
 import com.budgetsgenerator.services.impl.LineasAdicionalesService;
+import com.budgetsgenerator.services.impl.LineasPresupuestoService;
 import com.budgetsgenerator.services.impl.PacksFutbolService;
+import com.budgetsgenerator.services.impl.PresupuestosService;
 import com.budgetsgenerator.services.impl.StreamingService;
 import com.budgetsgenerator.services.impl.TarifasService;
 import com.budgetsgenerator.viewmodels.ResumentTableItem;
@@ -30,6 +34,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -38,6 +43,7 @@ public class PresupuestosController {
     private PresupuestosView view = new PresupuestosView();
     private List<LineasPresupuestoDTO> lineasPresupuestoList;
     private double total;
+    private PresupuestosDTO presupuesto;
 
     public PresupuestosController(PresupuestosView view) {
         this.view = view;
@@ -45,7 +51,8 @@ public class PresupuestosController {
     
     public void loadData(){
         lineasPresupuestoList  = new ArrayList<>();
-
+        presupuesto = new PresupuestosDTO();
+        
         List<TarifasDTO> tarifasList = TarifasService.getInstance().getAll();
         List<LineasAdicionalesDTO> lineasAdicionalesList = LineasAdicionalesService.getInstance().getAll();
         List<DescuentosDTO> descuentosList = DescuentosService.getInstance().getAll();
@@ -68,36 +75,21 @@ public class PresupuestosController {
         view.getPacksFutbolCombo().setConverter(UIUtil.createConverter(dto -> dto.getNombre()));
         view.getStreamingCombo().setConverter(UIUtil.createConverter(dto -> dto.getNombre()));
         
-        view.getTarifasCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        view.getTarifasCombo().setOnAction(e -> {
             view.getFibraCombo().getItems().clear();
-            view.getFibraCombo().getItems().setAll(newValue.getFibras());
-            view.getStreamingCombo().setDisable(!newValue.isStreaming());
+            view.getFibraCombo().getItems().setAll(view.getTarifasCombo().getValue().getFibras());
+            view.getStreamingCombo().setDisable(!view.getTarifasCombo().getValue().isStreaming());
             view.getStreamingCombo().valueProperty().set(null);
-            view.getDescuentoCombo().setDisable(newValue == null);
+            view.getDescuentoCombo().setDisable(view.getTarifasCombo().getValue() == null);
             view.getDescuentoCombo().valueProperty().set(null);
             updateResumenTable();
         });
-        
-        view.getFibraCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            updateResumenTable();
-        });
-        
-        view.getStreamingCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            updateResumenTable();
-        });
-        
-        view.getCentralitaCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            updateResumenTable();
-        });
-        
-        view.getPacksFutbolCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            updateResumenTable();
-        });
-        
-        view.getDescuentoCombo().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            updateResumenTable();
-        });
 
+        view.getFibraCombo().setOnAction(e -> updateResumenTable());
+        view.getStreamingCombo().setOnAction(e -> updateResumenTable());
+        view.getCentralitaCombo().setOnAction(e -> updateResumenTable());
+        view.getPacksFutbolCombo().setOnAction(e -> updateResumenTable());
+        view.getDescuentoCombo().setOnAction(e -> updateResumenTable());
         
         view.getTotalHBox().getChildren().addAll(view.getTotalLabel(), view.getTotalField());
         view.getTotalHBox().setAlignment(Pos.CENTER_RIGHT);
@@ -105,10 +97,14 @@ public class PresupuestosController {
         view.getTotalField().setEditable(false);
         view.getTotalField().setBorder(null);
         
-        
+        view.getAccionesHBox1().getChildren().addAll(view.getNuevoButton(), view.getAccionesComboBox());
+        view.getAccionesHBox2().getChildren().addAll(view.getLoadButton(), view.getSaveButton());
+        view.getAccionesHBox3().getChildren().addAll(view.getEliminarButton(), view.getGenerarPdfButton());
+
         UIUtil.populateVBox(view.getTarifasVBox(), new ArrayList<>(Arrays.asList(view.getTarifasVBoxLabel(), view.getTarifaLabel(), view.getTarifasCombo(), view.getFibraLabel(), view.getFibraCombo(), view.getStreamingLabel(), view.getStreamingCombo())));
         UIUtil.populateVBox(view.getProductosAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getProductosAdicioanelesVBoxLabel(), view.getCentralitaLabel(), view.getCentralitaCombo(), view.getPackFutbolLabel(), view.getPacksFutbolCombo())));
         UIUtil.populateVBox(view.getLineasAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getLineasAdicionalesVBoxLabel(), view.getLineasAdicionalesView())));
+        UIUtil.populateVBox(view.getAccionesVBox(), new ArrayList<>(Arrays.asList(view.getAcccionesVBoxLabel(), view.getAccionesHBox1(), view.getAccionesHBox2(), view.getAccionesHBox3())));
         UIUtil.populateVBox(view.getResumenVBox(), new ArrayList<>(Arrays.asList(view.getResumenVBoxLabel(), view.getDescuentoLabel(), view.getDescuentoCombo(), view.getResumenView(), view.getTotalHBox())));
 
         TableColumn<ResumentTableItem, Integer> cantidadTableColumn = new TableColumn<>("Cantidad");
@@ -132,6 +128,23 @@ public class PresupuestosController {
         view.getResumenView().getColumns().addAll(cantidadTableColumn, descripcionTableColumn, precioTableColumn); 
         view.getResumenVBox().setVgrow(view.getResumenView(), Priority.ALWAYS);
         view.getResumenView().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+
+        
+        view.getSaveButton().setOnAction(e -> {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Guardar presupuesto");
+            dialog.setHeaderText("Escribe un nombre para el presupuesto:");
+            Optional<String> nombre = dialog.showAndWait();
+            presupuesto.setNombre(dialog.getResult());
+            presupuesto.setLineasAdicionales(lineasPresupuestoList);
+            
+            
+            for(LineasPresupuestoDTO dto : lineasPresupuestoList) {
+                dto.setPresupuesto(presupuesto);
+                LineasPresupuestoService.getInstance().save(dto);
+            }
+            PresupuestosService.getInstance().save(presupuesto);
+        });
 
         for(LineasAdicionalesDTO dto : lineasAdicionalesList) {
             HBox listViewItem = new HBox();
@@ -219,6 +232,9 @@ public class PresupuestosController {
         TarifasDTO tarifasDTO = view.getTarifasCombo().getValue();
         FibrasDTO fibrasDTO = view.getFibraCombo().getValue();
         StreamingDTO streamingDTO = view.getStreamingCombo().getValue();
+        presupuesto.setTarifa(tarifasDTO);
+        presupuesto.setFibra(fibrasDTO);
+        presupuesto.setStreaming(streamingDTO);
 
         double importe = tarifasDTO.getPrecio();
         ListView<String> descripcionList = new ListView<>();
@@ -252,6 +268,7 @@ public class PresupuestosController {
     private void updateCentralitaRow() {
         ResumentTableItem row = new ResumentTableItem();
         CentralitasDTO centralitasDTO = view.getCentralitaCombo().getValue();
+        presupuesto.setCentralita(centralitasDTO);
         ListView<String> descripcion = new ListView<>();
         descripcion.setPrefHeight(30);
         descripcion.getItems().add("Centralita " + centralitasDTO.getNombre());
@@ -267,6 +284,7 @@ public class PresupuestosController {
     public void updatePackFutbolRow() {
         ResumentTableItem row = new ResumentTableItem();
         PacksFutbolDTO dto = view.getPacksFutbolCombo().getValue();
+        presupuesto.setPackFutbol(dto);
         ListView<String> descripcion = new ListView<>();
         descripcion.setPrefHeight(30);
         
@@ -285,6 +303,7 @@ public class PresupuestosController {
     private void updateDescuentoRow() {
         ResumentTableItem row = new ResumentTableItem();
         DescuentosDTO dto = view.getDescuentoCombo().getValue();
+        presupuesto.setDescuento(dto);
         ListView<String> descripcion = new ListView<>();
         descripcion.setPrefHeight(30);
         
@@ -310,9 +329,9 @@ public class PresupuestosController {
             }
         }
         if(exist){
-            lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto));
+            lineasPresupuestoList.set(index, new LineasPresupuestoDTO(index, quantity, dto, presupuesto));
         } else {
-            lineasPresupuestoList.add(new LineasPresupuestoDTO(index, quantity, dto));
+            lineasPresupuestoList.add(new LineasPresupuestoDTO(index, quantity, dto, presupuesto));
         }
     }
 

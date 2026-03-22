@@ -4,6 +4,7 @@ import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.dto.DescuentosDTO;
 import com.budgetsgenerator.dto.FibrasDTO;
 import com.budgetsgenerator.dto.PacksFutbolDTO;
+import com.budgetsgenerator.dto.PresupuestosDTO;
 import com.budgetsgenerator.dto.StreamingDTO;
 import com.budgetsgenerator.dto.TarifasDTO;
 import com.budgetsgenerator.viewmodels.ResumentTableItem;
@@ -31,6 +32,12 @@ public class PresupuestosView extends GridPane{
     private HBox totalHBox = new HBox();
     private final Label totalLabel = new Label("TOTAL:");
     private TextField totalField = new TextField();
+    private VBox accionesVBox = new VBox();
+    private Label acccionesVBoxLabel = new Label("ACCIONES");
+    private ComboBox<PresupuestosDTO> accionesComboBox = new ComboBox<>();
+    private HBox accionesHBox1 = new HBox();
+    private HBox accionesHBox2 = new HBox();
+    private HBox accionesHBox3 = new HBox();
 
     private ComboBox<TarifasDTO> tarifasCombo = new ComboBox<>();
     private ComboBox<FibrasDTO> fibraCombo = new ComboBox<>();
@@ -40,9 +47,11 @@ public class PresupuestosView extends GridPane{
     private ComboBox<PacksFutbolDTO> packsFutbolCombo = new ComboBox<>();
     private ListView<HBox> lineasAdicionalesView = new ListView<>();
     private TableView<ResumentTableItem> resumenView = new TableView<>();
-    private Button saveButton = new Button("Guardar Presupuesto");
-    private Button loadButton = new Button("Cargar Presupuesto");
-    private Button limpiarButton = new Button("Limpiar");
+    private Button saveButton = new Button("Guardar");
+    private Button loadButton = new Button("Abrir");
+    private Button actualizarButton = new Button("Actualizar");
+    private Button eliminarButton = new Button("Eliminar");
+    private Button nuevoButton = new Button("Nuevo");
     private Button generarPdfButton = new Button("Generar PDF");
     private final Label presupuestoLabel = new Label("Presupuestos");
     private final Label tarifaLabel = new Label("Tarifa:");
@@ -79,7 +88,8 @@ public class PresupuestosView extends GridPane{
         this.add(tarifasVBox, 0, 1, 1, 1);
         this.add(productosAdicionalesVBox, 0, 2, 1, 1);
         this.add(lineasAdicionalesVBox, 0, 3, 1, 1);
-        this.add(resumenVBox, 1, 1, 1, 3);
+        this.add(accionesVBox, 1, 1, 1, 1);
+        this.add(resumenVBox, 1, 2, 1, 2);
         // this.add(tarifaLabel, 0, 1, 2, 1);
         // this.add(tarifasCombo, 0, 2, 2, 1);
         // this.add(fibraLabel, 0, 3, 1, 1);
@@ -195,12 +205,12 @@ public class PresupuestosView extends GridPane{
         this.totalField = totaField;
     }
 
-    public Button getLimpiarButton() {
-        return limpiarButton;
+    public Button getNuevoButton() {
+        return nuevoButton;
     }
 
-    public void setLimpiarButton(Button limpiarButton) {
-        this.limpiarButton = limpiarButton;
+    public void setNuevoButton(Button nuevoButton) {
+        this.nuevoButton = nuevoButton;
     }
 
     public Button getGenerarPdfButton() {
@@ -317,5 +327,69 @@ public class PresupuestosView extends GridPane{
 
     public void setTotalHBox(HBox totalHBox) {
         this.totalHBox = totalHBox;
+    }
+
+    public Button getActualizarButton() {
+        return actualizarButton;
+    }
+
+    public void setActualizarButton(Button actualizarButton) {
+        this.actualizarButton = actualizarButton;
+    }
+
+    public Button getEliminarButton() {
+        return eliminarButton;
+    }
+
+    public void setEliminarButton(Button eliminarButton) {
+        this.eliminarButton = eliminarButton;
+    }
+
+    public VBox getAccionesVBox() {
+        return accionesVBox;
+    }
+
+    public void setAccionesVBox(VBox accionesVBox) {
+        this.accionesVBox = accionesVBox;
+    }
+
+    public Label getAcccionesVBoxLabel() {
+        return acccionesVBoxLabel;
+    }
+
+    public void setAcccionesVBoxLabel(Label acccionesVBoxLabel) {
+        this.acccionesVBoxLabel = acccionesVBoxLabel;
+    }
+
+    public ComboBox<PresupuestosDTO> getAccionesComboBox() {
+        return accionesComboBox;
+    }
+
+    public void setAccionesComboBox(ComboBox<PresupuestosDTO> accionesComboBox) {
+        this.accionesComboBox = accionesComboBox;
+    }
+
+    public HBox getAccionesHBox1() {
+        return accionesHBox1;
+    }
+
+    public void setAccionesHBox1(HBox accionesHBox1) {
+        this.accionesHBox1 = accionesHBox1;
+    }
+
+    public HBox getAccionesHBox2() {
+        return accionesHBox2;
+    }
+
+    public void setAccionesHBox2(HBox accionesHBox2) {
+        this.accionesHBox2 = accionesHBox2;
+    }
+
+    public HBox getAccionesHBox3() {
+        return accionesHBox3;
+    }
+
+    public void setAccionesHBox3(HBox accionesHBox3) {
+        this.accionesHBox3 = accionesHBox3;
     }
 }
