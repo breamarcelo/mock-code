@@ -4,6 +4,7 @@ module com.budgetsgenerator {
     requires javafx.base;
     requires jakarta.persistence;
     requires org.hibernate.orm.core;
+    requires jakarta.xml.bind;
 
     opens com.budgetsgenerator to javafx.fxml;
     opens com.budgetsgenerator.dto to javafx.base;
