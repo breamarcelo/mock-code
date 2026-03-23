@@ -85,11 +85,11 @@ public class PresupuestosView extends GridPane{
         this.getColumnConstraints().get(1).setPercentWidth(50);
         
         this.add(presupuestoLabel, 0, 0, 1, 1);
-        this.add(tarifasVBox, 0, 1, 1, 1);
-        this.add(productosAdicionalesVBox, 0, 2, 1, 1);
-        this.add(lineasAdicionalesVBox, 0, 3, 1, 1);
+        this.add(tarifasVBox, 0, 1, 1, 2);
+        this.add(productosAdicionalesVBox, 0, 3, 1, 1);
+        this.add(lineasAdicionalesVBox, 0, 4, 1, 1);
         this.add(accionesVBox, 1, 1, 1, 1);
-        this.add(resumenVBox, 1, 2, 1, 2);
+        this.add(resumenVBox, 1, 2, 1, 3);
         // this.add(tarifaLabel, 0, 1, 2, 1);
         // this.add(tarifasCombo, 0, 2, 2, 1);
         // this.add(fibraLabel, 0, 3, 1, 1);
