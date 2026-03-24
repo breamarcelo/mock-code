@@ -95,7 +95,6 @@ public class PresupuestosController {
         view.getTotalHBox().setAlignment(Pos.CENTER_RIGHT);
         view.getTotalHBox().setMargin(view.getTotalLabel(), new Insets(0, 10, 0, 0));
         view.getTotalField().setEditable(false);
-        view.getTotalField().setBorder(null);
         
         view.getAccionesHBox1().getChildren().addAll(view.getNuevoButton(), view.getAccionesComboBox());
         view.getAccionesHBox2().getChildren().addAll(view.getLoadButton(), view.getSaveButton());
@@ -128,8 +127,20 @@ public class PresupuestosController {
         view.getResumenView().getColumns().addAll(cantidadTableColumn, descripcionTableColumn, precioTableColumn); 
         view.getResumenVBox().setVgrow(view.getResumenView(), Priority.ALWAYS);
         view.getResumenView().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-
         
+        view.getGenerarPdfButton().setOnAction(e -> {
+            int cantidad = 0;
+            ListView<String> descripcion = new ListView<>();
+            double importe = 0.0;
+            double total = 0.0;
+            for(ResumentTableItem item : view.getResumenView().getItems()) {
+                cantidad = item.getCantidad();
+                descripcion = item.getDescripcion();
+                importe = item.getImporte();
+            }
+            total = Double.valueOf(view.getTotalField().getText());
+        });
+
         view.getSaveButton().setOnAction(e -> {
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Guardar presupuesto");

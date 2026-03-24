@@ -6,6 +6,7 @@ module com.budgetsgenerator {
     requires org.hibernate.orm.core;
     requires jakarta.xml.bind;
 
+    opens com.budgetsgenerator.xml.models to jakarta.xml.bind;
     opens com.budgetsgenerator to javafx.fxml;
     opens com.budgetsgenerator.dto to javafx.base;
     opens com.budgetsgenerator.viewmodels to javafx.base;
