@@ -5,29 +5,30 @@ import java.util.List;
 
 import com.budgetsgenerator.viewmodels.ResumentTableItem;
 import com.budgetsgenerator.xml.models.LineasPresupuestoXml;
+import com.budgetsgenerator.xml.models.PresupuestoXml;
 
 
 public class XmlMapper {
-    private XmlMapper instance;
+    private static XmlMapper instance;
     
     private XmlMapper(){
     }
     
-    public XmlMapper getInstance() {
+    public static XmlMapper getInstance() {
         if(instance == null) {
             instance = new XmlMapper();
         }
         return instance;
     }
     
-    public void lineaToToXml(List<ResumentTableItem> tableItems){
+    public PresupuestoXml lineaToToXml(List<ResumentTableItem> tableItems, String total){
         List<LineasPresupuestoXml> listaLineas = new ArrayList<>();
         LineasPresupuestoXml xml = null;
-        String descripcion = "";
-        double total = 0.0;
+        
         for(ResumentTableItem item : tableItems) {
             xml = new LineasPresupuestoXml();
-    
+            String descripcion = "";
+            
             for(String line : item.getDescripcion().getItems()) {
                 descripcion += line + "\n";
             }
@@ -38,6 +39,6 @@ public class XmlMapper {
 
             listaLineas.add(xml);
         }
-
+        return new PresupuestoXml(listaLineas, total);
     }
 }

@@ -26,6 +26,7 @@ import com.budgetsgenerator.services.impl.StreamingService;
 import com.budgetsgenerator.services.impl.TarifasService;
 import com.budgetsgenerator.viewmodels.ResumentTableItem;
 import com.budgetsgenerator.views.PresupuestosView;
+import com.budgetsgenerator.xml.XmlService;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -129,16 +130,7 @@ public class PresupuestosController {
         view.getResumenView().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         
         view.getGenerarPdfButton().setOnAction(e -> {
-            int cantidad = 0;
-            ListView<String> descripcion = new ListView<>();
-            double importe = 0.0;
-            double total = 0.0;
-            for(ResumentTableItem item : view.getResumenView().getItems()) {
-                cantidad = item.getCantidad();
-                descripcion = item.getDescripcion();
-                importe = item.getImporte();
-            }
-            total = Double.valueOf(view.getTotalField().getText());
+            XmlService.getInstance().createPdf(view.getResumenView().getItems(), view.getTotalFieldText());
         });
 
         view.getSaveButton().setOnAction(e -> {
