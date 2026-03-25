@@ -10,23 +10,6 @@
         <maven.compiler.target>25</maven.compiler.target>
     </properties>
     <dependencies>
-
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>fop</artifactId>
-            <version>2.11</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.xmlgraphics</groupId>
-                    <artifactId>fop-util</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>xml-apis</groupId>
-                    <artifactId>xml-apis</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -63,13 +46,6 @@
             <version>4.0.0</version>
         </dependency>
     </dependencies>
-    <repositories>
-        <repository>
-            <id>org.apache.xmlgraphics.util</id>
-            <name>org.apache.xmlgraphics.util</name>
-            <url>/Users/marcelobrea/Documents/mock-code/budgetsgenerator/lib/fop-2.11/fop/build/fop-util-2.11.jar</url>
-        </repository>
-    </repositories>
     <build>
         <plugins>
             <plugin>

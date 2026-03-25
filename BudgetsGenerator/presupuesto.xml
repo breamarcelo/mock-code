@@ -3,19 +3,19 @@
     <LineasPresupuesto>
         <Linea>
             <Cantidad>1</Cantidad>
-            <Descripcion>Tarifa Negocio Extra 5 línea
-                5 líneas móviles con llamadas ilimitadas y Gb ilimitados
-                Pack Negocio Extra 5 línea
-                Fibra 10Gb
-                Con Amazon Prime
+            <Descripcion>Tarifa Negocio Extra 3 línea
+3 líneas móviles  con llamadas ilimitadas y Gb ilimitados
+Pack Negocio Extra 3 línea
+Fibra 10Gb
+Con Amazon Prime
 </Descripcion>
-            <Importe>130.26</Importe>
+            <Importe>99.26</Importe>
         </Linea>
         <Linea>
             <Cantidad>1</Cantidad>
             <Descripcion>Descuento 20%
 </Descripcion>
-            <Importe>-26.052</Importe>
+            <Importe>-19.852</Importe>
         </Linea>
         <Linea>
             <Cantidad>1</Cantidad>
@@ -30,40 +30,34 @@
             <Importe>31.0</Importe>
         </Linea>
         <Linea>
-            <Cantidad>3</Cantidad>
-            <Descripcion>Línea Smartphone Negocio Sin Límites
+            <Cantidad>1</Cantidad>
+            <Descripcion>Línea adicional Smartphone Negocio 2Gb
 </Descripcion>
-            <Importe>33.0</Importe>
+            <Importe>8.0</Importe>
         </Linea>
         <Linea>
-            <Cantidad>3</Cantidad>
+            <Cantidad>1</Cantidad>
             <Descripcion>Línea Smartphone Negocio 250 min
 </Descripcion>
-            <Importe>36.0</Importe>
+            <Importe>12.0</Importe>
         </Linea>
         <Linea>
-            <Cantidad>3</Cantidad>
-            <Descripcion>Línea Negocio Datos
+            <Cantidad>1</Cantidad>
+            <Descripcion>Línea Smartphone Negocio Sin Límites
 </Descripcion>
-            <Importe>24.0</Importe>
-        </Linea>
-        <Linea>
-            <Cantidad>2</Cantidad>
-            <Descripcion>Línea adicional Multisede con velocidad de 1Gb
-</Descripcion>
-            <Importe>55.0</Importe>
+            <Importe>11.0</Importe>
         </Linea>
         <Linea>
             <Cantidad>1</Cantidad>
             <Descripcion>Roaming: llamadas y 60Gb en Zona Roaming UE
-                Llamadas internacionales: 200 min a fijos y móviles y 1.000 min de fijo a fijo
-                Legálitas Protección Jurídica Negocios Orange
-                Cloud y Protección Dispositivos
-                Ciber Protección Red Móvil
-                3 beneficios a elegir para tu negocio
+Llamadas internacionales: 200 min a fijos y móviles
+Legálitas Protección Jurídica Negocios Orange
+Cloud y Protección Dispositivos
+Ciber Protección Red Móvil
+2 beneficios a elegir para tu negocio
 </Descripcion>
             <Importe>0.0</Importe>
         </Linea>
     </LineasPresupuesto>
-    <Totla>300.20799999999997</Totla>
+    <Totla>158.40800000000002</Totla>
 </Presupuesto>

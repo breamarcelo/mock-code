@@ -10,7 +10,7 @@ public class XmlService {
     private static XmlService instance;
     private static XmlMapper mapper;
     private static XmlGenerator xmlGenerator;
-    private static PdfGenerator pdfGenerator;
+    private static PdfGenerator pdfGenerator = new PdfGenerator();
     private static PresupuestoXml xml;
 
     private XmlService(){
@@ -25,7 +25,13 @@ public class XmlService {
 
     public void createPdf(List<ResumentTableItem> tableItems, String total){
         xml = mapper.getInstance().lineaToToXml(tableItems, total);
+        // String xmlString = 
         xmlGenerator.getInstance().createXml(xml);
-        
+        // try {
+        //     pdfGenerator.generatePdf(xmlString, new File("/presupuesto.xsl"), new File("presupuesto.pdf"));
+        // } catch (Exception e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
     }
 }

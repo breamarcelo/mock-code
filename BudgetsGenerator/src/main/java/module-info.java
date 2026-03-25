@@ -5,9 +5,6 @@ module com.budgetsgenerator {
     requires jakarta.persistence;
     requires org.hibernate.orm.core;
     requires jakarta.xml.bind;
-    requires org.apache.xmlgraphics.fop.core;
-    
-    requires org.apache.xmlgraphics.commons;
 
     opens com.budgetsgenerator.xml.models to jakarta.xml.bind;
     opens com.budgetsgenerator to javafx.fxml;
