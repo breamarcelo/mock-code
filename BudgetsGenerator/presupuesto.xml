@@ -25,7 +25,7 @@
         </Linea>
         <Linea>
             <Cantidad>1</Cantidad>
-            <Descripcion>Pack Orange TV con más de 90 canales y todo el fútbol
+            <Descripcion>Pack Orange TV con más de 90 canales, deportes y todo el fútbol
 </Descripcion>
             <Importe>31.0</Importe>
         </Linea>
@@ -36,10 +36,22 @@
             <Importe>33.0</Importe>
         </Linea>
         <Linea>
-            <Cantidad>2</Cantidad>
+            <Cantidad>3</Cantidad>
             <Descripcion>Línea Smartphone Negocio 250 min
 </Descripcion>
+            <Importe>36.0</Importe>
+        </Linea>
+        <Linea>
+            <Cantidad>3</Cantidad>
+            <Descripcion>Línea Negocio Datos
+</Descripcion>
             <Importe>24.0</Importe>
+        </Linea>
+        <Linea>
+            <Cantidad>2</Cantidad>
+            <Descripcion>Línea adicional Multisede con velocidad de 1Gb
+</Descripcion>
+            <Importe>55.0</Importe>
         </Linea>
         <Linea>
             <Cantidad>1</Cantidad>
@@ -53,5 +65,5 @@
             <Importe>0.0</Importe>
         </Linea>
     </LineasPresupuesto>
-    <Totla>209.208</Totla>
+    <Totla>300.20799999999997</Totla>
 </Presupuesto>
