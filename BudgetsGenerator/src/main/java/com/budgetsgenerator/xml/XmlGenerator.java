@@ -1,6 +1,5 @@
 package com.budgetsgenerator.xml;
 
-import java.io.File;
 import java.io.StringWriter;
 
 import com.budgetsgenerator.xml.models.PresupuestoXml;
@@ -23,17 +22,17 @@ public class XmlGenerator {
         return instance;
     }
     
-    public static void createXml(PresupuestoXml presupuesto) {
+    public static String createXml(PresupuestoXml presupuesto) {
         StringWriter sw = new StringWriter();
         try {
             context = JAXBContext.newInstance(PresupuestoXml.class);
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            m.marshal(presupuesto, new File("presupuesto.xml"));
-            // m.marshal(presupuesto, sw);
+            // m.marshal(presupuesto, new File("presupuesto.xml"));
+            m.marshal(presupuesto, sw);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // return sw.toString();
+        return sw.toString();
     }
 }

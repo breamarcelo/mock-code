@@ -1,6 +1,15 @@
 package com.budgetsgenerator.xml;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.List;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import com.budgetsgenerator.viewmodels.ResumentTableItem;
 import com.budgetsgenerator.xml.models.PdfGenerator;
@@ -11,7 +20,7 @@ public class XmlService {
     private static XmlMapper mapper;
     private static XmlGenerator xmlGenerator;
     private static PdfGenerator pdfGenerator = new PdfGenerator();
-    private static PresupuestoXml xml;
+    private static PresupuestoXml presupuestoXml;
 
     private XmlService(){
     }
@@ -24,14 +33,26 @@ public class XmlService {
     }
 
     public void createPdf(List<ResumentTableItem> tableItems, String total){
-        xml = mapper.getInstance().lineaToToXml(tableItems, total);
-        // String xmlString = 
-        xmlGenerator.getInstance().createXml(xml);
-        // try {
-        //     pdfGenerator.generatePdf(xmlString, new File("/presupuesto.xsl"), new File("presupuesto.pdf"));
-        // } catch (Exception e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // }
+        presupuestoXml = mapper.getInstance().lineaToToXml(tableItems, total);
+        String xml = xmlGenerator.getInstance().createXml(presupuestoXml);
+        System.out.println(xml);
+        InputStream xsl = getClass().getResourceAsStream("/presupuesto.xsl");
+        try {
+            String html = transformXmltoHtml(xml, xsl);
+            System.out.println(html);
+            pdfGenerator.generatePdf(html, new File("presupuesto.pdf"));
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+  
+    }
+
+    public String transformXmltoHtml(String xmlData, InputStream xslStream) throws Exception {
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer(new StreamSource(xslStream));
+        StringWriter writer = new StringWriter();
+        transformer.transform(new StreamSource(new StringReader(xmlData)), new StreamResult(writer));
+        return writer.toString();
     }
 }

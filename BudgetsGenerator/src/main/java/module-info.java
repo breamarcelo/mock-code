@@ -5,6 +5,10 @@ module com.budgetsgenerator {
     requires jakarta.persistence;
     requires org.hibernate.orm.core;
     requires jakarta.xml.bind;
+    requires java.xml;
+    requires openhtmltopdf.core;
+    requires openhtmltopdf.pdfbox;
+    requires javafx.graphics;
 
     opens com.budgetsgenerator.xml.models to jakarta.xml.bind;
     opens com.budgetsgenerator to javafx.fxml;
