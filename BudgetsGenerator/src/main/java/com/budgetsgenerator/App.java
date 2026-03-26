@@ -3,61 +3,31 @@ package com.budgetsgenerator;
 import java.io.IOException;
 
 import com.budgetsgenerator.controllers.PresupuestosController;
+import com.budgetsgenerator.controllers.SidebarController;
 import com.budgetsgenerator.views.PresupuestosView;
+import com.budgetsgenerator.views.SidebarView;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-/**
- * JavaFX App
- */
 public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
         BorderPane root = new BorderPane();
-        
-        PresupuestosView p2 = new PresupuestosView();
-        PresupuestosController p2v = new PresupuestosController(p2);
-        p2v.loadData();
-        
-        AnchorPane sideBar = new AnchorPane();
-        sideBar.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-        Button btn1 = new Button("Panel 1");
-        btn1.setLayoutY(0);
-        Button btn2 = new Button("Panel 2");
-        btn2.setLayoutY(25);
-        sideBar.getChildren().addAll(btn1, btn2);
 
-        AnchorPane p1 = new AnchorPane();
-        p1.setMinSize(800, 400);
-        p1.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        PresupuestosView presupuestosView = new PresupuestosView();
+        PresupuestosController presupuestosController = new PresupuestosController(presupuestosView);
+        presupuestosController.loadData();
         
-        btn1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                root.setCenter(p1);
-            }
-        });
-        btn2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                root.setCenter(p1);
-            }
-        });
-        root.setLeft(sideBar);
-        root.setCenter(p2);
+        SidebarView sidebarView = new SidebarView();
+        SidebarController sidebarController = new SidebarController(sidebarView);
+        sidebarController.load();
+
+        root.setLeft(sidebarView);
+        root.setCenter(presupuestosView);
         
         Scene scene = new Scene(root);
         stage.setTitle("Generador de presupuestos - Orange Empresas");

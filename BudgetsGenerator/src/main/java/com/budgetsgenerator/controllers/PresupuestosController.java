@@ -30,6 +30,7 @@ import com.budgetsgenerator.xml.XmlService;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -39,9 +40,10 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
 public class PresupuestosController {
-    private PresupuestosView view = new PresupuestosView();
+    private PresupuestosView view;
     private List<LineasPresupuestoDTO> lineasPresupuestoList;
     private double total;
     private PresupuestosDTO presupuesto;
@@ -53,7 +55,19 @@ public class PresupuestosController {
     public void loadData(){
         lineasPresupuestoList  = new ArrayList<>();
         presupuesto = new PresupuestosDTO();
-        
+
+        Region espacio = new Region();
+        view.getButtonsHBox().getChildren().addAll(view.getNuevoButton(), view.getActualizarButton(), view.getLoadButton(), view.getSaveButton(), view.getGenerarPdfButton(), espacio, view.getPresupuestoField());
+        view.getButtonsHBox().setHgrow(espacio, Priority.ALWAYS);
+        view.getButtonsHBox().getStyleClass().add("menu-bar");
+        view.getButtonsHBox().setPrefWidth(Double.MAX_VALUE);
+        view.getPresupuestoField().setEditable(false);
+        for(Node node : view.getButtonsHBox().getChildren()){
+            if(node instanceof Button) {
+                view.getButtonsHBox().setMargin(node, new Insets(0, 20, 0, 0));
+            }
+        }
+
         List<TarifasDTO> tarifasList = TarifasService.getInstance().getAll();
         List<LineasAdicionalesDTO> lineasAdicionalesList = LineasAdicionalesService.getInstance().getAll();
         List<DescuentosDTO> descuentosList = DescuentosService.getInstance().getAll();
@@ -96,16 +110,12 @@ public class PresupuestosController {
         view.getTotalHBox().setAlignment(Pos.CENTER_RIGHT);
         view.getTotalHBox().setMargin(view.getTotalLabel(), new Insets(0, 10, 0, 0));
         view.getTotalField().setEditable(false);
-        
-        view.getAccionesHBox1().getChildren().addAll(view.getNuevoButton(), view.getAccionesComboBox());
-        view.getAccionesHBox2().getChildren().addAll(view.getLoadButton(), view.getSaveButton());
-        view.getAccionesHBox3().getChildren().addAll(view.getEliminarButton(), view.getGenerarPdfButton());
 
         UIUtil.populateVBox(view.getTarifasVBox(), new ArrayList<>(Arrays.asList(view.getTarifasVBoxLabel(), view.getTarifaLabel(), view.getTarifasCombo(), view.getFibraLabel(), view.getFibraCombo(), view.getStreamingLabel(), view.getStreamingCombo())));
         UIUtil.populateVBox(view.getProductosAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getProductosAdicioanelesVBoxLabel(), view.getCentralitaLabel(), view.getCentralitaCombo(), view.getPackFutbolLabel(), view.getPacksFutbolCombo())));
         UIUtil.populateVBox(view.getLineasAdicionalesVBox(), new ArrayList<>(Arrays.asList(view.getLineasAdicionalesVBoxLabel(), view.getLineasAdicionalesView())));
-        UIUtil.populateVBox(view.getAccionesVBox(), new ArrayList<>(Arrays.asList(view.getAcccionesVBoxLabel(), view.getAccionesHBox1(), view.getAccionesHBox2(), view.getAccionesHBox3())));
-        UIUtil.populateVBox(view.getResumenVBox(), new ArrayList<>(Arrays.asList(view.getResumenVBoxLabel(), view.getDescuentoLabel(), view.getDescuentoCombo(), view.getResumenView(), view.getTotalHBox())));
+        UIUtil.populateVBox(view.getDescuentosVBox(), new ArrayList<>(Arrays.asList(view.getDescuentoLabel(), view.getDescuentoCombo())));
+        UIUtil.populateVBox(view.getResumenVBox(), new ArrayList<>(Arrays.asList(view.getResumenVBoxLabel(), view.getResumenView(), view.getTotalHBox())));
 
         TableColumn<ResumentTableItem, Integer> cantidadTableColumn = new TableColumn<>("Cantidad");
         TableColumn<ResumentTableItem, ListView<String>> descripcionTableColumn = new TableColumn<>("Descripción");
@@ -210,7 +220,7 @@ public class PresupuestosController {
             for(LineasPresupuestoDTO linea : lineasPresupuestoList) {    
                 ResumentTableItem row = new ResumentTableItem();
                 ListView<String> descripcion = new ListView<>();
-                descripcion.setPrefHeight(30);
+                descripcion.setPrefHeight(10);
                 descripcion.getItems().add(linea.getLineasAdicional().getNombre());
                 
                 double importe = (double) linea.getLineasAdicional().getPrecio() * linea.getCantidad();
@@ -242,7 +252,7 @@ public class PresupuestosController {
 
         double importe = tarifasDTO.getPrecio();
         ListView<String> descripcionList = new ListView<>();
-        descripcionList.setPrefHeight(125);
+        descripcionList.setPrefHeight(87);
         
         descripcionList.getItems().add("Tarifa " + tarifasDTO.getNombre());
         descripcionList.getItems().add(tarifasDTO.getLineasMoviles() + (tarifasDTO.getLineasMoviles() > 1 ? " líneas móviles " : " línea móvil ") + 
@@ -274,7 +284,7 @@ public class PresupuestosController {
         CentralitasDTO centralitasDTO = view.getCentralitaCombo().getValue();
         presupuesto.setCentralita(centralitasDTO);
         ListView<String> descripcion = new ListView<>();
-        descripcion.setPrefHeight(30);
+        descripcion.setPrefHeight(10);
         descripcion.getItems().add("Centralita " + centralitasDTO.getNombre());
         
         double importe = centralitasDTO.getPrecio();
@@ -290,7 +300,7 @@ public class PresupuestosController {
         PacksFutbolDTO dto = view.getPacksFutbolCombo().getValue();
         presupuesto.setPackFutbol(dto);
         ListView<String> descripcion = new ListView<>();
-        descripcion.setPrefHeight(30);
+        descripcion.setPrefHeight(10);
         
         if(dto != null) {
             descripcion.getItems().add("Pack " + dto.getNombre());
@@ -309,7 +319,7 @@ public class PresupuestosController {
         DescuentosDTO dto = view.getDescuentoCombo().getValue();
         presupuesto.setDescuento(dto);
         ListView<String> descripcion = new ListView<>();
-        descripcion.setPrefHeight(30);
+        descripcion.setPrefHeight(10);
         
         if(dto != null) {
             descripcion.getItems().add("Descuento " + dto.getPorciento() + "%");
@@ -360,7 +370,7 @@ public class PresupuestosController {
         ServiciosAdicionalesDTO dto = view.getTarifasCombo().getValue().getServiciosAdicionales();
         ResumentTableItem row = new ResumentTableItem();
         ListView<String> descripcion = new ListView<>();
-        descripcion.setPrefHeight(197);
+        descripcion.setPrefHeight(138);
         descripcion.getItems().add("Roaming: llamadas y " + dto.getRoaming() + " en Zona Roaming UE");
         if(dto.getInternacional() != null){
             descripcion.getItems().add("Llamadas internacionales: " + dto.getInternacional());

@@ -4,7 +4,6 @@ import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.dto.DescuentosDTO;
 import com.budgetsgenerator.dto.FibrasDTO;
 import com.budgetsgenerator.dto.PacksFutbolDTO;
-import com.budgetsgenerator.dto.PresupuestosDTO;
 import com.budgetsgenerator.dto.StreamingDTO;
 import com.budgetsgenerator.dto.TarifasDTO;
 import com.budgetsgenerator.viewmodels.ResumentTableItem;
@@ -27,17 +26,16 @@ public class PresupuestosView extends GridPane{
     private Label lineasAdicionalesVBoxLabel = new Label("LÍNEAS ADICIONALES");
     private VBox productosAdicionalesVBox = new VBox();
     private Label productosAdicioanelesVBoxLabel = new Label("SERVICIOS ADICIONALES");
+    private VBox descuentosVBox = new VBox();
+
+    private final Label descuentoLabel = new Label("Descuento:");
     private VBox resumenVBox = new VBox();
     private Label resumenVBoxLabel = new Label("RESUMEN");
     private HBox totalHBox = new HBox();
     private final Label totalLabel = new Label("TOTAL:");
     private TextField totalField = new TextField();
-    private VBox accionesVBox = new VBox();
-    private Label acccionesVBoxLabel = new Label("ACCIONES");
-    private ComboBox<PresupuestosDTO> accionesComboBox = new ComboBox<>();
-    private HBox accionesHBox1 = new HBox();
-    private HBox accionesHBox2 = new HBox();
-    private HBox accionesHBox3 = new HBox();
+    private TextField presupuestoField = new TextField();
+    private HBox buttonsHBox = new HBox();
 
     private ComboBox<TarifasDTO> tarifasCombo = new ComboBox<>();
     private ComboBox<FibrasDTO> fibraCombo = new ComboBox<>();
@@ -58,7 +56,6 @@ public class PresupuestosView extends GridPane{
     private final Label fibraLabel = new Label("Fibra:");
     private final Label streamingLabel = new Label("Streaming:");
     private final Label lineasAdicionalesLabel = new Label("Líneas Adicionales:");
-    private final Label descuentoLabel = new Label("Descuento:");
     private final Label centralitaLabel = new Label("Centralita:");
     private final Label packFutbolLabel = new Label("Pack Fútbol:");
 
@@ -66,17 +63,6 @@ public class PresupuestosView extends GridPane{
         this.getStylesheets().add(getClass().getResource("/css/presupuestos.css").toExternalForm());
         this.getStyleClass().add("grid_pane");
 
-        // for(int i=0; i<4; i++){
-        //     ColumnConstraints col = new ColumnConstraints();
-        //     this.getColumnConstraints().add(col);
-        //     //col.setPercentWidth(25);
-        // }
-
-        // for(int i=0; i<15; i++){
-        //     RowConstraints row = new RowConstraints();
-        //     this.getRowConstraints().add(row);
-        //     //row.setPercentHeight(6.66);
-        // }
         presupuestoLabel.setId("presupuestos_title");
         totalLabel.setId("total_label");
         
@@ -84,37 +70,12 @@ public class PresupuestosView extends GridPane{
         this.getColumnConstraints().get(0).setPercentWidth(50);
         this.getColumnConstraints().get(1).setPercentWidth(50);
         
-        this.add(presupuestoLabel, 0, 0, 1, 1);
+        this.add(buttonsHBox, 0, 0, 2, 1);
         this.add(tarifasVBox, 0, 1, 1, 2);
         this.add(productosAdicionalesVBox, 0, 3, 1, 1);
-        this.add(lineasAdicionalesVBox, 0, 4, 1, 1);
-        this.add(accionesVBox, 1, 1, 1, 1);
+        this.add(lineasAdicionalesVBox, 0, 4, 1, 2);
+        this.add(descuentosVBox, 1, 1, 1, 1);
         this.add(resumenVBox, 1, 2, 1, 3);
-        // this.add(tarifaLabel, 0, 1, 2, 1);
-        // this.add(tarifasCombo, 0, 2, 2, 1);
-        // this.add(fibraLabel, 0, 3, 1, 1);
-        // this.add(fibraCombo, 0, 4, 1, 1);
-        // this.add(lineasAdicionalesLabel, 0, 5, 2, 1);
-        // this.add(lineasAdicionalesView, 0, 8, 2, 6);
-        // this.add(saveButton, 0, 14, 1, 1);
-        // this.add(streamingLabel, 1, 3, 1, 1);
-        // this.add(streamingCombo, 1, 4, 1, 1);
-        // this.add(loadButton, 1, 14, 1, 1);
-        // this.add(loadButton, 1, 14, 1, 1);
-        // this.add(loadButton, 1, 14, 1, 1);
-        // this.add(loadButton, 1, 14, 1, 1);
-        // this.add(loadButton, 1, 14, 1, 1);
-        // this.add(centralitaLabel, 2, 3, 2, 1);
-        // this.add(centralitaCombo, 2, 4, 2, 1);
-        // this.add(packFutbolLabel, 2, 5, 2, 1);
-        // this.add(packsFutbolCombo, 2, 6, 2, 1);
-        // this.add(resumenView, 2, 7, 2, 6);
-        // this.add(totalLabel, 2, 13, 1, 1);
-        // this.add(limpiarButton, 2, 14, 1, 1);
-        // this.add(descuentoLabel, 3, 1, 2, 1);
-        // this.add(descuentoCombo, 3, 2, 1, 1);
-        // this.add(totaField, 3, 13, 1, 1);
-        // this.add(generarPdfButton, 3, 14, 1, 1);
     }
 
     public ComboBox<TarifasDTO> getTarifasCombo() {
@@ -344,52 +305,27 @@ public class PresupuestosView extends GridPane{
     public void setEliminarButton(Button eliminarButton) {
         this.eliminarButton = eliminarButton;
     }
-
-    public VBox getAccionesVBox() {
-        return accionesVBox;
+    public TextField getPresupuestoField() {
+        return presupuestoField;
     }
 
-    public void setAccionesVBox(VBox accionesVBox) {
-        this.accionesVBox = accionesVBox;
+    public void setPresupuestoField(TextField presupuestoField) {
+        this.presupuestoField = presupuestoField;
     }
 
-    public Label getAcccionesVBoxLabel() {
-        return acccionesVBoxLabel;
+    public HBox getButtonsHBox() {
+        return buttonsHBox;
     }
 
-    public void setAcccionesVBoxLabel(Label acccionesVBoxLabel) {
-        this.acccionesVBoxLabel = acccionesVBoxLabel;
+    public void setButtonsHBox(HBox buttonsHBox) {
+        this.buttonsHBox = buttonsHBox;
     }
 
-    public ComboBox<PresupuestosDTO> getAccionesComboBox() {
-        return accionesComboBox;
+    public VBox getDescuentosVBox() {
+        return descuentosVBox;
     }
 
-    public void setAccionesComboBox(ComboBox<PresupuestosDTO> accionesComboBox) {
-        this.accionesComboBox = accionesComboBox;
-    }
-
-    public HBox getAccionesHBox1() {
-        return accionesHBox1;
-    }
-
-    public void setAccionesHBox1(HBox accionesHBox1) {
-        this.accionesHBox1 = accionesHBox1;
-    }
-
-    public HBox getAccionesHBox2() {
-        return accionesHBox2;
-    }
-
-    public void setAccionesHBox2(HBox accionesHBox2) {
-        this.accionesHBox2 = accionesHBox2;
-    }
-
-    public HBox getAccionesHBox3() {
-        return accionesHBox3;
-    }
-
-    public void setAccionesHBox3(HBox accionesHBox3) {
-        this.accionesHBox3 = accionesHBox3;
+    public void setDescuentosVBox(VBox descuentosVBox) {
+        this.descuentosVBox = descuentosVBox;
     }
 }

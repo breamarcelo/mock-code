@@ -8,7 +8,7 @@ module com.budgetsgenerator {
     requires java.xml;
     requires openhtmltopdf.core;
     requires openhtmltopdf.pdfbox;
-    requires javafx.graphics;
+    requires transitive javafx.graphics;
 
     opens com.budgetsgenerator.xml.models to jakarta.xml.bind;
     opens com.budgetsgenerator to javafx.fxml;
