@@ -12,7 +12,6 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import com.budgetsgenerator.viewmodels.ResumentTableItem;
-import com.budgetsgenerator.xml.models.PdfGenerator;
 import com.budgetsgenerator.xml.models.PresupuestoXml;
 
 public class XmlService {
@@ -35,11 +34,9 @@ public class XmlService {
     public void createPdf(List<ResumentTableItem> tableItems, String total){
         presupuestoXml = mapper.getInstance().lineaToToXml(tableItems, total);
         String xml = xmlGenerator.getInstance().createXml(presupuestoXml);
-        System.out.println(xml);
-        InputStream xsl = getClass().getResourceAsStream("/presupuesto.xsl");
+        InputStream xsl = getClass().getResourceAsStream("/templates/presupuesto.xsl");
         try {
             String html = transformXmltoHtml(xml, xsl);
-            System.out.println(html);
             pdfGenerator.generatePdf(html, new File("presupuesto.pdf"));
         } catch (Exception e) {
             // TODO Auto-generated catch block

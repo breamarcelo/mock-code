@@ -29,7 +29,7 @@ public class PresupuestoXml {
       this.lineas = lineas;
    }
 
-   @XmlElement(name="Totla")
+   @XmlElement(name="Total")
    public String getTotal() {
       return total;
    }

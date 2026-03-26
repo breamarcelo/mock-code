@@ -1,4 +1,4 @@
-package com.budgetsgenerator.xml.models;
+package com.budgetsgenerator.xml;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,7 +8,7 @@ import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 
 public class PdfGenerator {
     public void generatePdf(String htmlContent, File outputFile) throws Exception {
-        try(OutputStream os = new FileOutputStream(outputFile)) {
+        try (OutputStream os = new FileOutputStream(outputFile)) {
             PdfRendererBuilder builder = new PdfRendererBuilder();
             builder.withHtmlContent(htmlContent, "");
             builder.toStream(os);
