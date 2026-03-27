@@ -50,6 +50,7 @@ public class PresupuestosController {
 
     public PresupuestosController(PresupuestosView view) {
         this.view = view;
+        loadData();
     }
     
     public void loadData(){

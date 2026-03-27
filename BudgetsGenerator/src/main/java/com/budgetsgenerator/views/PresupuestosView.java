@@ -60,6 +60,7 @@ public class PresupuestosView extends GridPane{
     private final Label packFutbolLabel = new Label("Pack Fútbol:");
 
     public PresupuestosView() {
+        this.getStylesheets().add(getClass().getResource("/css/palette.css").toExternalForm());
         this.getStylesheets().add(getClass().getResource("/css/presupuestos.css").toExternalForm());
         this.getStyleClass().add("grid_pane");
 
