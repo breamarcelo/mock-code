@@ -22,6 +22,9 @@ public class PacksFutbolMapper implements EntityMapper<PacksFutbolEntity, PacksF
 
     @Override
     public PacksFutbolDTO toDTO(PacksFutbolEntity entity) {
+        if(entity == null) {
+            return null;
+        }
         PacksFutbolDTO dto = new PacksFutbolDTO();
         dto.setId(entity.getId());
         dto.setNombre(entity.getNombre());
@@ -31,6 +34,9 @@ public class PacksFutbolMapper implements EntityMapper<PacksFutbolEntity, PacksF
 
     @Override
     public PacksFutbolEntity toEntity(PacksFutbolDTO dto) {
+        if(dto == null) {
+            return null;
+        } 
         PacksFutbolEntity entity = new PacksFutbolEntity();
         entity.setId(dto.getId());
         entity.setNombre(dto.getNombre());

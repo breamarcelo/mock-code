@@ -22,6 +22,9 @@ public class FibrasMapper implements EntityMapper<FibrasEntity, FibrasDTO>{
 
     @Override
     public FibrasDTO toDTO(FibrasEntity entity) {
+        if(entity == null) {
+            return null;
+        }
         FibrasDTO dto = new FibrasDTO();
         dto.setId(entity.getId());
         dto.setNombre(entity.getNombre());
@@ -31,6 +34,9 @@ public class FibrasMapper implements EntityMapper<FibrasEntity, FibrasDTO>{
     
     @Override
     public FibrasEntity toEntity(FibrasDTO dto) {
+        if(dto == null) {
+            return null;
+        } 
         FibrasEntity entity = new FibrasEntity();
         entity.setId(dto.getId());
         entity.setNombre(dto.getNombre());

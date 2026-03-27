@@ -22,6 +22,9 @@ public class CentralitasMapper implements EntityMapper<CentralitasEntity, Centra
     
     @Override
     public CentralitasDTO toDTO(CentralitasEntity entity) {
+        if(entity == null) {
+            return null;
+        }
         CentralitasDTO dto = new CentralitasDTO();
         dto.setId(entity.getId());
         dto.setNombre(entity.getNombre());
@@ -31,6 +34,9 @@ public class CentralitasMapper implements EntityMapper<CentralitasEntity, Centra
 
     @Override
     public CentralitasEntity toEntity(CentralitasDTO dto) {
+        if(dto == null) {
+            return null;
+        } 
         CentralitasEntity entity = new CentralitasEntity();
         entity.setId(dto.getId());
         entity.setNombre(dto.getNombre());

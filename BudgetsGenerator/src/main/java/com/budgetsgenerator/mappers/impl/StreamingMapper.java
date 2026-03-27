@@ -22,6 +22,9 @@ public class StreamingMapper implements EntityMapper<StreamingEntity, StreamingD
     
     @Override
     public StreamingDTO toDTO(StreamingEntity entity) {
+        if(entity == null) {
+            return null;
+        }
         StreamingDTO dto = new StreamingDTO();
         dto.setId(entity.getId());
         dto.setNombre(entity.getNombre());
@@ -30,6 +33,9 @@ public class StreamingMapper implements EntityMapper<StreamingEntity, StreamingD
 
     @Override
     public StreamingEntity toEntity(StreamingDTO dto) {
+        if(dto == null) {
+            return null;
+        }
         StreamingEntity entity = new StreamingEntity();
         entity.setId(dto.getId());
         entity.setNombre(dto.getNombre());

@@ -22,6 +22,9 @@ public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, Pres
 
     @Override
     public PresupuestosDTO toDTO(PresupuestosEntity entity) {
+        if(entity == null) {
+            return null;
+        }
         PresupuestosDTO dto = new PresupuestosDTO();
         dto.setId(entity.getId());
         dto.setNombre(entity.getNombre());
@@ -37,6 +40,9 @@ public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, Pres
 
     @Override
     public PresupuestosEntity toEntity(PresupuestosDTO dto) {
+        if(dto == null) {
+            return null;
+        } 
         PresupuestosEntity entity = new PresupuestosEntity();
         entity.setId(dto.getId());
         entity.setNombre(dto.getNombre());

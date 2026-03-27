@@ -22,6 +22,9 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO>{
 
     @Override
     public TarifasDTO toDTO(TarifasEntity entity) {
+        if(entity == null) {
+            return null;
+        }
         TarifasDTO dto = new TarifasDTO();
         dto.setId(entity.getId());
         dto.setNombre(entity.getNombre());
@@ -38,6 +41,9 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO>{
     }
     @Override
     public TarifasEntity toEntity(TarifasDTO dto) {
+        if(dto == null) {
+            return null;
+        }
         TarifasEntity entity = new TarifasEntity();
         entity.setId(dto.getId());
         entity.setNombre(dto.getNombre());

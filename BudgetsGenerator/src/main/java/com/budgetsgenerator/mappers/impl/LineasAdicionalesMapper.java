@@ -22,6 +22,9 @@ public class LineasAdicionalesMapper implements EntityMapper<LineasAdicionalesEn
 
     @Override
     public LineasAdicionalesDTO toDTO(LineasAdicionalesEntity entity) {
+        if(entity == null) {
+            return null;
+        }
         LineasAdicionalesDTO dto = new LineasAdicionalesDTO();
         dto.setId(entity.getId());
         dto.setNombre(entity.getNombre());
@@ -36,6 +39,9 @@ public class LineasAdicionalesMapper implements EntityMapper<LineasAdicionalesEn
 
     @Override
     public LineasAdicionalesEntity toEntity(LineasAdicionalesDTO dto) {
+        if(dto == null) {
+            return null;
+        } 
         LineasAdicionalesEntity entity = new LineasAdicionalesEntity();
         entity.setId(dto.getId());
         entity.setNombre(dto.getNombre());

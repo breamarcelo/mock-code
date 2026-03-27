@@ -22,6 +22,9 @@ public class ServiciosAdicionalesMapper implements EntityMapper<ServiciosAdicion
 
     @Override
     public ServiciosAdicionalesDTO toDTO(ServiciosAdicionalesEntity entity) {
+        if(entity == null) {
+            return null;
+        }
         ServiciosAdicionalesDTO dto = new ServiciosAdicionalesDTO();
         dto.setId(entity.getId());
         dto.setRoaming(entity.getRoaming());
@@ -38,6 +41,9 @@ public class ServiciosAdicionalesMapper implements EntityMapper<ServiciosAdicion
     
     @Override
     public ServiciosAdicionalesEntity toEntity(ServiciosAdicionalesDTO dto) {
+        if(dto == null) {
+            return null;
+        } 
         ServiciosAdicionalesEntity entity = new ServiciosAdicionalesEntity();
         entity.setId(dto.getId());
         entity.setRoaming(dto.getRoaming());

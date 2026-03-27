@@ -145,36 +145,34 @@ public class PresupuestosController {
         });
 
         view.getNuevoButton().setOnAction(e -> {
-            view.getTarifasCombo().valueProperty().set(null);
-            view.getFibraCombo().valueProperty().set(null);
-            view.getStreamingCombo().valueProperty().set(null);
-            view.getCentralitaCombo().valueProperty().set(null);
-            view.getPacksFutbolCombo().valueProperty().set(null);
-            view.getDescuentoCombo().valueProperty().set(null);
-            for(Node node : view.getLineasAdicionalesView().getItems()) {
-               Node quantity = ((HBox) node).getChildren().get(3);
-               ((Label) quantity).setText("0");
-            }
-            lineasAdicionalesList.clear();
-            view.getResumenView().getItems().clear();
-            view.getTotalField().setText("");
-            view.getPresupuestoField().setText("");
+            limpiarFormulario();
         });
 
         view.getSaveButton().setOnAction(e -> {
             TextInputDialog dialog = new TextInputDialog();
+
+            dialog.getDialogPane().getStylesheets().add(getClass().getResource("/css/dark-palette.css").toExternalForm());
+            dialog.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
+            dialog.getDialogPane().getStyleClass().add("dialog");
             dialog.setTitle("Guardar presupuesto");
-            dialog.setHeaderText("Escribe un nombre para el presupuesto:");
+            dialog.setGraphic(null);
+            dialog.setHeaderText("Nombre del presupuesto:");
+            
             Optional<String> nombre = dialog.showAndWait();
-            presupuesto.setNombre(dialog.getResult());
-            presupuesto.setLineasAdicionales(lineasPresupuestoList);
             
-            PresupuestosDTO guardado = PresupuestosService.getInstance().save(presupuesto);
-            
-            for(LineasPresupuestoDTO dto : lineasPresupuestoList) {
-                dto.setPresupuesto(guardado);
-                dto.setId(null);
-                LineasPresupuestoService.getInstance().save(dto);
+            if(nombre.isPresent()) {
+                presupuesto.setNombre(dialog.getResult());
+                presupuesto.setLineasAdicionales(lineasPresupuestoList);
+                
+                PresupuestosDTO guardado = PresupuestosService.getInstance().save(presupuesto);
+                
+                for(LineasPresupuestoDTO dto : lineasPresupuestoList) {
+                    dto.setPresupuesto(guardado);
+                    dto.setId(null);
+                    LineasPresupuestoService.getInstance().save(dto);
+                }
+                guardado = null;
+                limpiarFormulario();
             }
         });
 
@@ -409,5 +407,23 @@ public class PresupuestosController {
         row.setDescripcion(descripcion);
         row.setImporte(0.0);
         view.getResumenView().getItems().add(row);
+    }
+
+    public void limpiarFormulario(){
+        view.getTarifasCombo().valueProperty().set(null);
+        view.getFibraCombo().valueProperty().set(null);
+        view.getStreamingCombo().valueProperty().set(null);
+        view.getCentralitaCombo().valueProperty().set(null);
+        view.getPacksFutbolCombo().valueProperty().set(null);
+        view.getDescuentoCombo().valueProperty().set(null);
+        for(Node node : view.getLineasAdicionalesView().getItems()) {
+            Node quantity = ((HBox) node).getChildren().get(3);
+            ((Label) quantity).setText("0");
+        }
+        lineasPresupuestoList.clear();
+        view.getTotalField().setText("");
+        view.getPresupuestoField().setText("");
+        presupuesto = new PresupuestosDTO();
+        updateResumenTable();
     }
 }

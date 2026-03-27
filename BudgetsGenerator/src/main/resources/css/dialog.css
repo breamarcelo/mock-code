@@ -1,0 +1,38 @@
+.dialog {
+    -fx-background-color: -card-background;
+    -fx-pref-width: 400;
+}
+
+GridPane {
+    -fx-background-color: transparent;
+    -fx-padding: 20;
+    -fx-hgap: 0;
+}
+
+Label {
+    -fx-text-fill: -light-font-fill;
+}
+
+TextField {
+    -fx-background-color: transparent;
+    -fx-border-color: -light-font-fill;
+    -fx-border-style: solid;
+    -fx-border-width: 0 0 1 0;
+    -fx-text-fill: -light-font-fill;
+    -fx-pref-height: 20;
+    -fx-translate-x: -5;
+}
+
+Button {
+    -fx-background-color: -btn-background;
+    -fx-text-fill: -btn-font-fill;
+    -fx-font-weight: bold;
+    -fx-border-style: none;
+    -fx-padding: 5 10 5 10;
+    -fx-background-radius: 5;
+    -fx-pref-width: 100;
+}
+
+Button:hover {
+    -fx-opacity: 0.7;
+}

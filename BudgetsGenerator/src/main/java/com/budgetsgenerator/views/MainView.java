@@ -19,7 +19,7 @@ public class MainView {
         this.setSidebar(new SidebarView());
         SidebarController sidebarController = new SidebarController(this.getSidebar());
         Pane emptyPane = new Pane();
-        emptyPane.getStylesheets().add(getClass().getResource("/css/light-palette.css").toExternalForm());
+        emptyPane.getStylesheets().add(getClass().getResource("/css/dark-palette.css").toExternalForm());
         emptyPane.getStylesheets().add(getClass().getResource("/css/emptypane.css").toExternalForm());
         emptyPane.getStyleClass().add("empty-pane");
         root.setLeft(sidebar);

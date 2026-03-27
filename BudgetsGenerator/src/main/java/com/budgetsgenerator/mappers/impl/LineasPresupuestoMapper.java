@@ -23,6 +23,9 @@ public class LineasPresupuestoMapper implements EntityMapper<LineasPresupuestoEn
 
     @Override
     public LineasPresupuestoDTO toDTO(LineasPresupuestoEntity entity) {
+        if(entity == null) {
+            return null;
+        }
         LineasPresupuestoDTO dto = new LineasPresupuestoDTO();
         dto.setId(entity.getId());
         dto.setCantidad(entity.getCantidad());
@@ -32,6 +35,9 @@ public class LineasPresupuestoMapper implements EntityMapper<LineasPresupuestoEn
 
     @Override
     public LineasPresupuestoEntity toEntity(LineasPresupuestoDTO dto) {
+        if(dto == null) {
+            return null;
+        } 
         LineasPresupuestoEntity entity = new LineasPresupuestoEntity();
         entity.setId(dto.getId());
         entity.setCantidad(dto.getCantidad());

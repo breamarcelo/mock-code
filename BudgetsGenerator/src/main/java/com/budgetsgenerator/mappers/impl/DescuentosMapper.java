@@ -22,6 +22,9 @@ public class DescuentosMapper implements EntityMapper<DescuentosEntity, Descuent
     
     @Override
     public DescuentosDTO toDTO(DescuentosEntity entity) {
+        if(entity == null) {
+            return null;
+        }
         DescuentosDTO dto = new DescuentosDTO();
         dto.setId(entity.getId());
         dto.setPorciento(entity.getPorciento());
@@ -30,6 +33,9 @@ public class DescuentosMapper implements EntityMapper<DescuentosEntity, Descuent
 
     @Override
     public DescuentosEntity toEntity(DescuentosDTO dto) {
+        if(dto == null) {
+            return null;
+        } 
         DescuentosEntity entity = new DescuentosEntity();
         entity.setId(dto.getId());
         entity.setPorciento(dto.getPorciento());
