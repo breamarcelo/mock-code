@@ -129,8 +129,8 @@ public class PresupuestosController {
         cantidadTableColumn.setMinWidth(60);
         cantidadTableColumn.setMaxWidth(60);
         
-        precioTableColumn.setMinWidth(100);
-        precioTableColumn.setMaxWidth(100);
+        precioTableColumn.setMinWidth(80);
+        precioTableColumn.setMaxWidth(80);
 
         descripcionTableColumn.setMaxWidth(Double.MAX_VALUE);
         descripcionTableColumn.resizableProperty().set(true);
@@ -142,6 +142,23 @@ public class PresupuestosController {
         
         view.getGenerarPdfButton().setOnAction(e -> {
             XmlService.getInstance().createPdf(view.getResumenView().getItems(), view.getTotalFieldText());
+        });
+
+        view.getNuevoButton().setOnAction(e -> {
+            view.getTarifasCombo().valueProperty().set(null);
+            view.getFibraCombo().valueProperty().set(null);
+            view.getStreamingCombo().valueProperty().set(null);
+            view.getCentralitaCombo().valueProperty().set(null);
+            view.getPacksFutbolCombo().valueProperty().set(null);
+            view.getDescuentoCombo().valueProperty().set(null);
+            for(Node node : view.getLineasAdicionalesView().getItems()) {
+               Node quantity = ((HBox) node).getChildren().get(3);
+               ((Label) quantity).setText("0");
+            }
+            lineasAdicionalesList.clear();
+            view.getResumenView().getItems().clear();
+            view.getTotalField().setText("");
+            view.getPresupuestoField().setText("");
         });
 
         view.getSaveButton().setOnAction(e -> {

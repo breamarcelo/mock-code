@@ -12,6 +12,7 @@ Button,
     -fx-background-color: transparent;
     -fx-pref-width: 170;
     -fx-alignment: center-left;
+    -fx-font-weight: bold;
 }
 
 Button:hover,

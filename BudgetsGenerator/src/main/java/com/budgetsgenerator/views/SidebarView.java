@@ -14,7 +14,7 @@ public class SidebarView extends VBox{
     private Button ajustesButton = new Button("AJUSTES");
 
     public SidebarView() {
-        this.getStylesheets().add(getClass().getResource("/css/palette.css").toExternalForm());
+        this.getStylesheets().add(getClass().getResource("/css/light-palette.css").toExternalForm());
         this.getStylesheets().add(getClass().getResource("/css/sidebar.css").toExternalForm());
         this.getStyleClass().add("sidebar");
         load();
