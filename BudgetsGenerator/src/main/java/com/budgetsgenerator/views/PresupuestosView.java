@@ -1,5 +1,6 @@
 package com.budgetsgenerator.views;
 
+import com.budgetsgenerator.config.UIUtil;
 import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.dto.DescuentosDTO;
 import com.budgetsgenerator.dto.FibrasDTO;
@@ -60,7 +61,7 @@ public class PresupuestosView extends GridPane{
     private final Label packFutbolLabel = new Label("Pack Fútbol:");
 
     public PresupuestosView() {
-        this.getStylesheets().add(getClass().getResource("/css/dark-palette.css").toExternalForm());
+        this.getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
         this.getStylesheets().add(getClass().getResource("/css/presupuestos.css").toExternalForm());
         this.getStyleClass().add("grid_pane");
 

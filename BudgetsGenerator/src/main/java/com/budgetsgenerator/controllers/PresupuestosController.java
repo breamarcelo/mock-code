@@ -3,7 +3,6 @@ package com.budgetsgenerator.controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import com.budgetsgenerator.config.UIUtil;
 import com.budgetsgenerator.dto.CentralitasDTO;
@@ -28,14 +27,19 @@ import com.budgetsgenerator.viewmodels.ResumentTableItem;
 import com.budgetsgenerator.views.PresupuestosView;
 import com.budgetsgenerator.xml.XmlService;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
@@ -148,32 +152,103 @@ public class PresupuestosController {
             limpiarFormulario();
         });
 
+        view.getLoadButton().setOnAction(e -> {
+            TextInputDialog dialog = new TextInputDialog();
+            
+            dialog.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
+            dialog.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
+            dialog.getDialogPane().getStyleClass().add("dialog");
+            dialog.setTitle("Abrir presupuesto");
+            dialog.setGraphic(null);
+            dialog.setHeaderText("Seleccione un presupuesto:");
+
+            Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
+            cancelButton.setText("Cancelar");
+            cancelButton.getStyleClass().add("cancel-btn");
+
+            Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+            okButton.setText("Guardar");
+            
+            TextField node = (TextField) dialog.getDialogPane().lookup("TextField");
+            node.setVisible(false);
+
+            ListView<PresupuestosDTO> presupuestoListView = new ListView<>();
+            presupuestoListView.getItems().setAll(PresupuestosService.getInstance().getAll());
+            
+            presupuestoListView.setCellFactory(param -> new ListCell<PresupuestosDTO>() {
+                @Override
+                protected void updateItem(PresupuestosDTO item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(item.getNombre());
+                    }
+                }
+            });
+
+            dialog.getDialogPane().setContent(presupuestoListView);
+
+            okButton.addEventFilter(ActionEvent.ACTION, eh -> {
+                if(dialog.getContentText() != null) {
+                    
+                    limpiarFormulario();
+                }
+                eh.consume();
+            });
+
+            dialog.showAndWait();
+        });
+
         view.getSaveButton().setOnAction(e -> {
             TextInputDialog dialog = new TextInputDialog();
 
-            dialog.getDialogPane().getStylesheets().add(getClass().getResource("/css/dark-palette.css").toExternalForm());
+            dialog.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
             dialog.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
             dialog.getDialogPane().getStyleClass().add("dialog");
             dialog.setTitle("Guardar presupuesto");
             dialog.setGraphic(null);
             dialog.setHeaderText("Nombre del presupuesto:");
             
-            Optional<String> nombre = dialog.showAndWait();
-            
-            if(nombre.isPresent()) {
-                presupuesto.setNombre(dialog.getResult());
-                presupuesto.setLineasAdicionales(lineasPresupuestoList);
-                
-                PresupuestosDTO guardado = PresupuestosService.getInstance().save(presupuesto);
-                
-                for(LineasPresupuestoDTO dto : lineasPresupuestoList) {
-                    dto.setPresupuesto(guardado);
-                    dto.setId(null);
-                    LineasPresupuestoService.getInstance().save(dto);
+            Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
+            cancelButton.setText("Cancelar");
+            cancelButton.getStyleClass().add("cancel-btn");
+
+            Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+            okButton.setText("Guardar");
+            okButton.addEventFilter(ActionEvent.ACTION, eh -> {
+                if(!dialog.getEditor().getText().isEmpty()) {
+                    presupuesto.setNombre(dialog.getEditor().getText());
+                    presupuesto.setLineasAdicionales(lineasPresupuestoList);
+                    
+                    PresupuestosDTO guardado = PresupuestosService.getInstance().save(presupuesto);
+                    
+                    for(LineasPresupuestoDTO dto : lineasPresupuestoList) {
+                        dto.setPresupuesto(guardado);
+                        dto.setId(null);
+                        LineasPresupuestoService.getInstance().save(dto);
+                    }
+                    dialog.close();
+                    
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
+                    alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
+                    alert.getDialogPane().getStyleClass().add("dialog");
+                    alert.setContentText("Presupuesto guardado correctamente.");
+                    alert.setHeaderText("");
+                    alert.setTitle("Confirmación");
+                    alert.setGraphic(null);
+                    alert.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
+                    alert.showAndWait();
+                    
+                    guardado = null;
+                    limpiarFormulario();
                 }
-                guardado = null;
-                limpiarFormulario();
-            }
+                dialog.getEditor().getStyleClass().add("empty-field");
+                dialog.getEditor().setPromptText("* Este campo no puede estar vacío");
+                eh.consume();
+            });
+            dialog.showAndWait();
         });
 
         for(LineasAdicionalesDTO dto : lineasAdicionalesList) {

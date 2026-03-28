@@ -11,6 +11,8 @@ import javafx.util.StringConverter;
 
 
 public class UIUtil {
+    private static boolean darkMode = true;
+
     public static <T> StringConverter<T> createConverter(Function<T, String> nameExtractor) {
         return new StringConverter<T>() {
             @Override
@@ -33,5 +35,20 @@ public class UIUtil {
                 box.setMargin(c, new Insets(5,0,10,0));
             }
         }
+    }
+
+    public static String getPalette(){
+        if(darkMode) {
+            return "/css/dark-palette.css";
+        }
+        return "/css/light-palette.css";
+    }
+
+    public boolean isDarkMode() {
+        return darkMode;
+    }
+
+    public void setDarkMode(boolean darkMode) {
+        this.darkMode = darkMode;
     }
 }

@@ -1,5 +1,7 @@
 package com.budgetsgenerator.views;
 
+import com.budgetsgenerator.config.UIUtil;
+
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -14,7 +16,7 @@ public class SidebarView extends VBox{
     private Button ajustesButton = new Button("AJUSTES");
 
     public SidebarView() {
-        this.getStylesheets().add(getClass().getResource("/css/dark-palette.css").toExternalForm());
+        this.getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
         this.getStylesheets().add(getClass().getResource("/css/sidebar.css").toExternalForm());
         this.getStyleClass().add("sidebar");
         load();
@@ -30,6 +32,22 @@ public class SidebarView extends VBox{
         }
         this.setVgrow(start, Priority.ALWAYS);
         this.setVgrow(end, Priority.ALWAYS);
+
+        Region invoiceIcon = new Region();
+        invoiceIcon.getStyleClass().addAll("icon", "invoice-icon");
+        this.getPresupuestosButton().setGraphic(invoiceIcon);
+
+        Region homeIcon = new Region();
+        homeIcon.getStyleClass().addAll("icon", "home-icon");
+        this.getTarifasButton().setGraphic(homeIcon);
+
+        Region phoneIcon = new Region();
+        phoneIcon.getStyleClass().addAll("icon", "phone-icon");
+        this.getProductosButton().setGraphic(phoneIcon);
+        
+        Region gearIcon = new Region();
+        gearIcon.getStyleClass().addAll("icon", "gear-icon");
+        this.getAjustesButton().setGraphic(gearIcon);
     }
 
     public Button getPresupuestosButton() {
