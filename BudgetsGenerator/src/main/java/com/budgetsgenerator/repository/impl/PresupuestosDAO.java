@@ -6,7 +6,7 @@ import com.budgetsgenerator.repository.GenericDAOImpl;
 
 import jakarta.persistence.EntityManager;
 
-public class PresupuestosDAO extends GenericDAOImpl<PresupuestosEntity, Integer>{
+public class PresupuestosDAO extends GenericDAOImpl<PresupuestosEntity, Integer, EntityManager>{
 
     public PresupuestosDAO(Class<PresupuestosEntity> entityClass) {
         super(entityClass);

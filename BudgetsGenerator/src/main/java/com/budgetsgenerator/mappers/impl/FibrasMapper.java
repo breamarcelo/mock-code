@@ -9,7 +9,9 @@ import com.budgetsgenerator.models.FibrasEntity;
 import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.FibrasDAO;
 
-public class FibrasMapper implements EntityMapper<FibrasEntity, FibrasDTO>{
+import jakarta.persistence.EntityManager;
+
+public class FibrasMapper implements EntityMapper<FibrasEntity, FibrasDTO, EntityManager>{
     private static final FibrasMapper instance = new FibrasMapper();
     private static final FibrasDAO fibrasDAO = new FibrasDAO(FibrasEntity.class);
 
@@ -21,7 +23,7 @@ public class FibrasMapper implements EntityMapper<FibrasEntity, FibrasDTO>{
     }
 
     @Override
-    public FibrasDTO toDTO(FibrasEntity entity) {
+    public FibrasDTO toDTO(FibrasEntity entity, EntityManager em) {
         if(entity == null) {
             return null;
         }
@@ -45,18 +47,18 @@ public class FibrasMapper implements EntityMapper<FibrasEntity, FibrasDTO>{
     }
 
     @Override
-    public List<FibrasEntity> toEntityList(GenericDAO dao) {
-        return dao.findall();
+    public List<FibrasEntity> toEntityList(GenericDAO dao, EntityManager em) {
+        return dao.findall(em);
     }
 
     @Override
-    public List<FibrasDTO> toDTOList(List<FibrasEntity> entities) {
+    public List<FibrasDTO> toDTOList(List<FibrasEntity> entities, EntityManager em) {
         if(entities == null) {
-            entities = fibrasDAO.findall();
+            entities = fibrasDAO.findall(em);
         }
         List<FibrasDTO> dtos = new ArrayList<>();
         for(FibrasEntity entity : entities){
-            dtos.add(toDTO(entity));
+            dtos.add(toDTO(entity, em));
         }
         return dtos;
     }

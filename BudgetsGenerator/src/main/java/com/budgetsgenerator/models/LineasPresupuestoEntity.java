@@ -1,7 +1,9 @@
 package com.budgetsgenerator.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,8 +26,8 @@ public class LineasPresupuestoEntity {
     @JoinColumn(name="FK_LineaAdicional_ID")
     private LineasAdicionalesEntity lineaAdicional;
 
-    @ManyToOne
-    @JoinColumn(name="FK_Presupuesto_ID")
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @JoinColumn(name="FK_Presupuesto_ID", nullable=false)
     private PresupuestosEntity presupuesto;
 
     public LineasPresupuestoEntity() {

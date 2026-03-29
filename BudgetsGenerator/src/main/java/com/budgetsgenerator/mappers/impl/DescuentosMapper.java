@@ -9,7 +9,9 @@ import com.budgetsgenerator.models.DescuentosEntity;
 import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.DescuentosDAO;
 
-public class DescuentosMapper implements EntityMapper<DescuentosEntity, DescuentosDTO> {
+import jakarta.persistence.EntityManager;
+
+public class DescuentosMapper implements EntityMapper<DescuentosEntity, DescuentosDTO, EntityManager> {
     private static final DescuentosMapper instance = new DescuentosMapper();
     private static final DescuentosDAO descuentosDAO = new DescuentosDAO(DescuentosEntity.class);
 
@@ -21,7 +23,7 @@ public class DescuentosMapper implements EntityMapper<DescuentosEntity, Descuent
     }
     
     @Override
-    public DescuentosDTO toDTO(DescuentosEntity entity) {
+    public DescuentosDTO toDTO(DescuentosEntity entity, EntityManager em) {
         if(entity == null) {
             return null;
         }
@@ -43,18 +45,18 @@ public class DescuentosMapper implements EntityMapper<DescuentosEntity, Descuent
     }
 
     @Override
-    public List<DescuentosEntity> toEntityList(GenericDAO dao) {
-        return dao.findall();
+    public List<DescuentosEntity> toEntityList(GenericDAO dao, EntityManager em) {
+        return dao.findall(em);
     }
 
     @Override
-    public List<DescuentosDTO> toDTOList(List<DescuentosEntity> entities) {
+    public List<DescuentosDTO> toDTOList(List<DescuentosEntity> entities, EntityManager em) {
         if(entities == null){
-            entities = descuentosDAO.findall();
+            entities = descuentosDAO.findall(em);
         }
         List<DescuentosDTO> dtos = new ArrayList<>();
         for(DescuentosEntity entity : entities) {
-            dtos.add(toDTO(entity));
+            dtos.add(toDTO(entity, em));
         }
         return dtos;
     }

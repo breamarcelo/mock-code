@@ -9,7 +9,9 @@ import com.budgetsgenerator.models.LineasAdicionalesEntity;
 import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.LineasAdicionalesDAO;
 
-public class LineasAdicionalesMapper implements EntityMapper<LineasAdicionalesEntity, LineasAdicionalesDTO>{
+import jakarta.persistence.EntityManager;
+
+public class LineasAdicionalesMapper implements EntityMapper<LineasAdicionalesEntity, LineasAdicionalesDTO, EntityManager>{
     public static final LineasAdicionalesMapper instance = new LineasAdicionalesMapper();
     public static final LineasAdicionalesDAO lineasAdicionalesDAO = new LineasAdicionalesDAO(LineasAdicionalesEntity.class);
     
@@ -21,7 +23,7 @@ public class LineasAdicionalesMapper implements EntityMapper<LineasAdicionalesEn
     }
 
     @Override
-    public LineasAdicionalesDTO toDTO(LineasAdicionalesEntity entity) {
+    public LineasAdicionalesDTO toDTO(LineasAdicionalesEntity entity, EntityManager em) {
         if(entity == null) {
             return null;
         }
@@ -55,18 +57,18 @@ public class LineasAdicionalesMapper implements EntityMapper<LineasAdicionalesEn
     }
 
     @Override
-    public List<LineasAdicionalesEntity> toEntityList(GenericDAO dao) {
-        return dao.findall();
+    public List<LineasAdicionalesEntity> toEntityList(GenericDAO dao, EntityManager em) {
+        return dao.findall(em);
     }
 
     @Override
-    public List<LineasAdicionalesDTO> toDTOList(List<LineasAdicionalesEntity> entities) {
+    public List<LineasAdicionalesDTO> toDTOList(List<LineasAdicionalesEntity> entities, EntityManager em) {
         if(entities == null){
-            entities = lineasAdicionalesDAO.findall();
+            entities = lineasAdicionalesDAO.findall(em);
         }
         List<LineasAdicionalesDTO> dtos = new ArrayList<>();
         for(LineasAdicionalesEntity entity : entities) {
-            dtos.add(toDTO(entity));
+            dtos.add(toDTO(entity, em));
         }
         return dtos;
     }

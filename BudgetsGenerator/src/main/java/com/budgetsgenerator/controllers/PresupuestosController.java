@@ -156,7 +156,7 @@ public class PresupuestosController {
         view.getNuevoButton().setOnAction(e -> {
             view.getSaveButton().setDisable(false);
             view.getActualizarButton().setDisable(true);
-            presupuesto = null;
+            presupuesto = new PresupuestosDTO();
             limpiarFormulario();
         });
 
@@ -250,17 +250,17 @@ public class PresupuestosController {
             okButton.addEventFilter(ActionEvent.ACTION, eh -> {
                 if(!dialog.getEditor().getText().isEmpty()) {
                     presupuesto.setNombre(dialog.getEditor().getText());
+                    presupuesto.setTarifa(view.getTarifasCombo().getValue());
+                    presupuesto.setFibra(view.getFibraCombo().getValue());
+                    presupuesto.setStreaming(view.getStreamingCombo().getValue());
+                    presupuesto.setCentralita(view.getCentralitaCombo().getValue());
+                    presupuesto.setPackFutbol(view.getPacksFutbolCombo().getValue());
+                    presupuesto.setDescuento(view.getDescuentoCombo().getValue());
                     presupuesto.setLineasAdicionales(lineasPresupuestoList);
                     
-                    PresupuestosDTO guardado = PresupuestosService.getInstance().save(presupuesto);
-                    
-                    for(LineasPresupuestoDTO dto : lineasPresupuestoList) {
-                        dto.setPresupuesto(guardado);
-                        dto.setId(null);
-                        LineasPresupuestoService.getInstance().save(dto);
-                    }
-                    presupuesto.setId(guardado.getId());
-                    
+                    PresupuestosDTO savedPresupuesto = PresupuestosService.getInstance().savePresupuesto(presupuesto, lineasPresupuestoList);
+                    // presupuesto = savedPresupuesto;
+
                     view.getPresupuestoField().setText(presupuesto.getNombre());
                     view.getActualizarButton().setDisable(false);
                     view.getSaveButton().setDisable(true);
@@ -337,9 +337,9 @@ public class PresupuestosController {
         TarifasDTO tarifasDTO = view.getTarifasCombo().getValue();
         FibrasDTO fibrasDTO = view.getFibraCombo().getValue();
         StreamingDTO streamingDTO = view.getStreamingCombo().getValue();
-        presupuesto.setTarifa(tarifasDTO);
-        presupuesto.setFibra(fibrasDTO);
-        presupuesto.setStreaming(streamingDTO);
+        // presupuesto.setTarifa(tarifasDTO);
+        // presupuesto.setFibra(fibrasDTO);
+        // presupuesto.setStreaming(streamingDTO);
 
         double importe = tarifasDTO.getPrecio();
         ListView<String> descripcionList = new ListView<>();
@@ -373,7 +373,7 @@ public class PresupuestosController {
     private void updateCentralitaRow() {
         ResumentTableItem row = new ResumentTableItem();
         CentralitasDTO centralitasDTO = view.getCentralitaCombo().getValue();
-        presupuesto.setCentralita(centralitasDTO);
+        // presupuesto.setCentralita(centralitasDTO);
         ListView<String> descripcion = new ListView<>();
         descripcion.setPrefHeight(10);
         descripcion.getItems().add("Centralita " + centralitasDTO.getNombre());
@@ -389,7 +389,7 @@ public class PresupuestosController {
     public void updatePackFutbolRow() {
         ResumentTableItem row = new ResumentTableItem();
         PacksFutbolDTO dto = view.getPacksFutbolCombo().getValue();
-        presupuesto.setPackFutbol(dto);
+        // presupuesto.setPackFutbol(dto);
         ListView<String> descripcion = new ListView<>();
         descripcion.setPrefHeight(10);
         
@@ -408,7 +408,7 @@ public class PresupuestosController {
     private void updateDescuentoRow() {
         ResumentTableItem row = new ResumentTableItem();
         DescuentosDTO dto = view.getDescuentoCombo().getValue();
-        presupuesto.setDescuento(dto);
+        // presupuesto.setDescuento(dto);
         ListView<String> descripcion = new ListView<>();
         descripcion.setPrefHeight(10);
         
@@ -438,8 +438,8 @@ public class PresupuestosController {
         } else {
             lineasPresupuestoList.add(new LineasPresupuestoDTO(index, quantity, dto));
         }
-        presupuesto.getLineasAdicionales().clear();
-        presupuesto.setLineasAdicionales(lineasPresupuestoList);
+        // presupuesto.getLineasAdicionales().clear();
+        // presupuesto.setLineasAdicionales(lineasPresupuestoList);
     }
 
     public void removeLineasAdicionales(LineasAdicionalesDTO dto, int quantity) {
@@ -456,8 +456,8 @@ public class PresupuestosController {
             } else {
                 lineasPresupuestoList.remove(index);
             }
-            presupuesto.getLineasAdicionales().clear();
-            presupuesto.setLineasAdicionales(lineasPresupuestoList);
+            // presupuesto.getLineasAdicionales().clear();
+            // presupuesto.setLineasAdicionales(lineasPresupuestoList);
         }
     }
 

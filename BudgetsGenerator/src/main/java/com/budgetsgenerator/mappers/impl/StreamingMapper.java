@@ -9,7 +9,9 @@ import com.budgetsgenerator.models.StreamingEntity;
 import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.StreamingDAO;
 
-public class StreamingMapper implements EntityMapper<StreamingEntity, StreamingDTO>{
+import jakarta.persistence.EntityManager;
+
+public class StreamingMapper implements EntityMapper<StreamingEntity, StreamingDTO, EntityManager>{
     private static final StreamingMapper instance = new StreamingMapper();
     private static final StreamingDAO streamingDAO = new StreamingDAO(StreamingEntity.class);
     
@@ -21,7 +23,7 @@ public class StreamingMapper implements EntityMapper<StreamingEntity, StreamingD
     }
     
     @Override
-    public StreamingDTO toDTO(StreamingEntity entity) {
+    public StreamingDTO toDTO(StreamingEntity entity, EntityManager em) {
         if(entity == null) {
             return null;
         }
@@ -43,18 +45,18 @@ public class StreamingMapper implements EntityMapper<StreamingEntity, StreamingD
     }
 
     @Override
-    public List<StreamingEntity> toEntityList(GenericDAO dao) {
-        return dao.findall();
+    public List<StreamingEntity> toEntityList(GenericDAO dao, EntityManager em) {
+        return dao.findall(em);
     }
   
     @Override
-    public List<StreamingDTO> toDTOList(List<StreamingEntity> entities) {
+    public List<StreamingDTO> toDTOList(List<StreamingEntity> entities, EntityManager em) {
         if(entities == null) {
-            entities = streamingDAO.findall();
+            entities = streamingDAO.findall(em);
         }
         List<StreamingDTO> dtos = new ArrayList<>();
         for(StreamingEntity entity : entities){
-            dtos.add(toDTO(entity));
+            dtos.add(toDTO(entity, em));
         }
         return dtos;
     }

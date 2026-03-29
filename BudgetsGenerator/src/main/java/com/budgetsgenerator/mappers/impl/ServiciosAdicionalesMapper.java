@@ -9,7 +9,9 @@ import com.budgetsgenerator.models.ServiciosAdicionalesEntity;
 import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.ServiciosAdicionalesDAO;
 
-public class ServiciosAdicionalesMapper implements EntityMapper<ServiciosAdicionalesEntity, ServiciosAdicionalesDTO>{
+import jakarta.persistence.EntityManager;
+
+public class ServiciosAdicionalesMapper implements EntityMapper<ServiciosAdicionalesEntity, ServiciosAdicionalesDTO, EntityManager>{
     private static final ServiciosAdicionalesMapper instance = new ServiciosAdicionalesMapper();
     private static final ServiciosAdicionalesDAO serviciosAdicionalesDAO = new ServiciosAdicionalesDAO(ServiciosAdicionalesEntity.class);
     
@@ -21,7 +23,7 @@ public class ServiciosAdicionalesMapper implements EntityMapper<ServiciosAdicion
     }
 
     @Override
-    public ServiciosAdicionalesDTO toDTO(ServiciosAdicionalesEntity entity) {
+    public ServiciosAdicionalesDTO toDTO(ServiciosAdicionalesEntity entity, EntityManager em) {
         if(entity == null) {
             return null;
         }
@@ -59,18 +61,18 @@ public class ServiciosAdicionalesMapper implements EntityMapper<ServiciosAdicion
     }
 
     @Override
-    public List<ServiciosAdicionalesEntity> toEntityList(GenericDAO dao) {
-        return dao.findall();
+    public List<ServiciosAdicionalesEntity> toEntityList(GenericDAO dao, EntityManager em) {
+        return dao.findall(em);
     }
 
     @Override
-    public List<ServiciosAdicionalesDTO> toDTOList(List<ServiciosAdicionalesEntity> entities) {
+    public List<ServiciosAdicionalesDTO> toDTOList(List<ServiciosAdicionalesEntity> entities, EntityManager em) {
         if(entities == null) {
-            entities = serviciosAdicionalesDAO.findall();
+            entities = serviciosAdicionalesDAO.findall(em);
         }
         List<ServiciosAdicionalesDTO> dtos = new ArrayList<>();
         for(ServiciosAdicionalesEntity entity : entities) {
-            dtos.add(toDTO(entity));
+            dtos.add(toDTO(entity, em));
         }
         return dtos;
     }

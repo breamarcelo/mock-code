@@ -2,11 +2,9 @@ package com.budgetsgenerator.repository;
 
 import java.util.List;
 
-import com.budgetsgenerator.config.JPAUtil;
-
 import jakarta.persistence.EntityManager;
 
-public abstract class GenericDAOImpl<T, ID> implements GenericDAO<T, ID> {
+public abstract class GenericDAOImpl<T, ID, EM> implements GenericDAO<T, ID, EntityManager> {
     protected Class<T> entityClass;
 
     public GenericDAOImpl(Class<T> entityClass){
@@ -14,86 +12,30 @@ public abstract class GenericDAOImpl<T, ID> implements GenericDAO<T, ID> {
     }
 
     @Override
-    public void delete(T entity) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            T mergedEntity = em.merge(entity);
-            em.remove(mergedEntity);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if(em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            } 
-            throw e;  
-        } finally {
-            em.close();
-        }
+    public void delete(T entity, EntityManager em) {
+        T mergedEntity = em.merge(entity);
+        em.remove(mergedEntity);
     }
 
     @Override
-    public T findBy(ID id) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            return em.find(entityClass, id);
-        } catch (Exception e) {
-            if(em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            } 
-            throw e;
-        }finally {
-            em.close();
-        }
+    public T findBy(ID id, EntityManager em) {
+        return em.find(entityClass, id);
     }
 
     @Override
-    public List<T> findall() {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            String query = "SELECT e FROM " + entityClass.getSimpleName() + " e";
-            return em.createQuery(query, entityClass).getResultList();
-        } catch (Exception e) {
-            if(em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            } 
-            throw e;
-        } finally {
-            em.close();
-        }
+    public List<T> findall(EntityManager em) {
+        String query = "SELECT e FROM " + entityClass.getSimpleName() + " e";
+        return em.createQuery(query, entityClass).getResultList();
     }
 
     @Override
-    public T save(T entity) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            T managedEntity = em.merge(entity);
-            em.getTransaction().commit();
-            return managedEntity;
-        } catch (Exception e) {
-            if(em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            } 
-            throw e;  
-        } finally {
-            em.close();
-        }
+    public T save(T entity, EntityManager em) {
+        T managedEntity = em.merge(entity);
+        return managedEntity;
     }
 
     @Override
-    public void update(T entity) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.merge(entity);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if(em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            } 
-            throw e;  
-        } finally {
-            em.close();
-        }
+    public void update(T entity, EntityManager em) {
+        em.merge(entity);
     }
 }

@@ -9,7 +9,9 @@ import com.budgetsgenerator.models.CentralitasEntity;
 import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.CentralitasDAO;
 
-public class CentralitasMapper implements EntityMapper<CentralitasEntity, CentralitasDTO>{
+import jakarta.persistence.EntityManager;
+
+public class CentralitasMapper implements EntityMapper<CentralitasEntity, CentralitasDTO, EntityManager>{
     private static final CentralitasMapper instance = new CentralitasMapper();
     private static final CentralitasDAO centralitasDAO = new CentralitasDAO(CentralitasEntity.class);
 
@@ -21,7 +23,7 @@ public class CentralitasMapper implements EntityMapper<CentralitasEntity, Centra
     }
     
     @Override
-    public CentralitasDTO toDTO(CentralitasEntity entity) {
+    public CentralitasDTO toDTO(CentralitasEntity entity, EntityManager em) {
         if(entity == null) {
             return null;
         }
@@ -45,18 +47,18 @@ public class CentralitasMapper implements EntityMapper<CentralitasEntity, Centra
     }
 
     @Override
-    public List<CentralitasEntity> toEntityList(GenericDAO dao) {
-        return dao.findall();
+    public List<CentralitasEntity> toEntityList(GenericDAO dao, EntityManager em) {
+        return dao.findall(em);
     }
 
     @Override
-    public List<CentralitasDTO> toDTOList(List<CentralitasEntity> entities) {
+    public List<CentralitasDTO> toDTOList(List<CentralitasEntity> entities, EntityManager em) {
         if(entities == null) {
-            entities = centralitasDAO.findall();
+            entities = centralitasDAO.findall(em);
         }
         List<CentralitasDTO> dtos = new ArrayList<>();
         for(CentralitasEntity entity : entities) {
-            dtos.add(toDTO(entity));
+            dtos.add(toDTO(entity, em));
         }
         return dtos;
     }

@@ -9,7 +9,9 @@ import com.budgetsgenerator.models.PresupuestosEntity;
 import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.PresupuestosDAO;
 
-public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, PresupuestosDTO>{
+import jakarta.persistence.EntityManager;
+
+public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, PresupuestosDTO, EntityManager>{
     private static final PresupuestosMapper instance = new PresupuestosMapper();
     private static final PresupuestosDAO presupuestosDAO = new PresupuestosDAO(PresupuestosEntity.class);
     
@@ -21,20 +23,22 @@ public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, Pres
     }
 
     @Override
-    public PresupuestosDTO toDTO(PresupuestosEntity entity) {
+    public PresupuestosDTO toDTO(PresupuestosEntity entity, EntityManager em) {
         if(entity == null) {
             return null;
         }
         PresupuestosDTO dto = new PresupuestosDTO();
         dto.setId(entity.getId());
         dto.setNombre(entity.getNombre());
-        dto.setTarifa(TarifasMapper.getInstance().toDTO(entity.getTarifa()));
-        dto.setFibra(FibrasMapper.getInstance().toDTO(entity.getFibra()));
-        dto.setStreaming(StreamingMapper.getInstance().toDTO(entity.getStreaming()));
-        dto.setCentralita(CentralitasMapper.getInstance().toDTO(entity.getCentralita()));
-        dto.setPackFutbol(PacksFutbolMapper.getInstance().toDTO(entity.getPackFutbol()));
-        dto.setDescuento(DescuentosMapper.getInstance().toDTO(entity.getDescuento()));
-        dto.setLineasAdicionales(LineasPresupuestoMapper.getInstance().toDTOList(presupuestosDAO.findByIdWithLineasPresupuesto(entity.getId()).getLineasPresupuesto()));
+        dto.setTarifa(TarifasMapper.getInstance().toDTO(entity.getTarifa(), em));
+        dto.setFibra(FibrasMapper.getInstance().toDTO(entity.getFibra(), em));
+        dto.setStreaming(StreamingMapper.getInstance().toDTO(entity.getStreaming(), em));
+        dto.setCentralita(CentralitasMapper.getInstance().toDTO(entity.getCentralita(), em));
+        dto.setPackFutbol(PacksFutbolMapper.getInstance().toDTO(entity.getPackFutbol(), em));
+        dto.setDescuento(DescuentosMapper.getInstance().toDTO(entity.getDescuento(), em));
+        if(entity.getLineasPresupuesto() != null) {
+            dto.setLineasAdicionales(LineasPresupuestoMapper.getInstance().toDTOList(presupuestosDAO.findByIdWithLineasPresupuesto(entity.getId()).getLineasPresupuesto(), em));
+        }
         return dto;
     }
 
@@ -59,23 +63,23 @@ public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, Pres
     }
     
     @Override
-    public List<PresupuestosEntity> toEntityList(GenericDAO dao) {
-        return dao.findall();
+    public List<PresupuestosEntity> toEntityList(GenericDAO dao, EntityManager em) {
+        return dao.findall(em);
     }
     
     @Override
-    public List<PresupuestosDTO> toDTOList(List<PresupuestosEntity> entities) {
+    public List<PresupuestosDTO> toDTOList(List<PresupuestosEntity> entities, EntityManager em) {
         if(entities == null){
             entities = new ArrayList<>();
         }
         List<PresupuestosDTO> dtos = new ArrayList<>();
         for(PresupuestosEntity entity : entities) {
-            dtos.add(toDTO(entity));
+            dtos.add(toDTO(entity, em));
         }
         return dtos;
     }
 
-    public PresupuestosDTO toDTOById(int id) {
-        return toDTO(presupuestosDAO.findBy(id));
-    }
+    // public PresupuestosDTO toDTOById(int id, EntityManager em) {
+    //     return toDTO(presupuestosDAO.findBy(id, em));
+    // }
 }

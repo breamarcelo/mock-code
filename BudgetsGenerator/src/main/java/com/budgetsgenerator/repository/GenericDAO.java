@@ -2,10 +2,10 @@ package com.budgetsgenerator.repository;
 
 import java.util.List;
 
-public interface GenericDAO<T, ID> {
-    T save(T entity);
-    T findBy(ID id);
-    List<T> findall();
-    void update(T entity);
-    void delete(T entity);
+public interface GenericDAO<T, ID, EM> {
+    T save(T entity, EM em);
+    T findBy(ID id, EM em);
+    List<T> findall(EM em);
+    void update(T entity, EM em);
+    void delete(T entity, EM em);
 }

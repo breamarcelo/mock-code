@@ -6,7 +6,7 @@ import com.budgetsgenerator.repository.GenericDAOImpl;
 
 import jakarta.persistence.EntityManager;
 
-public class TarifasDAO extends GenericDAOImpl<TarifasEntity, Integer>{
+public class TarifasDAO extends GenericDAOImpl<TarifasEntity, Integer, EntityManager>{
 
     public TarifasDAO(Class<TarifasEntity> entityClass) {
         super(entityClass);

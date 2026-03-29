@@ -9,7 +9,9 @@ import com.budgetsgenerator.models.PacksFutbolEntity;
 import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.PacksFutbolDAO;
 
-public class PacksFutbolMapper implements EntityMapper<PacksFutbolEntity, PacksFutbolDTO>{
+import jakarta.persistence.EntityManager;
+
+public class PacksFutbolMapper implements EntityMapper<PacksFutbolEntity, PacksFutbolDTO, EntityManager>{
     private static final PacksFutbolMapper instance = new PacksFutbolMapper();
     private static final PacksFutbolDAO packsFutbolDAO = new PacksFutbolDAO(PacksFutbolEntity.class);
     
@@ -21,7 +23,7 @@ public class PacksFutbolMapper implements EntityMapper<PacksFutbolEntity, PacksF
     }
 
     @Override
-    public PacksFutbolDTO toDTO(PacksFutbolEntity entity) {
+    public PacksFutbolDTO toDTO(PacksFutbolEntity entity, EntityManager em) {
         if(entity == null) {
             return null;
         }
@@ -45,18 +47,18 @@ public class PacksFutbolMapper implements EntityMapper<PacksFutbolEntity, PacksF
     }
     
     @Override
-    public List<PacksFutbolEntity> toEntityList(GenericDAO dao) {
-        return dao.findall();
+    public List<PacksFutbolEntity> toEntityList(GenericDAO dao, EntityManager em) {
+        return dao.findall(em);
     }
 
     @Override
-    public List<PacksFutbolDTO> toDTOList(List<PacksFutbolEntity> entities) {
+    public List<PacksFutbolDTO> toDTOList(List<PacksFutbolEntity> entities, EntityManager em) {
         if(entities == null) {
-            entities = packsFutbolDAO.findall();
+            entities = packsFutbolDAO.findall(em);
         }
         List<PacksFutbolDTO> dtos = new ArrayList<>();
         for(PacksFutbolEntity entity : entities) {
-            dtos.add(toDTO(entity));
+            dtos.add(toDTO(entity, em));
         }
         return dtos;
     }

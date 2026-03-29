@@ -9,7 +9,9 @@ import com.budgetsgenerator.models.TarifasEntity;
 import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.TarifasDAO;
 
-public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO>{
+import jakarta.persistence.EntityManager;
+
+public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO, EntityManager>{
     private static final TarifasMapper instance = new TarifasMapper();
     private static final TarifasDAO tarifasDAO = new TarifasDAO(TarifasEntity.class);
     
@@ -21,7 +23,7 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO>{
     }
 
     @Override
-    public TarifasDTO toDTO(TarifasEntity entity) {
+    public TarifasDTO toDTO(TarifasEntity entity, EntityManager em) {
         if(entity == null) {
             return null;
         }
@@ -32,9 +34,9 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO>{
         dto.setLineasMoviles(entity.getLineasMoviles());
         dto.setLlamadasMovil(entity.getLlamadasMovil());
         dto.setGbMovil(entity.getGbMovil());
-        dto.setFibras(FibrasMapper.getInstance().toDTOList(tarifasDAO.findByIdWithFibras(entity.getId()).getFibras()));
+        dto.setFibras(FibrasMapper.getInstance().toDTOList(tarifasDAO.findByIdWithFibras(entity.getId()).getFibras(), em));
         dto.setPrecio(entity.getPrecio());
-        dto.setServiciosAdicionales(ServiciosAdicionalesMapper.getInstance().toDTO(entity.getServiciosAdicionales()));
+        dto.setServiciosAdicionales(ServiciosAdicionalesMapper.getInstance().toDTO(entity.getServiciosAdicionales(), em));
         dto.setTv(entity.isTv());
         dto.setStreaming(entity.isStreaming());
         return dto;
@@ -60,18 +62,18 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO>{
     }
     
     @Override
-    public List<TarifasEntity> toEntityList(GenericDAO dao) {
-        return dao.findall();
+    public List<TarifasEntity> toEntityList(GenericDAO dao, EntityManager em) {
+        return dao.findall(em);
     }
     
     @Override
-    public List<TarifasDTO> toDTOList(List<TarifasEntity> entities) {
+    public List<TarifasDTO> toDTOList(List<TarifasEntity> entities, EntityManager em) {
         if(entities == null) {
-            entities = tarifasDAO.findall();
+            entities = tarifasDAO.findall(em);
         }
         List<TarifasDTO> dtos = new ArrayList<>();
         for(TarifasEntity entity : entities) {
-            dtos.add(toDTO(entity));
+            dtos.add(toDTO(entity, em));
         }
         return dtos;
     }
