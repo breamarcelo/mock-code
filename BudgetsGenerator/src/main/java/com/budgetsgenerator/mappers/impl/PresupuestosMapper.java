@@ -55,14 +55,6 @@ public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, Pres
         if(dto.getLineasAdicionales() != null) {
             entity.setLineasPresupuesto(LineasPresupuestoMapper.getInstance().toEntityListFromDTOs(dto.getLineasAdicionales()));
         }
-        // if (dto.getLineasAdicionales() != null) {
-        //     List<LineasPresupuestoEntity> newLines = LineasPresupuestoMapper.getInstance().toEntityListFromDTOs(dto.getLineasAdicionales());
-        //     entity.getLineasPresupuesto().clear();
-        //     for (LineasPresupuestoEntity line : newLines) {
-        //         line.setPresupuesto(entity);
-        //         entity.getLineasPresupuesto().add(line);
-        //     }
-        // }
         return entity;
     }
     
@@ -81,5 +73,9 @@ public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, Pres
             dtos.add(toDTO(entity));
         }
         return dtos;
+    }
+
+    public PresupuestosDTO toDTOById(int id) {
+        return toDTO(presupuestosDAO.findBy(id));
     }
 }

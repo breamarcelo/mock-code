@@ -156,6 +156,7 @@ public class PresupuestosController {
         view.getNuevoButton().setOnAction(e -> {
             view.getSaveButton().setDisable(false);
             view.getActualizarButton().setDisable(true);
+            presupuesto = null;
             limpiarFormulario();
         });
 
@@ -259,6 +260,7 @@ public class PresupuestosController {
                         LineasPresupuestoService.getInstance().save(dto);
                     }
                     presupuesto.setId(guardado.getId());
+                    
                     view.getPresupuestoField().setText(presupuesto.getNombre());
                     view.getActualizarButton().setDisable(false);
                     view.getSaveButton().setDisable(true);
@@ -436,6 +438,8 @@ public class PresupuestosController {
         } else {
             lineasPresupuestoList.add(new LineasPresupuestoDTO(index, quantity, dto));
         }
+        presupuesto.getLineasAdicionales().clear();
+        presupuesto.setLineasAdicionales(lineasPresupuestoList);
     }
 
     public void removeLineasAdicionales(LineasAdicionalesDTO dto, int quantity) {
@@ -452,6 +456,8 @@ public class PresupuestosController {
             } else {
                 lineasPresupuestoList.remove(index);
             }
+            presupuesto.getLineasAdicionales().clear();
+            presupuesto.setLineasAdicionales(lineasPresupuestoList);
         }
     }
 

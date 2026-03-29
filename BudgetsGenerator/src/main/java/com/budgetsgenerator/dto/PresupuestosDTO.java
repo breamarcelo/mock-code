@@ -3,7 +3,7 @@ package com.budgetsgenerator.dto;
 import java.util.List;
 
 public class PresupuestosDTO {
-    private int id;
+    private Integer id;
     private String nombre;
     private TarifasDTO tarifa;
     private FibrasDTO fibra;
@@ -16,7 +16,7 @@ public class PresupuestosDTO {
     public PresupuestosDTO() {
     }
 
-    public PresupuestosDTO(int id, String nombre, TarifasDTO tarifa, FibrasDTO fibra, StreamingDTO streaming,
+    public PresupuestosDTO(Integer id, String nombre, TarifasDTO tarifa, FibrasDTO fibra, StreamingDTO streaming,
             CentralitasDTO centralita, PacksFutbolDTO packFutbol, DescuentosDTO descuento,
             List<LineasPresupuestoDTO> lineasAdicionales) {
         this.id = id;
@@ -30,11 +30,11 @@ public class PresupuestosDTO {
         this.lineasAdicionales = lineasAdicionales;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
