@@ -51,6 +51,7 @@ public class PresupuestosController {
     private List<LineasPresupuestoDTO> lineasPresupuestoList;
     private double total;
     private PresupuestosDTO presupuesto;
+    private List<LineasAdicionalesDTO> lineasAdicionalesList;
 
     public PresupuestosController(PresupuestosView view) {
         this.view = view;
@@ -62,7 +63,8 @@ public class PresupuestosController {
         presupuesto = new PresupuestosDTO();
 
         Region espacio = new Region();
-        view.getButtonsHBox().getChildren().addAll(view.getNuevoButton(), view.getActualizarButton(), view.getLoadButton(), view.getSaveButton(), view.getGenerarPdfButton(), espacio, view.getPresupuestoField());
+        view.getButtonsHBox().getChildren().addAll(view.getNuevoButton(), view.getLoadButton(), view.getActualizarButton(), view.getSaveButton(), view.getGenerarPdfButton(), espacio, view.getPresupuestoField());
+        view.getGenerarPdfButton().getStyleClass().add("action-btn");
         view.getButtonsHBox().setHgrow(espacio, Priority.ALWAYS);
         view.getButtonsHBox().getStyleClass().add("menu-bar");
         view.getButtonsHBox().setPrefWidth(Double.MAX_VALUE);
@@ -74,7 +76,7 @@ public class PresupuestosController {
         }
 
         List<TarifasDTO> tarifasList = TarifasService.getInstance().getAll();
-        List<LineasAdicionalesDTO> lineasAdicionalesList = LineasAdicionalesService.getInstance().getAll();
+        lineasAdicionalesList = LineasAdicionalesService.getInstance().getAll();
         List<DescuentosDTO> descuentosList = DescuentosService.getInstance().getAll();
         List<CentralitasDTO> centralitasList = CentralitasService.getInstance().getAll();
         List<PacksFutbolDTO> packsFutbolList = PacksFutbolService.getInstance().getAll();
@@ -144,13 +146,19 @@ public class PresupuestosController {
         view.getResumenVBox().setVgrow(view.getResumenView(), Priority.ALWAYS);
         view.getResumenView().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         
+        view.getSaveButton().setDisable(false);
+        view.getActualizarButton().setDisable(true);
+
         view.getGenerarPdfButton().setOnAction(e -> {
             XmlService.getInstance().createPdf(view.getResumenView().getItems(), view.getTotalFieldText());
         });
 
         view.getNuevoButton().setOnAction(e -> {
+            view.getSaveButton().setDisable(false);
+            view.getActualizarButton().setDisable(true);
             limpiarFormulario();
         });
+
 
         view.getLoadButton().setOnAction(e -> {
             TextInputDialog dialog = new TextInputDialog();
@@ -167,7 +175,7 @@ public class PresupuestosController {
             cancelButton.getStyleClass().add("cancel-btn");
 
             Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
-            okButton.setText("Guardar");
+            okButton.setText("Abrir");
             
             TextField node = (TextField) dialog.getDialogPane().lookup("TextField");
             node.setVisible(false);
@@ -190,14 +198,36 @@ public class PresupuestosController {
             dialog.getDialogPane().setContent(presupuestoListView);
 
             okButton.addEventFilter(ActionEvent.ACTION, eh -> {
-                if(dialog.getContentText() != null) {
-                    
-                    limpiarFormulario();
+                PresupuestosDTO selected = presupuestoListView.getSelectionModel().getSelectedItem();
+                if(selected != null) {  
+                    loadPresupuestoDTO(selected);
+                    dialog.close();
                 }
                 eh.consume();
             });
 
             dialog.showAndWait();
+        });
+
+        view.getActualizarButton().setOnAction(e -> {
+            PresupuestosService.getInstance().update(presupuesto);
+            
+            if(lineasPresupuestoList != null) {
+                for(LineasPresupuestoDTO dto : lineasPresupuestoList) {
+                    LineasPresupuestoService.getInstance().update(dto);
+                }
+            }
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
+            alert.getDialogPane().getStyleClass().add("dialog");
+            alert.setContentText("Presupuesto actualizado correctamente.");
+            alert.setHeaderText("");
+            alert.setTitle("Confirmación");
+            alert.setGraphic(null);
+            alert.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
+            alert.showAndWait();
         });
 
         view.getSaveButton().setOnAction(e -> {
@@ -228,6 +258,10 @@ public class PresupuestosController {
                         dto.setId(null);
                         LineasPresupuestoService.getInstance().save(dto);
                     }
+                    presupuesto.setId(guardado.getId());
+                    view.getPresupuestoField().setText(presupuesto.getNombre());
+                    view.getActualizarButton().setDisable(false);
+                    view.getSaveButton().setDisable(true);
                     dialog.close();
                     
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -240,9 +274,6 @@ public class PresupuestosController {
                     alert.setGraphic(null);
                     alert.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
                     alert.showAndWait();
-                    
-                    guardado = null;
-                    limpiarFormulario();
                 }
                 dialog.getEditor().getStyleClass().add("empty-field");
                 dialog.getEditor().setPromptText("* Este campo no puede estar vacío");
@@ -251,58 +282,26 @@ public class PresupuestosController {
             dialog.showAndWait();
         });
 
-        for(LineasAdicionalesDTO dto : lineasAdicionalesList) {
-            HBox listViewItem = new HBox();
-            Label itemId = new Label(Integer.toString(dto.getId()));
-            itemId.setVisible(false);
-            itemId.getStyleClass().add("view_id");
-            Label itemName = new Label(dto.getNombre());
-            itemName.setMaxWidth(Double.MAX_VALUE);
-            itemName.getStyleClass().add("view_label");
-            Button addItemButton = new Button("+");
-            addItemButton.getStyleClass().add("view_btn");
-            Label itemQuantityLabel = new Label("0");
-            itemQuantityLabel.getStyleClass().add("view_qt");
-            Button deleteItemButton = new Button("-");
-            deleteItemButton.getStyleClass().add("view_btn");
-
-            addItemButton.setOnAction(e -> {
-                int quantity = Integer.decode(itemQuantityLabel.getText());
-                quantity += 1;
-                itemQuantityLabel.setText(Integer.toString(quantity));
-                addLineasAdicionales(dto, quantity);
-                updateResumenTable();
-            });
-            
-            deleteItemButton.setOnAction(e -> {
-                int quantity = Integer.decode(itemQuantityLabel.getText());
-                quantity -= 1;
-                itemQuantityLabel.setText(Integer.toString(quantity >= 1 ? quantity : 0));
-                removeLineasAdicionales(dto, quantity);
-                updateResumenTable();
-            });
-
-            listViewItem.setHgrow(itemName, Priority.ALWAYS);
-            listViewItem.setAlignment(Pos.CENTER_RIGHT);
-            listViewItem.getChildren().addAll(itemId, itemName, addItemButton, itemQuantityLabel, deleteItemButton);
-
-            view.getLineasAdicionalesView().getItems().add(listViewItem);
-        }
+        loadLineasAdicionalesView();
         view.getLineasAdicionalesView().setPadding(Insets.EMPTY);
     }
 
     private void updateResumenTable() {
         total = 0.0;
         view.getResumenView().getItems().clear();
+        
         if(view.getTarifasCombo().getValue() != null) {
             updateTarifaRow();
         }
+
         if(view.getDescuentoCombo().getValue() != null) {
             updateDescuentoRow();
         }
+
         if(view.getCentralitaCombo().getValue() != null){
             updateCentralitaRow();
         }
+
         if(view.getPacksFutbolCombo().getValue() != null) {
             updatePackFutbolRow();
         }
@@ -323,12 +322,11 @@ public class PresupuestosController {
             }
         }
 
-        if(view.getTarifasCombo().getValue().getServiciosAdicionales() != null) {
+        if(view.getTarifasCombo().getValue() != null) {
             updateServiciosAdicionalesRow();
         }
-
+        
         view.getResumenView().refresh();
-
         view.getTotalField().setText(String.valueOf(total));
     }
 
@@ -401,8 +399,8 @@ public class PresupuestosController {
         row.setCantidad(1);
         row.setDescripcion(descripcion);
         row.setImporte(importe);
-        total += importe;
         view.getResumenView().getItems().add(row);
+        total += importe;
     }
 
     private void updateDescuentoRow() {
@@ -500,5 +498,74 @@ public class PresupuestosController {
         view.getPresupuestoField().setText("");
         presupuesto = new PresupuestosDTO();
         updateResumenTable();
+    }
+
+    public void loadLineasAdicionalesView() {
+        view.getLineasAdicionalesView().getItems().clear();
+        for(LineasAdicionalesDTO dto : lineasAdicionalesList) {
+            HBox listViewItem = new HBox();
+            Label itemId = new Label(Integer.toString(dto.getId()));
+            itemId.setVisible(false);
+            itemId.getStyleClass().add("view_id");
+            Label itemName = new Label(dto.getNombre());
+            itemName.setMaxWidth(Double.MAX_VALUE);
+            itemName.getStyleClass().add("view_label");
+            Button addItemButton = new Button("+");
+            addItemButton.getStyleClass().add("view_btn");
+            Label itemQuantityLabel = new Label("0");
+            itemQuantityLabel.getStyleClass().add("view_qt");
+            Button deleteItemButton = new Button("-");
+            deleteItemButton.getStyleClass().add("view_btn");
+
+            addItemButton.setOnAction(e -> {
+                int quantity = Integer.decode(itemQuantityLabel.getText());
+                quantity += 1;
+                itemQuantityLabel.setText(Integer.toString(quantity));
+                addLineasAdicionales(dto, quantity);
+                updateResumenTable();
+            });
+            
+            deleteItemButton.setOnAction(e -> {
+                int quantity = Integer.decode(itemQuantityLabel.getText());
+                quantity -= 1;
+                itemQuantityLabel.setText(Integer.toString(quantity >= 1 ? quantity : 0));
+                removeLineasAdicionales(dto, quantity);
+                updateResumenTable();
+            });
+
+            listViewItem.setHgrow(itemName, Priority.ALWAYS);
+            listViewItem.setAlignment(Pos.CENTER_RIGHT);
+            if(lineasPresupuestoList != null) {
+                for(LineasPresupuestoDTO lineaPresupuesto : lineasPresupuestoList) {
+                    if(lineaPresupuesto.getLineasAdicional().getId() == dto.getId()) {
+                        itemQuantityLabel.setText(Integer.toString(lineaPresupuesto.getCantidad()));
+                    }
+                }
+            }
+
+            listViewItem.getChildren().addAll(itemId, itemName, addItemButton, itemQuantityLabel, deleteItemButton);
+
+            view.getLineasAdicionalesView().getItems().add(listViewItem);
+        }
+    }
+
+    public void loadPresupuestoDTO(PresupuestosDTO loaded) {
+        if(loaded.getTarifa() != null) {
+            view.getTarifasCombo().setValue(loaded.getTarifa());
+            view.getFibraCombo().getItems().clear();
+            view.getFibraCombo().getItems().addAll(loaded.getTarifa().getFibras());
+            view.getFibraCombo().setValue(loaded.getFibra());
+            view.getStreamingCombo().setDisable(!loaded.getTarifa().isStreaming());
+            view.getStreamingCombo().setValue(loaded.getStreaming());
+        }
+        view.getCentralitaCombo().setValue(loaded.getCentralita());
+        view.getPacksFutbolCombo().setValue(loaded.getPackFutbol());
+        view.getDescuentoCombo().setValue(loaded.getDescuento());
+        view.getPresupuestoField().setText(loaded.getNombre());
+        lineasPresupuestoList = loaded.getLineasAdicionales();
+        loadLineasAdicionalesView();
+        updateResumenTable();
+        view.getSaveButton().setDisable(true);
+        view.getActualizarButton().setDisable(false);
     }
 }
