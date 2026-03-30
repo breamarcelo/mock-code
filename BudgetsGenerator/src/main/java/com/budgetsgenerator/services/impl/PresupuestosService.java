@@ -28,10 +28,11 @@ public class PresupuestosService extends GenericServiceImpl<PresupuestosDTO, Pre
         }
         return instance;
     }
+    
     public static PresupuestosDTO savePresupuesto(PresupuestosDTO presupuestosDTO, List<LineasPresupuestoDTO> lineasPresupuesto){
         EntityManager em = JPAUtil.getEntityManager();
         PresupuestosDAO presupuestosDAO = new PresupuestosDAO(PresupuestosEntity.class);
-        // LineasPresupuestoDAO lineasPresupuestoDAO = new LineasPresupuestoDAO(LineasPresupuestoEntity.class);
+        
         try {
             em.getTransaction().begin();
             PresupuestosEntity presupuestosEntity = PresupuestosMapper.getInstance().toEntity(presupuestosDTO);
@@ -50,7 +51,28 @@ public class PresupuestosService extends GenericServiceImpl<PresupuestosDTO, Pre
             em.close();
         }
     }
-    // public static PresupuestosDTO findByIdWithLineas(int id){
-    //     return PresupuestosMapper.getInstance().toDTO(new PresupuestosDAO(PresupuestosEntity.class).findByIdWithLineasPresupuesto(id));
-    // }
+
+    public static PresupuestosDTO updatePresupuesto(PresupuestosDTO presupuestosDTO, List<LineasPresupuestoDTO> lineasPresupuesto){
+        EntityManager em = JPAUtil.getEntityManager();
+        PresupuestosDAO presupuestosDAO = new PresupuestosDAO(PresupuestosEntity.class);
+        
+        try {
+            em.getTransaction().begin();
+            PresupuestosEntity presupuestosEntity = PresupuestosMapper.getInstance().toEntity(presupuestosDTO);
+            presupuestosEntity.setLineasPresupuesto(new ArrayList<>());
+    
+            List<LineasPresupuestoEntity> lineasPresupuestoEntitys = LineasPresupuestoMapper.getInstance().toEntityList(lineasPresupuesto, em);
+            PresupuestosEntity savedEntity = presupuestosDAO.updatePresupuesto(presupuestosDTO, presupuestosEntity, lineasPresupuestoEntitys, em);
+            em.getTransaction().commit();
+            return PresupuestosMapper.getInstance().toDTO(savedEntity, em);
+        } catch (Exception e) {
+            if(em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            } 
+            throw e;  
+        } finally {
+            em.close();
+        }
+    }
+    
 }

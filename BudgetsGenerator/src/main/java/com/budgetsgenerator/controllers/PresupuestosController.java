@@ -18,7 +18,6 @@ import com.budgetsgenerator.dto.TarifasDTO;
 import com.budgetsgenerator.services.impl.CentralitasService;
 import com.budgetsgenerator.services.impl.DescuentosService;
 import com.budgetsgenerator.services.impl.LineasAdicionalesService;
-import com.budgetsgenerator.services.impl.LineasPresupuestoService;
 import com.budgetsgenerator.services.impl.PacksFutbolService;
 import com.budgetsgenerator.services.impl.PresupuestosService;
 import com.budgetsgenerator.services.impl.StreamingService;
@@ -203,13 +202,8 @@ public class PresupuestosController {
         });
 
         view.getActualizarButton().setOnAction(e -> {
-            PresupuestosService.getInstance().update(presupuesto);
-            
-            if(lineasPresupuestoList != null) {
-                for(LineasPresupuestoDTO dto : lineasPresupuestoList) {
-                    LineasPresupuestoService.getInstance().update(dto);
-                }
-            }
+            PresupuestosService.getInstance().updatePresupuesto(presupuesto, lineasPresupuestoList);
+            limpiarFormulario();
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
@@ -252,13 +246,8 @@ public class PresupuestosController {
                     
                     PresupuestosDTO savedPresupuesto = PresupuestosService.getInstance().savePresupuesto(presupuesto, lineasPresupuestoList);
                     limpiarFormulario();
-                    
-                    System.out.println(PresupuestosService.getInstance().findById(savedPresupuesto.getId()));
-                    loadPresupuestoDTO(PresupuestosService.getInstance().findById(savedPresupuesto.getId()));
 
                     view.getPresupuestoField().setText(presupuesto.getNombre());
-                    view.getActualizarButton().setDisable(false);
-                    view.getSaveButton().setDisable(true);
                     dialog.close();
                     
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -332,9 +321,6 @@ public class PresupuestosController {
         TarifasDTO tarifasDTO = view.getTarifasCombo().getValue();
         FibrasDTO fibrasDTO = view.getFibraCombo().getValue();
         StreamingDTO streamingDTO = view.getStreamingCombo().getValue();
-        // presupuesto.setTarifa(tarifasDTO);
-        // presupuesto.setFibra(fibrasDTO);
-        // presupuesto.setStreaming(streamingDTO);
 
         double importe = tarifasDTO.getPrecio();
         ListView<String> descripcionList = new ListView<>();
@@ -368,7 +354,6 @@ public class PresupuestosController {
     private void updateCentralitaRow() {
         ResumentTableItem row = new ResumentTableItem();
         CentralitasDTO centralitasDTO = view.getCentralitaCombo().getValue();
-        // presupuesto.setCentralita(centralitasDTO);
         ListView<String> descripcion = new ListView<>();
         descripcion.setPrefHeight(10);
         descripcion.getItems().add("Centralita " + centralitasDTO.getNombre());
@@ -384,7 +369,6 @@ public class PresupuestosController {
     public void updatePackFutbolRow() {
         ResumentTableItem row = new ResumentTableItem();
         PacksFutbolDTO dto = view.getPacksFutbolCombo().getValue();
-        // presupuesto.setPackFutbol(dto);
         ListView<String> descripcion = new ListView<>();
         descripcion.setPrefHeight(10);
         
@@ -403,7 +387,6 @@ public class PresupuestosController {
     private void updateDescuentoRow() {
         ResumentTableItem row = new ResumentTableItem();
         DescuentosDTO dto = view.getDescuentoCombo().getValue();
-        // presupuesto.setDescuento(dto);
         ListView<String> descripcion = new ListView<>();
         descripcion.setPrefHeight(10);
         
@@ -433,8 +416,6 @@ public class PresupuestosController {
         } else {
             lineasPresupuestoList.add(new LineasPresupuestoDTO(index, quantity, dto));
         }
-        // presupuesto.getLineasAdicionales().clear();
-        // presupuesto.setLineasAdicionales(lineasPresupuestoList);
     }
 
     public void removeLineasAdicionales(LineasAdicionalesDTO dto, int quantity) {
@@ -451,8 +432,6 @@ public class PresupuestosController {
             } else {
                 lineasPresupuestoList.remove(index);
             }
-            // presupuesto.getLineasAdicionales().clear();
-            // presupuesto.setLineasAdicionales(lineasPresupuestoList);
         }
     }
 

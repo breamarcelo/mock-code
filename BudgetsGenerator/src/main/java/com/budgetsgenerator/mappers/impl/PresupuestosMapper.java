@@ -35,9 +35,10 @@ public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, Pres
         dto.setCentralita(CentralitasMapper.getInstance().toDTO(entity.getCentralita(), em));
         dto.setPackFutbol(PacksFutbolMapper.getInstance().toDTO(entity.getPackFutbol(), em));
         dto.setDescuento(DescuentosMapper.getInstance().toDTO(entity.getDescuento(), em));
-        if(entity.getLineasPresupuesto() != null) {
-            dto.setLineasAdicionales(LineasPresupuestoMapper.getInstance().toDTOList(presupuestosDAO.findByIdWithLineasPresupuesto(entity.getId()).getLineasPresupuesto(), em));
-        }
+        dto.setLineasAdicionales(LineasPresupuestoMapper.getInstance().toDTOList(entity.getLineasPresupuesto(), em));
+        // if(entity.getLineasPresupuesto() != null) {
+        //     dto.setLineasAdicionales(LineasPresupuestoMapper.getInstance().toDTOList(presupuestosDAO.findByIdWithLineasPresupuesto(entity.getId()).getLineasPresupuesto(), em));
+        // }
         return dto;
     }
 
