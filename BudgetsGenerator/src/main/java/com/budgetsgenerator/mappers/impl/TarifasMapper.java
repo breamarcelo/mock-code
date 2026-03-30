@@ -6,7 +6,6 @@ import java.util.List;
 import com.budgetsgenerator.dto.TarifasDTO;
 import com.budgetsgenerator.mappers.EntityMapper;
 import com.budgetsgenerator.models.TarifasEntity;
-import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.TarifasDAO;
 
 import jakarta.persistence.EntityManager;
@@ -62,8 +61,15 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO, En
     }
     
     @Override
-    public List<TarifasEntity> toEntityList(GenericDAO dao, EntityManager em) {
-        return dao.findall(em);
+    public List<TarifasEntity> toEntityList(List<TarifasDTO> dtoList, EntityManager em) {
+        if(dtoList != null) {
+            List<TarifasEntity> entitys = new ArrayList<>();
+            for(TarifasDTO dto : dtoList) {
+                entitys.add(toEntity(dto));
+            }
+            return entitys;
+        }
+        return tarifasDAO.findall(em);
     }
     
     @Override

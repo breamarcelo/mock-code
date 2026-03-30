@@ -6,7 +6,6 @@ import java.util.List;
 import com.budgetsgenerator.dto.ServiciosAdicionalesDTO;
 import com.budgetsgenerator.mappers.EntityMapper;
 import com.budgetsgenerator.models.ServiciosAdicionalesEntity;
-import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.ServiciosAdicionalesDAO;
 
 import jakarta.persistence.EntityManager;
@@ -61,8 +60,15 @@ public class ServiciosAdicionalesMapper implements EntityMapper<ServiciosAdicion
     }
 
     @Override
-    public List<ServiciosAdicionalesEntity> toEntityList(GenericDAO dao, EntityManager em) {
-        return dao.findall(em);
+    public List<ServiciosAdicionalesEntity> toEntityList(List<ServiciosAdicionalesDTO> dtoList, EntityManager em) {
+        if(dtoList != null) {
+            List<ServiciosAdicionalesEntity> entitys = new ArrayList<>();
+            for(ServiciosAdicionalesDTO dto : dtoList) {
+                entitys.add(toEntity(dto));
+            }
+            return entitys;
+        }
+        return serviciosAdicionalesDAO.findall(em);
     }
 
     @Override

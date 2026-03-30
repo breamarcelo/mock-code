@@ -6,7 +6,6 @@ import java.util.List;
 import com.budgetsgenerator.dto.StreamingDTO;
 import com.budgetsgenerator.mappers.EntityMapper;
 import com.budgetsgenerator.models.StreamingEntity;
-import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.StreamingDAO;
 
 import jakarta.persistence.EntityManager;
@@ -45,8 +44,15 @@ public class StreamingMapper implements EntityMapper<StreamingEntity, StreamingD
     }
 
     @Override
-    public List<StreamingEntity> toEntityList(GenericDAO dao, EntityManager em) {
-        return dao.findall(em);
+    public List<StreamingEntity> toEntityList(List<StreamingDTO> dtoList, EntityManager em) {
+        if(dtoList != null) {
+            List<StreamingEntity> entitys = new ArrayList<>();
+            for(StreamingDTO dto : dtoList) {
+                entitys.add(toEntity(dto));
+            }
+            return entitys;
+        }
+        return streamingDAO.findall(em);
     }
   
     @Override

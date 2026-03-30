@@ -6,15 +6,13 @@ import java.util.List;
 import com.budgetsgenerator.dto.LineasPresupuestoDTO;
 import com.budgetsgenerator.mappers.EntityMapper;
 import com.budgetsgenerator.models.LineasPresupuestoEntity;
-import com.budgetsgenerator.models.PresupuestosEntity;
-import com.budgetsgenerator.repository.GenericDAO;
-import com.budgetsgenerator.repository.impl.PresupuestosDAO;
+import com.budgetsgenerator.repository.impl.LineasPresupuestoDAO;
 
 import jakarta.persistence.EntityManager;
 
 public class LineasPresupuestoMapper implements EntityMapper<LineasPresupuestoEntity, LineasPresupuestoDTO, EntityManager> {
     private static final LineasPresupuestoMapper instance = new LineasPresupuestoMapper();
-    private static final PresupuestosDAO presupuestosDAO = new PresupuestosDAO(PresupuestosEntity.class);
+    private static final LineasPresupuestoDAO lineasPresupuestoDAO = new LineasPresupuestoDAO(LineasPresupuestoEntity.class);
 
     private LineasPresupuestoMapper() {
     }
@@ -49,16 +47,15 @@ public class LineasPresupuestoMapper implements EntityMapper<LineasPresupuestoEn
     }
     
     @Override
-    public List<LineasPresupuestoEntity> toEntityList(GenericDAO dao, EntityManager em) {
-        return dao.findall(em);
-    }
-
-    public List<LineasPresupuestoEntity> toEntityListFromDTOs(List<LineasPresupuestoDTO> dtos) {
-        List<LineasPresupuestoEntity> entities = new ArrayList<>();
-        for(LineasPresupuestoDTO dto : dtos) {
-            entities.add(toEntity(dto));
+    public List<LineasPresupuestoEntity> toEntityList(List<LineasPresupuestoDTO> dtoList, EntityManager em) {
+        if(dtoList != null) {
+            List<LineasPresupuestoEntity> entitys = new ArrayList<>();
+            for(LineasPresupuestoDTO dto : dtoList) {
+                entitys.add(toEntity(dto));
+            }
+            return entitys;
         }
-        return entities;
+        return lineasPresupuestoDAO.findall(em);
     }
     
     @Override

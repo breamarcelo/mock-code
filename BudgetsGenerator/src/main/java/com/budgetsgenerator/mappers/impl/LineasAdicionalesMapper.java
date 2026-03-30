@@ -6,7 +6,6 @@ import java.util.List;
 import com.budgetsgenerator.dto.LineasAdicionalesDTO;
 import com.budgetsgenerator.mappers.EntityMapper;
 import com.budgetsgenerator.models.LineasAdicionalesEntity;
-import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.LineasAdicionalesDAO;
 
 import jakarta.persistence.EntityManager;
@@ -57,8 +56,15 @@ public class LineasAdicionalesMapper implements EntityMapper<LineasAdicionalesEn
     }
 
     @Override
-    public List<LineasAdicionalesEntity> toEntityList(GenericDAO dao, EntityManager em) {
-        return dao.findall(em);
+    public List<LineasAdicionalesEntity> toEntityList(List<LineasAdicionalesDTO> dtoList, EntityManager em) {
+        if(dtoList != null) {
+            List<LineasAdicionalesEntity> entitys = new ArrayList<>();
+            for(LineasAdicionalesDTO dto : dtoList) {
+                entitys.add(toEntity(dto));
+            }
+            return entitys;
+        }
+        return lineasAdicionalesDAO.findall(em);
     }
 
     @Override

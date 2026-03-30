@@ -6,7 +6,6 @@ import java.util.List;
 import com.budgetsgenerator.dto.CentralitasDTO;
 import com.budgetsgenerator.mappers.EntityMapper;
 import com.budgetsgenerator.models.CentralitasEntity;
-import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.CentralitasDAO;
 
 import jakarta.persistence.EntityManager;
@@ -47,8 +46,15 @@ public class CentralitasMapper implements EntityMapper<CentralitasEntity, Centra
     }
 
     @Override
-    public List<CentralitasEntity> toEntityList(GenericDAO dao, EntityManager em) {
-        return dao.findall(em);
+    public List<CentralitasEntity> toEntityList(List<CentralitasDTO> dtoList, EntityManager em) {
+        if(dtoList != null) {
+            List<CentralitasEntity> entitys = new ArrayList<>();
+            for(CentralitasDTO dto : dtoList) {
+                entitys.add(toEntity(dto));
+            }
+            return entitys;
+        }
+        return centralitasDAO.findall(em);
     }
 
     @Override

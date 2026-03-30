@@ -4,7 +4,7 @@ import java.util.List;
 
 import jakarta.persistence.EntityManager;
 
-public abstract class GenericDAOImpl<T, ID, EM> implements GenericDAO<T, ID, EntityManager> {
+public abstract class GenericDAOImpl<T, Integer, EM> implements GenericDAO<T, Integer, EntityManager> {
     protected Class<T> entityClass;
 
     public GenericDAOImpl(Class<T> entityClass){
@@ -18,7 +18,7 @@ public abstract class GenericDAOImpl<T, ID, EM> implements GenericDAO<T, ID, Ent
     }
 
     @Override
-    public T findBy(ID id, EntityManager em) {
+    public T findBy(Integer id, EntityManager em) {
         return em.find(entityClass, id);
     }
 

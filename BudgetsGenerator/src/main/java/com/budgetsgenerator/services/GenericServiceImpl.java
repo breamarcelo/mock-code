@@ -8,14 +8,14 @@ import com.budgetsgenerator.repository.GenericDAO;
 
 import jakarta.persistence.EntityManager;
 
-public abstract class GenericServiceImpl<DTO, M, E, DAO, ID> implements GenericService<DTO, M, E, DAO, ID>{
-    private GenericDAO<E, ID, EntityManager> dao;
+public abstract class GenericServiceImpl<DTO, M, E, DAO, Integer> implements GenericService<DTO, M, E, DAO, Integer>{
+    private GenericDAO<E, Integer, EntityManager> dao;
     private EntityMapper<E, DTO, EntityManager> mapper;
     
     public GenericServiceImpl() {
     }
 
-    public GenericServiceImpl(GenericDAO<E, ID, EntityManager> dao, EntityMapper<E, DTO, EntityManager> mapper) {
+    public GenericServiceImpl(GenericDAO<E, Integer, EntityManager> dao, EntityMapper<E, DTO, EntityManager> mapper) {
         this.dao = dao;
         this.mapper = mapper;
     }
@@ -36,7 +36,7 @@ public abstract class GenericServiceImpl<DTO, M, E, DAO, ID> implements GenericS
     }
 
     @Override
-    public DTO findById(ID id) {
+    public DTO findById(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return mapper.toDTO(dao.findBy(id, em), em);

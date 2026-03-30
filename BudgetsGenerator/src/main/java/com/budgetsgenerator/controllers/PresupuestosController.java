@@ -52,6 +52,11 @@ public class PresupuestosController {
     private double total;
     private PresupuestosDTO presupuesto;
     private List<LineasAdicionalesDTO> lineasAdicionalesList;
+    private List<TarifasDTO> tarifasList;
+    private List<DescuentosDTO> descuentosList;
+    private List<CentralitasDTO> centralitasList;
+    private List<PacksFutbolDTO> packsFutbolList;
+    private List<StreamingDTO> streamingList;
 
     public PresupuestosController(PresupuestosView view) {
         this.view = view;
@@ -75,20 +80,7 @@ public class PresupuestosController {
             }
         }
 
-        List<TarifasDTO> tarifasList = TarifasService.getInstance().getAll();
-        lineasAdicionalesList = LineasAdicionalesService.getInstance().getAll();
-        List<DescuentosDTO> descuentosList = DescuentosService.getInstance().getAll();
-        List<CentralitasDTO> centralitasList = CentralitasService.getInstance().getAll();
-        List<PacksFutbolDTO> packsFutbolList = PacksFutbolService.getInstance().getAll();
-        List<StreamingDTO> streamingList = StreamingService.getInstance().getAll();
-        
-        view.getTarifasCombo().getItems().setAll(tarifasList);
-        view.getDescuentoCombo().getItems().setAll(descuentosList);
-        view.getDescuentoCombo().setDisable(true);
-        view.getCentralitaCombo().getItems().setAll(centralitasList);
-        view.getPacksFutbolCombo().getItems().setAll(packsFutbolList);
-        view.getStreamingCombo().setDisable(true);
-        view.getStreamingCombo().getItems().setAll(streamingList);
+        populateCombos();
         
         view.getTarifasCombo().setConverter(UIUtil.createConverter(dto -> dto.getNombre()));
         view.getDescuentoCombo().setConverter(UIUtil.createConverter(dto -> dto.getPorciento() + "%"));
@@ -259,7 +251,10 @@ public class PresupuestosController {
                     presupuesto.setLineasAdicionales(lineasPresupuestoList);
                     
                     PresupuestosDTO savedPresupuesto = PresupuestosService.getInstance().savePresupuesto(presupuesto, lineasPresupuestoList);
-                    // presupuesto = savedPresupuesto;
+                    limpiarFormulario();
+                    
+                    System.out.println(PresupuestosService.getInstance().findById(savedPresupuesto.getId()));
+                    loadPresupuestoDTO(PresupuestosService.getInstance().findById(savedPresupuesto.getId()));
 
                     view.getPresupuestoField().setText(presupuesto.getNombre());
                     view.getActualizarButton().setDisable(false);
@@ -556,6 +551,8 @@ public class PresupuestosController {
     }
 
     public void loadPresupuestoDTO(PresupuestosDTO loaded) {
+        populateCombos();
+        presupuesto = loaded;
         if(loaded.getTarifa() != null) {
             view.getTarifasCombo().setValue(loaded.getTarifa());
             view.getFibraCombo().getItems().clear();
@@ -573,5 +570,30 @@ public class PresupuestosController {
         updateResumenTable();
         view.getSaveButton().setDisable(true);
         view.getActualizarButton().setDisable(false);
+    }
+
+    public void populateCombos() {
+        lineasAdicionalesList = LineasAdicionalesService.getInstance().getAll();
+        tarifasList = TarifasService.getInstance().getAll();
+        descuentosList = DescuentosService.getInstance().getAll();
+        centralitasList = CentralitasService.getInstance().getAll();
+        packsFutbolList = PacksFutbolService.getInstance().getAll();
+        streamingList = StreamingService.getInstance().getAll();
+
+        view.getTarifasCombo().getItems().clear();
+        view.getDescuentoCombo().getItems().clear();
+        view.getDescuentoCombo().setDisable(true);
+        view.getCentralitaCombo().getItems().clear();
+        view.getPacksFutbolCombo().getItems().clear();
+        view.getStreamingCombo().setDisable(true);
+        view.getStreamingCombo().getItems().clear();
+
+        view.getTarifasCombo().getItems().setAll(tarifasList);
+        view.getDescuentoCombo().getItems().setAll(descuentosList);
+        view.getDescuentoCombo().setDisable(true);
+        view.getCentralitaCombo().getItems().setAll(centralitasList);
+        view.getPacksFutbolCombo().getItems().setAll(packsFutbolList);
+        view.getStreamingCombo().setDisable(true);
+        view.getStreamingCombo().getItems().setAll(streamingList);
     }
 }

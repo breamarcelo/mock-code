@@ -6,7 +6,6 @@ import java.util.List;
 import com.budgetsgenerator.dto.PresupuestosDTO;
 import com.budgetsgenerator.mappers.EntityMapper;
 import com.budgetsgenerator.models.PresupuestosEntity;
-import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.PresupuestosDAO;
 
 import jakarta.persistence.EntityManager;
@@ -56,15 +55,22 @@ public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, Pres
         entity.setCentralita(CentralitasMapper.getInstance().toEntity(dto.getCentralita()));
         entity.setPackFutbol(PacksFutbolMapper.getInstance().toEntity(dto.getPackFutbol()));
         entity.setDescuento(DescuentosMapper.getInstance().toEntity(dto.getDescuento()));
-        if(dto.getLineasAdicionales() != null) {
-            entity.setLineasPresupuesto(LineasPresupuestoMapper.getInstance().toEntityListFromDTOs(dto.getLineasAdicionales()));
-        }
+        // if(dto.getLineasAdicionales() != null) {
+        //     entity.setLineasPresupuesto(LineasPresupuestoMapper.getInstance().toEntityList(dto.getLineasAdicionales(), em));
+        // }
         return entity;
     }
     
     @Override
-    public List<PresupuestosEntity> toEntityList(GenericDAO dao, EntityManager em) {
-        return dao.findall(em);
+    public List<PresupuestosEntity> toEntityList(List<PresupuestosDTO> dtoList, EntityManager em) {
+        if(dtoList != null) {
+            List<PresupuestosEntity> entitys = new ArrayList<>();
+            for(PresupuestosDTO dto : dtoList) {
+                entitys.add(toEntity(dto));
+            }
+            return entitys;
+        }
+        return presupuestosDAO.findall(em);
     }
     
     @Override
@@ -78,8 +84,4 @@ public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, Pres
         }
         return dtos;
     }
-
-    // public PresupuestosDTO toDTOById(int id, EntityManager em) {
-    //     return toDTO(presupuestosDAO.findBy(id, em));
-    // }
 }

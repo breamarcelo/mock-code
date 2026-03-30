@@ -10,7 +10,6 @@ import com.budgetsgenerator.mappers.impl.LineasPresupuestoMapper;
 import com.budgetsgenerator.mappers.impl.PresupuestosMapper;
 import com.budgetsgenerator.models.LineasPresupuestoEntity;
 import com.budgetsgenerator.models.PresupuestosEntity;
-import com.budgetsgenerator.repository.impl.LineasPresupuestoDAO;
 import com.budgetsgenerator.repository.impl.PresupuestosDAO;
 import com.budgetsgenerator.services.GenericServiceImpl;
 
@@ -32,25 +31,16 @@ public class PresupuestosService extends GenericServiceImpl<PresupuestosDTO, Pre
     public static PresupuestosDTO savePresupuesto(PresupuestosDTO presupuestosDTO, List<LineasPresupuestoDTO> lineasPresupuesto){
         EntityManager em = JPAUtil.getEntityManager();
         PresupuestosDAO presupuestosDAO = new PresupuestosDAO(PresupuestosEntity.class);
-        LineasPresupuestoDAO lineasPresupuestoDAO = new LineasPresupuestoDAO(LineasPresupuestoEntity.class);
+        // LineasPresupuestoDAO lineasPresupuestoDAO = new LineasPresupuestoDAO(LineasPresupuestoEntity.class);
         try {
             em.getTransaction().begin();
             PresupuestosEntity presupuestosEntity = PresupuestosMapper.getInstance().toEntity(presupuestosDTO);
             presupuestosEntity.setLineasPresupuesto(new ArrayList<>());
-            // presupuestosDAO.save(presupuestosEntity, em);
-            presupuestosEntity = em.merge(presupuestosEntity);
-            em.flush();
-            if(lineasPresupuesto != null) {
-                for(LineasPresupuestoDTO lineaDTO : lineasPresupuesto){
-                    LineasPresupuestoEntity lineaEntity = LineasPresupuestoMapper.getInstance().toEntity(lineaDTO);
-                    lineaEntity.setPresupuesto(presupuestosEntity);
-
-                    // lineasPresupuestoDAO.save(lineaEntity, em);
-                    em.merge(lineaEntity);
-                }
-            }
+    
+            List<LineasPresupuestoEntity> lineasPresupuestoEntitys = LineasPresupuestoMapper.getInstance().toEntityList(lineasPresupuesto, em);
+            PresupuestosEntity savedEntity = presupuestosDAO.savePresupuesto(presupuestosEntity, lineasPresupuestoEntitys, em);
             em.getTransaction().commit();
-            return PresupuestosMapper.getInstance().toDTO(presupuestosEntity, em);
+            return PresupuestosMapper.getInstance().toDTO(savedEntity, em);
         } catch (Exception e) {
             if(em.getTransaction().isActive()) {
                 em.getTransaction().rollback();

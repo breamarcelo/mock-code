@@ -6,7 +6,6 @@ import java.util.List;
 import com.budgetsgenerator.dto.FibrasDTO;
 import com.budgetsgenerator.mappers.EntityMapper;
 import com.budgetsgenerator.models.FibrasEntity;
-import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.FibrasDAO;
 
 import jakarta.persistence.EntityManager;
@@ -47,8 +46,15 @@ public class FibrasMapper implements EntityMapper<FibrasEntity, FibrasDTO, Entit
     }
 
     @Override
-    public List<FibrasEntity> toEntityList(GenericDAO dao, EntityManager em) {
-        return dao.findall(em);
+    public List<FibrasEntity> toEntityList(List<FibrasDTO> dtoList, EntityManager em) {
+        if(dtoList != null) {
+            List<FibrasEntity> entitys = new ArrayList<>();
+            for(FibrasDTO dto : dtoList) {
+                entitys.add(toEntity(dto));
+            }
+            return entitys;
+        }
+        return fibrasDAO.findall(em);
     }
 
     @Override

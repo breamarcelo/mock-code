@@ -1,6 +1,9 @@
 package com.budgetsgenerator.repository.impl;
 
+import java.util.List;
+
 import com.budgetsgenerator.config.JPAUtil;
+import com.budgetsgenerator.models.LineasPresupuestoEntity;
 import com.budgetsgenerator.models.PresupuestosEntity;
 import com.budgetsgenerator.repository.GenericDAOImpl;
 
@@ -23,5 +26,19 @@ public class PresupuestosDAO extends GenericDAOImpl<PresupuestosEntity, Integer,
         } finally {
             em.close();
         }
+    }
+
+    public PresupuestosEntity savePresupuesto(PresupuestosEntity presuspuestoEntity, List<LineasPresupuestoEntity> lineasPresupuestoEntitys, EntityManager em) {
+        presuspuestoEntity.setId(null);
+        PresupuestosEntity savedPresupuesto = em.merge(presuspuestoEntity);
+        em.flush();
+        if(lineasPresupuestoEntitys != null) {
+            for(LineasPresupuestoEntity lineaEntity : lineasPresupuestoEntitys){
+                lineaEntity.setId(null);
+                lineaEntity.setPresupuesto(savedPresupuesto);
+                em.persist(lineaEntity);
+            }
+        }
+        return savedPresupuesto;
     }
 }

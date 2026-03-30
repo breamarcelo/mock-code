@@ -6,7 +6,6 @@ import java.util.List;
 import com.budgetsgenerator.dto.DescuentosDTO;
 import com.budgetsgenerator.mappers.EntityMapper;
 import com.budgetsgenerator.models.DescuentosEntity;
-import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.DescuentosDAO;
 
 import jakarta.persistence.EntityManager;
@@ -45,8 +44,15 @@ public class DescuentosMapper implements EntityMapper<DescuentosEntity, Descuent
     }
 
     @Override
-    public List<DescuentosEntity> toEntityList(GenericDAO dao, EntityManager em) {
-        return dao.findall(em);
+    public List<DescuentosEntity> toEntityList(List<DescuentosDTO> dtoList, EntityManager em) {
+        if(dtoList != null) {
+            List<DescuentosEntity> entitys = new ArrayList<>();
+            for(DescuentosDTO dto : dtoList) {
+                entitys.add(toEntity(dto));
+            }
+            return entitys;
+        }
+        return descuentosDAO.findall(em);
     }
 
     @Override

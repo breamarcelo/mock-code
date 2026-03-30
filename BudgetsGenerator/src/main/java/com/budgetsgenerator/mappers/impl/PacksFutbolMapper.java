@@ -6,7 +6,6 @@ import java.util.List;
 import com.budgetsgenerator.dto.PacksFutbolDTO;
 import com.budgetsgenerator.mappers.EntityMapper;
 import com.budgetsgenerator.models.PacksFutbolEntity;
-import com.budgetsgenerator.repository.GenericDAO;
 import com.budgetsgenerator.repository.impl.PacksFutbolDAO;
 
 import jakarta.persistence.EntityManager;
@@ -47,8 +46,15 @@ public class PacksFutbolMapper implements EntityMapper<PacksFutbolEntity, PacksF
     }
     
     @Override
-    public List<PacksFutbolEntity> toEntityList(GenericDAO dao, EntityManager em) {
-        return dao.findall(em);
+    public List<PacksFutbolEntity> toEntityList(List<PacksFutbolDTO> dtoList, EntityManager em) {
+        if(dtoList != null) {
+            List<PacksFutbolEntity> entitys = new ArrayList<>();
+            for(PacksFutbolDTO dto : dtoList) {
+                entitys.add(toEntity(dto));
+            }
+            return entitys;
+        }
+        return packsFutbolDAO.findall(em);
     }
 
     @Override
