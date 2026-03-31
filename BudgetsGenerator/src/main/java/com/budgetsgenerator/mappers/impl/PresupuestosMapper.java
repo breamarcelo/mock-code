@@ -43,19 +43,20 @@ public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, Pres
     }
 
     @Override
-    public PresupuestosEntity toEntity(PresupuestosDTO dto) {
+    public PresupuestosEntity toEntity(PresupuestosDTO dto, EntityManager em) {
         if(dto == null) {
             return null;
         } 
         PresupuestosEntity entity = new PresupuestosEntity();
         entity.setId(dto.getId());
         entity.setNombre(dto.getNombre());
-        entity.setTarifa(TarifasMapper.getInstance().toEntity(dto.getTarifa()));
-        entity.setFibra(FibrasMapper.getInstance().toEntity(dto.getFibra()));
-        entity.setStreaming(StreamingMapper.getInstance().toEntity(dto.getStreaming()));
-        entity.setCentralita(CentralitasMapper.getInstance().toEntity(dto.getCentralita()));
-        entity.setPackFutbol(PacksFutbolMapper.getInstance().toEntity(dto.getPackFutbol()));
-        entity.setDescuento(DescuentosMapper.getInstance().toEntity(dto.getDescuento()));
+        entity.setTarifa(TarifasMapper.getInstance().toEntity(dto.getTarifa(), em));
+        entity.setFibra(FibrasMapper.getInstance().toEntity(dto.getFibra(), em));
+        entity.setStreaming(StreamingMapper.getInstance().toEntity(dto.getStreaming(), em));
+        entity.setCentralita(CentralitasMapper.getInstance().toEntity(dto.getCentralita(), em));
+        entity.setPackFutbol(PacksFutbolMapper.getInstance().toEntity(dto.getPackFutbol(), em));
+        entity.setDescuento(DescuentosMapper.getInstance().toEntity(dto.getDescuento(), em));
+        entity.setLineasPresupuesto(LineasPresupuestoMapper.getInstance().toEntityList(dto.getLineasAdicionales(), em));
         // if(dto.getLineasAdicionales() != null) {
         //     entity.setLineasPresupuesto(LineasPresupuestoMapper.getInstance().toEntityList(dto.getLineasAdicionales(), em));
         // }
@@ -67,7 +68,7 @@ public class PresupuestosMapper implements EntityMapper<PresupuestosEntity, Pres
         if(dtoList != null) {
             List<PresupuestosEntity> entitys = new ArrayList<>();
             for(PresupuestosDTO dto : dtoList) {
-                entitys.add(toEntity(dto));
+                entitys.add(toEntity(dto, em));
             }
             return entitys;
         }

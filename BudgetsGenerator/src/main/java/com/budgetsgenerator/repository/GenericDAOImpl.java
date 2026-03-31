@@ -35,7 +35,8 @@ public abstract class GenericDAOImpl<T, Integer, EM> implements GenericDAO<T, In
     }
 
     @Override
-    public void update(T entity, EntityManager em) {
-        em.merge(entity);
+    public T update(T entity, EntityManager em) {
+        T updatedEntity = em.merge(entity);
+        return updatedEntity;
     }
 }

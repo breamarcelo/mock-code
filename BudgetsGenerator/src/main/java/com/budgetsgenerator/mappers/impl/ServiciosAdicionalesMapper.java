@@ -41,7 +41,7 @@ public class ServiciosAdicionalesMapper implements EntityMapper<ServiciosAdicion
     }
     
     @Override
-    public ServiciosAdicionalesEntity toEntity(ServiciosAdicionalesDTO dto) {
+    public ServiciosAdicionalesEntity toEntity(ServiciosAdicionalesDTO dto, EntityManager em) {
         if(dto == null) {
             return null;
         } 
@@ -64,7 +64,7 @@ public class ServiciosAdicionalesMapper implements EntityMapper<ServiciosAdicion
         if(dtoList != null) {
             List<ServiciosAdicionalesEntity> entitys = new ArrayList<>();
             for(ServiciosAdicionalesDTO dto : dtoList) {
-                entitys.add(toEntity(dto));
+                entitys.add(toEntity(dto, em));
             }
             return entitys;
         }

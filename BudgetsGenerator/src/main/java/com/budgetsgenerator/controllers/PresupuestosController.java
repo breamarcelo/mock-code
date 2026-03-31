@@ -56,6 +56,7 @@ public class PresupuestosController {
     private List<CentralitasDTO> centralitasList;
     private List<PacksFutbolDTO> packsFutbolList;
     private List<StreamingDTO> streamingList;
+    private List<PresupuestosDTO> presupuestosList;
 
     public PresupuestosController(PresupuestosView view) {
         this.view = view;
@@ -65,21 +66,35 @@ public class PresupuestosController {
     public void loadData(){
         lineasPresupuestoList  = new ArrayList<>();
         presupuesto = new PresupuestosDTO();
-
         Region espacio = new Region();
-        view.getButtonsHBox().getChildren().addAll(view.getNuevoButton(), view.getLoadButton(), view.getActualizarButton(), view.getSaveButton(), view.getGenerarPdfButton(), espacio, view.getPresupuestoField());
+
+        view.getButtonsHBox().getChildren().addAll(view.getNuevoButton(), view.getLoadButton(), view.getActualizarButton(), view.getSaveButton(), espacio, view.getPresupuestoField(), view.getGenerarPdfButton());
         view.getGenerarPdfButton().getStyleClass().add("action-btn");
         view.getButtonsHBox().setHgrow(espacio, Priority.ALWAYS);
         view.getButtonsHBox().getStyleClass().add("menu-bar");
         view.getButtonsHBox().setPrefWidth(Double.MAX_VALUE);
         view.getPresupuestoField().setEditable(false);
         for(Node node : view.getButtonsHBox().getChildren()){
-            if(node instanceof Button) {
+            if(view.getButtonsHBox().getChildren().indexOf(node) <= 5) {
                 view.getButtonsHBox().setMargin(node, new Insets(0, 20, 0, 0));
             }
         }
 
-        populateCombos();
+        lineasAdicionalesList = LineasAdicionalesService.getInstance().getAll();
+        tarifasList = TarifasService.getInstance().getAll();
+        descuentosList = DescuentosService.getInstance().getAll();
+        centralitasList = CentralitasService.getInstance().getAll();
+        packsFutbolList = PacksFutbolService.getInstance().getAll();
+        streamingList = StreamingService.getInstance().getAll();
+        presupuestosList = PresupuestosService.getInstance().getAll();
+
+        view.getTarifasCombo().getItems().setAll(tarifasList);
+        view.getDescuentoCombo().getItems().setAll(descuentosList);
+        view.getDescuentoCombo().setDisable(true);
+        view.getCentralitaCombo().getItems().setAll(centralitasList);
+        view.getPacksFutbolCombo().getItems().setAll(packsFutbolList);
+        view.getStreamingCombo().setDisable(true);
+        view.getStreamingCombo().getItems().setAll(streamingList);
         
         view.getTarifasCombo().setConverter(UIUtil.createConverter(dto -> dto.getNombre()));
         view.getDescuentoCombo().setConverter(UIUtil.createConverter(dto -> dto.getPorciento() + "%"));
@@ -136,21 +151,18 @@ public class PresupuestosController {
         view.getResumenView().getColumns().addAll(cantidadTableColumn, descripcionTableColumn, precioTableColumn); 
         view.getResumenVBox().setVgrow(view.getResumenView(), Priority.ALWAYS);
         view.getResumenView().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        
-        view.getSaveButton().setDisable(false);
-        view.getActualizarButton().setDisable(true);
+
+        view.getActualizarButton().setDisable(view.getPresupuestoField().getText().isEmpty());
+        view.getSaveButton().setDisable(!view.getPresupuestoField().getText().isEmpty());
 
         view.getGenerarPdfButton().setOnAction(e -> {
             XmlService.getInstance().createPdf(view.getResumenView().getItems(), view.getTotalFieldText());
         });
 
-        view.getNuevoButton().setOnAction(e -> {
-            view.getSaveButton().setDisable(false);
-            view.getActualizarButton().setDisable(true);
+        view.getNuevoButton().setOnAction(e -> {            
             presupuesto = new PresupuestosDTO();
             limpiarFormulario();
         });
-
 
         view.getLoadButton().setOnAction(e -> {
             TextInputDialog dialog = new TextInputDialog();
@@ -173,7 +185,7 @@ public class PresupuestosController {
             node.setVisible(false);
 
             ListView<PresupuestosDTO> presupuestoListView = new ListView<>();
-            presupuestoListView.getItems().setAll(PresupuestosService.getInstance().getAll());
+            presupuestoListView.getItems().setAll(presupuestosList);
             
             presupuestoListView.setCellFactory(param -> new ListCell<PresupuestosDTO>() {
                 @Override
@@ -202,9 +214,22 @@ public class PresupuestosController {
         });
 
         view.getActualizarButton().setOnAction(e -> {
-            PresupuestosService.getInstance().updatePresupuesto(presupuesto, lineasPresupuestoList);
+            System.out.println(presupuesto.getId());
+            PresupuestosDTO nuevoPresupuesto = new PresupuestosDTO();
+            
+            nuevoPresupuesto.setId(presupuesto.getId());
+            nuevoPresupuesto.setNombre(view.getPresupuestoField().getText());
+            nuevoPresupuesto.setTarifa(view.getTarifasCombo().getValue());
+            nuevoPresupuesto.setFibra(view.getFibraCombo().getValue());
+            nuevoPresupuesto.setStreaming(view.getStreamingCombo().getValue());
+            nuevoPresupuesto.setCentralita(view.getCentralitaCombo().getValue());
+            nuevoPresupuesto.setPackFutbol(view.getPacksFutbolCombo().getValue());
+            nuevoPresupuesto.setDescuento(view.getDescuentoCombo().getValue());
+            nuevoPresupuesto.setLineasAdicionales(lineasPresupuestoList);
+            PresupuestosDTO actualizado = PresupuestosService.getInstance().updatePresupuesto(nuevoPresupuesto, lineasPresupuestoList);
+            presupuestosList = PresupuestosService.getInstance().getAll();
             limpiarFormulario();
-
+            
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
             alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
@@ -215,6 +240,17 @@ public class PresupuestosController {
             alert.setGraphic(null);
             alert.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
             alert.showAndWait();
+            System.out.println("**********************");
+            System.out.println("FROM UPDATED DTO: " + actualizado.getId());
+            
+            for(PresupuestosDTO dto : presupuestosList) {
+                System.out.println("ID FROM LIST: " + dto.getId());
+                System.out.println("**********************");
+                if(dto.getId() == actualizado.getId()){
+                    lineasPresupuestoList = dto.getLineasAdicionales();
+                    loadPresupuestoDTO(dto);
+                }
+            }
         });
 
         view.getSaveButton().setOnAction(e -> {
@@ -235,20 +271,23 @@ public class PresupuestosController {
             okButton.setText("Guardar");
             okButton.addEventFilter(ActionEvent.ACTION, eh -> {
                 if(!dialog.getEditor().getText().isEmpty()) {
-                    presupuesto.setNombre(dialog.getEditor().getText());
-                    presupuesto.setTarifa(view.getTarifasCombo().getValue());
-                    presupuesto.setFibra(view.getFibraCombo().getValue());
-                    presupuesto.setStreaming(view.getStreamingCombo().getValue());
-                    presupuesto.setCentralita(view.getCentralitaCombo().getValue());
-                    presupuesto.setPackFutbol(view.getPacksFutbolCombo().getValue());
-                    presupuesto.setDescuento(view.getDescuentoCombo().getValue());
-                    presupuesto.setLineasAdicionales(lineasPresupuestoList);
+                    PresupuestosDTO nuevoPresupuesto = new PresupuestosDTO();
+                    List<LineasPresupuestoDTO> nuevaListaLineas = new ArrayList<>();
+                    nuevaListaLineas.addAll(lineasPresupuestoList);
+                    nuevoPresupuesto.setId(null);
+                    nuevoPresupuesto.setNombre(dialog.getEditor().getText());
+                    nuevoPresupuesto.setTarifa(view.getTarifasCombo().getValue());
+                    nuevoPresupuesto.setFibra(view.getFibraCombo().getValue());
+                    nuevoPresupuesto.setStreaming(view.getStreamingCombo().getValue());
+                    nuevoPresupuesto.setCentralita(view.getCentralitaCombo().getValue());
+                    nuevoPresupuesto.setPackFutbol(view.getPacksFutbolCombo().getValue());
+                    nuevoPresupuesto.setDescuento(view.getDescuentoCombo().getValue());
+                    nuevoPresupuesto.setLineasAdicionales(nuevaListaLineas);
                     
-                    PresupuestosDTO savedPresupuesto = PresupuestosService.getInstance().savePresupuesto(presupuesto, lineasPresupuestoList);
-                    limpiarFormulario();
-
-                    view.getPresupuestoField().setText(presupuesto.getNombre());
+                    PresupuestosDTO savedPresupuesto = PresupuestosService.getInstance().savePresupuesto(nuevoPresupuesto, nuevaListaLineas);
+                    
                     dialog.close();
+                    limpiarFormulario();
                     
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
@@ -260,6 +299,14 @@ public class PresupuestosController {
                     alert.setGraphic(null);
                     alert.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
                     alert.showAndWait();
+                    
+                    presupuestosList = PresupuestosService.getInstance().getAll();
+                    for(PresupuestosDTO dto : presupuestosList) {
+                        if(dto.getId() == savedPresupuesto.getId()){
+                            lineasPresupuestoList = dto.getLineasAdicionales();
+                            loadPresupuestoDTO(dto);
+                        }
+                    }
                 }
                 dialog.getEditor().getStyleClass().add("empty-field");
                 dialog.getEditor().setPromptText("* Este campo no puede estar vacío");
@@ -478,6 +525,8 @@ public class PresupuestosController {
         view.getPresupuestoField().setText("");
         presupuesto = new PresupuestosDTO();
         updateResumenTable();
+        view.getActualizarButton().setDisable(view.getPresupuestoField().getText().isEmpty());
+        view.getSaveButton().setDisable(!view.getPresupuestoField().getText().isEmpty());
     }
 
     public void loadLineasAdicionalesView() {
@@ -530,16 +579,13 @@ public class PresupuestosController {
     }
 
     public void loadPresupuestoDTO(PresupuestosDTO loaded) {
-        populateCombos();
         presupuesto = loaded;
-        if(loaded.getTarifa() != null) {
-            view.getTarifasCombo().setValue(loaded.getTarifa());
-            view.getFibraCombo().getItems().clear();
-            view.getFibraCombo().getItems().addAll(loaded.getTarifa().getFibras());
-            view.getFibraCombo().setValue(loaded.getFibra());
-            view.getStreamingCombo().setDisable(!loaded.getTarifa().isStreaming());
-            view.getStreamingCombo().setValue(loaded.getStreaming());
-        }
+        view.getTarifasCombo().setValue(loaded.getTarifa());
+        view.getFibraCombo().getItems().clear();
+        view.getFibraCombo().getItems().addAll(loaded.getTarifa().getFibras());
+        view.getFibraCombo().setValue(loaded.getFibra());
+        view.getStreamingCombo().setDisable(!loaded.getTarifa().isStreaming());
+        view.getStreamingCombo().setValue(loaded.getStreaming());
         view.getCentralitaCombo().setValue(loaded.getCentralita());
         view.getPacksFutbolCombo().setValue(loaded.getPackFutbol());
         view.getDescuentoCombo().setValue(loaded.getDescuento());
@@ -547,32 +593,7 @@ public class PresupuestosController {
         lineasPresupuestoList = loaded.getLineasAdicionales();
         loadLineasAdicionalesView();
         updateResumenTable();
-        view.getSaveButton().setDisable(true);
-        view.getActualizarButton().setDisable(false);
-    }
-
-    public void populateCombos() {
-        lineasAdicionalesList = LineasAdicionalesService.getInstance().getAll();
-        tarifasList = TarifasService.getInstance().getAll();
-        descuentosList = DescuentosService.getInstance().getAll();
-        centralitasList = CentralitasService.getInstance().getAll();
-        packsFutbolList = PacksFutbolService.getInstance().getAll();
-        streamingList = StreamingService.getInstance().getAll();
-
-        view.getTarifasCombo().getItems().clear();
-        view.getDescuentoCombo().getItems().clear();
-        view.getDescuentoCombo().setDisable(true);
-        view.getCentralitaCombo().getItems().clear();
-        view.getPacksFutbolCombo().getItems().clear();
-        view.getStreamingCombo().setDisable(true);
-        view.getStreamingCombo().getItems().clear();
-
-        view.getTarifasCombo().getItems().setAll(tarifasList);
-        view.getDescuentoCombo().getItems().setAll(descuentosList);
-        view.getDescuentoCombo().setDisable(true);
-        view.getCentralitaCombo().getItems().setAll(centralitasList);
-        view.getPacksFutbolCombo().getItems().setAll(packsFutbolList);
-        view.getStreamingCombo().setDisable(true);
-        view.getStreamingCombo().getItems().setAll(streamingList);
+        view.getActualizarButton().setDisable(view.getPresupuestoField().getText().isEmpty());
+        view.getSaveButton().setDisable(!view.getPresupuestoField().getText().isEmpty());
     }
 }

@@ -33,7 +33,7 @@ public class DescuentosMapper implements EntityMapper<DescuentosEntity, Descuent
     }
 
     @Override
-    public DescuentosEntity toEntity(DescuentosDTO dto) {
+    public DescuentosEntity toEntity(DescuentosDTO dto, EntityManager em) {
         if(dto == null) {
             return null;
         } 
@@ -48,7 +48,7 @@ public class DescuentosMapper implements EntityMapper<DescuentosEntity, Descuent
         if(dtoList != null) {
             List<DescuentosEntity> entitys = new ArrayList<>();
             for(DescuentosDTO dto : dtoList) {
-                entitys.add(toEntity(dto));
+                entitys.add(toEntity(dto, em));
             }
             return entitys;
         }

@@ -49,22 +49,22 @@ public class PresupuestosDAO extends GenericDAOImpl<PresupuestosEntity, Integer,
     }
 
     public PresupuestosEntity updatePresupuesto(PresupuestosDTO dto, PresupuestosEntity presuspuestoEntity, List<LineasPresupuestoEntity> lineasPresupuestoEntitys, EntityManager em) {
-        PresupuestosEntity savedPresupuesto = em.find(PresupuestosEntity.class, dto.getId());
-        savedPresupuesto.setTarifa(TarifasMapper.getInstance().toEntity(dto.getTarifa()));
-        savedPresupuesto.setFibra(FibrasMapper.getInstance().toEntity(dto.getFibra()));
-        savedPresupuesto.setStreaming(StreamingMapper.getInstance().toEntity(dto.getStreaming()));
-        savedPresupuesto.setCentralita(CentralitasMapper.getInstance().toEntity(dto.getCentralita()));
-        savedPresupuesto.setPackFutbol(PacksFutbolMapper.getInstance().toEntity(dto.getPackFutbol()));
-        savedPresupuesto.setDescuento(DescuentosMapper.getInstance().toEntity(dto.getDescuento()));
-        savedPresupuesto.getLineasPresupuesto().clear();
+        // PresupuestosEntity savedPresupuesto = em.find(PresupuestosEntity.class, dto.getId());
+        presuspuestoEntity.setTarifa(TarifasMapper.getInstance().toEntity(dto.getTarifa(), em));
+        presuspuestoEntity.setFibra(FibrasMapper.getInstance().toEntity(dto.getFibra(), em));
+        presuspuestoEntity.setStreaming(StreamingMapper.getInstance().toEntity(dto.getStreaming(), em));
+        presuspuestoEntity.setCentralita(CentralitasMapper.getInstance().toEntity(dto.getCentralita(), em));
+        presuspuestoEntity.setPackFutbol(PacksFutbolMapper.getInstance().toEntity(dto.getPackFutbol(), em));
+        presuspuestoEntity.setDescuento(DescuentosMapper.getInstance().toEntity(dto.getDescuento(), em));
+        presuspuestoEntity.getLineasPresupuesto().clear();
         em.flush();
         if(lineasPresupuestoEntitys != null) {
             for(LineasPresupuestoEntity lineaEntity : lineasPresupuestoEntitys){
-                lineaEntity.setPresupuesto(savedPresupuesto);
-                savedPresupuesto.getLineasPresupuesto().add(lineaEntity);
+                lineaEntity.setPresupuesto(presuspuestoEntity);
+                presuspuestoEntity.getLineasPresupuesto().add(lineaEntity);
             }
         }
-        em.merge(savedPresupuesto);
-        return savedPresupuesto;
+        // em.merge(presuspuestoEntity);
+        return presuspuestoEntity;
     }
 }

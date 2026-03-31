@@ -34,7 +34,7 @@ public class CentralitasMapper implements EntityMapper<CentralitasEntity, Centra
     }
 
     @Override
-    public CentralitasEntity toEntity(CentralitasDTO dto) {
+    public CentralitasEntity toEntity(CentralitasDTO dto, EntityManager em) {
         if(dto == null) {
             return null;
         } 
@@ -50,7 +50,7 @@ public class CentralitasMapper implements EntityMapper<CentralitasEntity, Centra
         if(dtoList != null) {
             List<CentralitasEntity> entitys = new ArrayList<>();
             for(CentralitasDTO dto : dtoList) {
-                entitys.add(toEntity(dto));
+                entitys.add(toEntity(dto, em));
             }
             return entitys;
         }

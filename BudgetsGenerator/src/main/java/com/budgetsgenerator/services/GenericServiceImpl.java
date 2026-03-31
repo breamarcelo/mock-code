@@ -55,7 +55,7 @@ public abstract class GenericServiceImpl<DTO, M, E, DAO, Integer> implements Gen
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
-            E entity = mapper.toEntity(dto);
+            E entity = mapper.toEntity(dto, em);
             E savedEntity = dao.save(entity, em);
             em.getTransaction().commit();
             return mapper.toDTO(savedEntity, em);
@@ -74,7 +74,7 @@ public abstract class GenericServiceImpl<DTO, M, E, DAO, Integer> implements Gen
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
-            dao.delete(mapper.toEntity(dto), em);
+            dao.delete(mapper.toEntity(dto, em), em);
             em.getTransaction().commit();
         } catch (Exception e) {
             if(em.getTransaction().isActive()) {
@@ -87,12 +87,13 @@ public abstract class GenericServiceImpl<DTO, M, E, DAO, Integer> implements Gen
     }
 
     @Override
-    public void update(DTO dto) {
+    public DTO update(DTO dto) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
-            dao.update(mapper.toEntity(dto), em);
+            E updatedEntity = dao.update(mapper.toEntity(dto, em), em);
             em.getTransaction().commit();
+            return mapper.toDTO(updatedEntity, em);
         } catch (Exception e) {
             if(em.getTransaction().isActive()) {
                 em.getTransaction().rollback();

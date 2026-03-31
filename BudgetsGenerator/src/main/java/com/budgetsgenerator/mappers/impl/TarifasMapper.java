@@ -41,7 +41,7 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO, En
         return dto;
     }
     @Override
-    public TarifasEntity toEntity(TarifasDTO dto) {
+    public TarifasEntity toEntity(TarifasDTO dto, EntityManager em) {
         if(dto == null) {
             return null;
         }
@@ -54,7 +54,7 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO, En
         entity.setGbMovil(dto.getGbMovil());
         entity.setFibras(tarifasDAO.findByIdWithFibras(dto.getId()).getFibras());
         entity.setPrecio(dto.getPrecio());
-        entity.setServiciosAdicionales(ServiciosAdicionalesMapper.getInstance().toEntity(dto.getServiciosAdicionales()));
+        entity.setServiciosAdicionales(ServiciosAdicionalesMapper.getInstance().toEntity(dto.getServiciosAdicionales(), em));
         entity.setTv(dto.isTv());
         entity.setStreaming(dto.isStreaming());
         return entity;
@@ -65,7 +65,7 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO, En
         if(dtoList != null) {
             List<TarifasEntity> entitys = new ArrayList<>();
             for(TarifasDTO dto : dtoList) {
-                entitys.add(toEntity(dto));
+                entitys.add(toEntity(dto, em));
             }
             return entitys;
         }

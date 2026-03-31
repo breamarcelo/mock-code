@@ -34,15 +34,15 @@ public class LineasPresupuestoMapper implements EntityMapper<LineasPresupuestoEn
     }
 
     @Override
-    public LineasPresupuestoEntity toEntity(LineasPresupuestoDTO dto) {
+    public LineasPresupuestoEntity toEntity(LineasPresupuestoDTO dto, EntityManager em) {
         if(dto == null) {
             return null;
         } 
         LineasPresupuestoEntity entity = new LineasPresupuestoEntity();
-        entity.setId(dto.getId());
+        // entity.setId(dto.getId());
         entity.setCantidad(dto.getCantidad());
-        entity.setPresupuesto(PresupuestosMapper.getInstance().toEntity(dto.getPresupuesto()));
-        entity.setLineaAdicional(LineasAdicionalesMapper.getInstance().toEntity(dto.getLineasAdicional()));
+        entity.setPresupuesto(PresupuestosMapper.getInstance().toEntity(dto.getPresupuesto(), em));
+        entity.setLineaAdicional(LineasAdicionalesMapper.getInstance().toEntity(dto.getLineasAdicional(), em));
         return entity;
     }
     
@@ -51,7 +51,7 @@ public class LineasPresupuestoMapper implements EntityMapper<LineasPresupuestoEn
         if(dtoList != null) {
             List<LineasPresupuestoEntity> entitys = new ArrayList<>();
             for(LineasPresupuestoDTO dto : dtoList) {
-                entitys.add(toEntity(dto));
+                entitys.add(toEntity(dto, em));
             }
             return entitys;
         }

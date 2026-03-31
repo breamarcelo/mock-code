@@ -33,7 +33,7 @@ public class StreamingMapper implements EntityMapper<StreamingEntity, StreamingD
     }
 
     @Override
-    public StreamingEntity toEntity(StreamingDTO dto) {
+    public StreamingEntity toEntity(StreamingDTO dto, EntityManager em) {
         if(dto == null) {
             return null;
         }
@@ -48,7 +48,7 @@ public class StreamingMapper implements EntityMapper<StreamingEntity, StreamingD
         if(dtoList != null) {
             List<StreamingEntity> entitys = new ArrayList<>();
             for(StreamingDTO dto : dtoList) {
-                entitys.add(toEntity(dto));
+                entitys.add(toEntity(dto, em));
             }
             return entitys;
         }

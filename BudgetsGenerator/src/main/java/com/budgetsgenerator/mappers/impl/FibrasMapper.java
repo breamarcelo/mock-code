@@ -34,7 +34,7 @@ public class FibrasMapper implements EntityMapper<FibrasEntity, FibrasDTO, Entit
     }
     
     @Override
-    public FibrasEntity toEntity(FibrasDTO dto) {
+    public FibrasEntity toEntity(FibrasDTO dto, EntityManager em) {
         if(dto == null) {
             return null;
         } 
@@ -50,7 +50,7 @@ public class FibrasMapper implements EntityMapper<FibrasEntity, FibrasDTO, Entit
         if(dtoList != null) {
             List<FibrasEntity> entitys = new ArrayList<>();
             for(FibrasDTO dto : dtoList) {
-                entitys.add(toEntity(dto));
+                entitys.add(toEntity(dto, em));
             }
             return entitys;
         }
