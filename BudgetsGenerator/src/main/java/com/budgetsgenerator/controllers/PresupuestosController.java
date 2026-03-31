@@ -104,6 +104,7 @@ public class PresupuestosController {
         view.getStreamingCombo().setConverter(UIUtil.createConverter(dto -> dto.getNombre()));
         
         view.getTarifasCombo().setOnAction(e -> {
+            presupuesto.setTarifa(view.getTarifasCombo().getValue());
             view.getFibraCombo().getItems().clear();
             view.getFibraCombo().getItems().setAll(view.getTarifasCombo().getValue().getFibras());
             view.getStreamingCombo().setDisable(!view.getTarifasCombo().getValue().isStreaming());
@@ -113,11 +114,27 @@ public class PresupuestosController {
             updateResumenTable();
         });
 
-        view.getFibraCombo().setOnAction(e -> updateResumenTable());
-        view.getStreamingCombo().setOnAction(e -> updateResumenTable());
-        view.getCentralitaCombo().setOnAction(e -> updateResumenTable());
-        view.getPacksFutbolCombo().setOnAction(e -> updateResumenTable());
-        view.getDescuentoCombo().setOnAction(e -> updateResumenTable());
+        view.getFibraCombo().setOnAction(e -> {
+            presupuesto.setFibra(view.getFibraCombo().getValue());
+            updateResumenTable();
+
+        });
+        view.getStreamingCombo().setOnAction(e -> {
+            presupuesto.setStreaming(view.getStreamingCombo().getValue());
+            updateResumenTable();
+        });
+        view.getCentralitaCombo().setOnAction(e -> {
+            presupuesto.setCentralita(view.getCentralitaCombo().getValue());
+            updateResumenTable();
+        });
+        view.getPacksFutbolCombo().setOnAction(e -> {
+            presupuesto.setPackFutbol(view.getPacksFutbolCombo().getValue());
+            updateResumenTable();
+        });
+        view.getDescuentoCombo().setOnAction(e -> {
+            presupuesto.setDescuento(view.getDescuentoCombo().getValue());
+            updateResumenTable();
+        });
         
         view.getTotalHBox().getChildren().addAll(view.getTotalLabel(), view.getTotalField());
         view.getTotalHBox().setAlignment(Pos.CENTER_RIGHT);
@@ -214,20 +231,8 @@ public class PresupuestosController {
         });
 
         view.getActualizarButton().setOnAction(e -> {
-            System.out.println(presupuesto.getId());
-            PresupuestosDTO nuevoPresupuesto = new PresupuestosDTO();
-            
-            nuevoPresupuesto.setId(presupuesto.getId());
-            nuevoPresupuesto.setNombre(view.getPresupuestoField().getText());
-            nuevoPresupuesto.setTarifa(view.getTarifasCombo().getValue());
-            nuevoPresupuesto.setFibra(view.getFibraCombo().getValue());
-            nuevoPresupuesto.setStreaming(view.getStreamingCombo().getValue());
-            nuevoPresupuesto.setCentralita(view.getCentralitaCombo().getValue());
-            nuevoPresupuesto.setPackFutbol(view.getPacksFutbolCombo().getValue());
-            nuevoPresupuesto.setDescuento(view.getDescuentoCombo().getValue());
-            nuevoPresupuesto.setLineasAdicionales(lineasPresupuestoList);
-            PresupuestosDTO actualizado = PresupuestosService.getInstance().updatePresupuesto(nuevoPresupuesto, lineasPresupuestoList);
-            presupuestosList = PresupuestosService.getInstance().getAll();
+            PresupuestosDTO actualizado = PresupuestosService.getInstance().updatePresupuesto(presupuesto, lineasPresupuestoList);
+            // presupuestosList = PresupuestosService.getInstance().getAll();
             limpiarFormulario();
             
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -240,17 +245,14 @@ public class PresupuestosController {
             alert.setGraphic(null);
             alert.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
             alert.showAndWait();
-            System.out.println("**********************");
-            System.out.println("FROM UPDATED DTO: " + actualizado.getId());
             
-            for(PresupuestosDTO dto : presupuestosList) {
-                System.out.println("ID FROM LIST: " + dto.getId());
-                System.out.println("**********************");
-                if(dto.getId() == actualizado.getId()){
-                    lineasPresupuestoList = dto.getLineasAdicionales();
-                    loadPresupuestoDTO(dto);
-                }
-            }
+            loadPresupuestoDTO(actualizado);
+            // for(PresupuestosDTO dto : presupuestosList) {
+            //     if(dto.getId() == actualizado.getId()){
+            //         lineasPresupuestoList = dto.getLineasAdicionales();
+            //         loadPresupuestoDTO(dto);
+            //     }
+            // }
         });
 
         view.getSaveButton().setOnAction(e -> {

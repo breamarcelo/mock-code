@@ -91,7 +91,7 @@ public class PresupuestosService extends GenericServiceImpl<PresupuestosDTO, Pre
                     lineaEntity.setPresupuesto(presupuestosEntity);
                     presupuestosEntity.getLineasPresupuesto().add(lineaEntity);
                 }
-                // em.merge(presupuestosEntity);
+                em.merge(presupuestosEntity);
             }
             // presupuestosEntity.setLineasPresupuesto(lineasPresupuestoEntitys);
             // PresupuestosEntity savedEntity = presupuestosDAO.updatePresupuesto(presupuestosDTO, presupuestosEntity, lineasPresupuestoEntitys, em);

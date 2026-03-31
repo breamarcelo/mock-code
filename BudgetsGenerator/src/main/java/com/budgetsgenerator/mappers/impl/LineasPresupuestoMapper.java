@@ -39,7 +39,7 @@ public class LineasPresupuestoMapper implements EntityMapper<LineasPresupuestoEn
             return null;
         } 
         LineasPresupuestoEntity entity = new LineasPresupuestoEntity();
-        // entity.setId(dto.getId());
+        entity.setId(null);
         entity.setCantidad(dto.getCantidad());
         entity.setPresupuesto(PresupuestosMapper.getInstance().toEntity(dto.getPresupuesto(), em));
         entity.setLineaAdicional(LineasAdicionalesMapper.getInstance().toEntity(dto.getLineasAdicional(), em));
