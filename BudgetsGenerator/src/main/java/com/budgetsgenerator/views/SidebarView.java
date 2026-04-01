@@ -28,7 +28,9 @@ public class SidebarView extends VBox{
 
         this.getChildren().addAll(start, this.getPresupuestosButton(), this.getTarifasButton(), this.getProductosButton(), this.getAjustesButton(), end);
         for(Node node : this.getChildren()){
-            this.setMargin(node, new Insets(0, 0, 10, 0));
+            if(node instanceof Button) {
+                this.setMargin(node, new Insets(0, 0, 10, 0));
+            }
         }
         this.setVgrow(start, Priority.ALWAYS);
         this.setVgrow(end, Priority.ALWAYS);

@@ -6,6 +6,7 @@ import java.util.function.Function;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
@@ -29,11 +30,16 @@ public class UIUtil {
     public static void populateVBox(VBox box, List<Node> controls) {
         box.getChildren().addAll(controls);
         controls.get(0).getStyleClass().add("VBox-Label");
-        for(Node c : controls) {
-            if(c instanceof ComboBox) {
-                ((ComboBox) c).setPrefWidth(Double.MAX_VALUE);
-                box.setMargin(c, new Insets(5,0,10,0));
+        box.setMargin(controls.get(0), new Insets(0, 0, 20, 0));
+        for(Node node : controls) {
+            if(node instanceof ComboBox || node instanceof TextField) {
+                ((Control) node).setPrefWidth(Double.MAX_VALUE);
+                box.setMargin(node, new Insets(5,0,10,0));
             }
+            if(node instanceof HBox) {
+                box.setMargin(node, new Insets(5,0,10,0));
+            }
+            
         }
     }
 

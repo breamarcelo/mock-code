@@ -231,8 +231,8 @@ public class PresupuestosController {
         });
 
         view.getActualizarButton().setOnAction(e -> {
-            PresupuestosDTO actualizado = PresupuestosService.getInstance().updatePresupuesto(presupuesto, lineasPresupuestoList);
-            // presupuestosList = PresupuestosService.getInstance().getAll();
+            PresupuestosDTO actualizado = new PresupuestosDTO();
+            actualizado = PresupuestosService.getInstance().updatePresupuesto(presupuesto, lineasPresupuestoList);
             limpiarFormulario();
             
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -247,12 +247,6 @@ public class PresupuestosController {
             alert.showAndWait();
             
             loadPresupuestoDTO(actualizado);
-            // for(PresupuestosDTO dto : presupuestosList) {
-            //     if(dto.getId() == actualizado.getId()){
-            //         lineasPresupuestoList = dto.getLineasAdicionales();
-            //         loadPresupuestoDTO(dto);
-            //     }
-            // }
         });
 
         view.getSaveButton().setOnAction(e -> {

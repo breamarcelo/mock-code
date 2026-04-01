@@ -21,37 +21,37 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class PresupuestosView extends GridPane{
-    private VBox tarifasVBox = new VBox();
-    private Label tarifasVBoxLabel = new Label("TARIFAS");
-    private VBox lineasAdicionalesVBox = new VBox();
-    private Label lineasAdicionalesVBoxLabel = new Label("LÍNEAS ADICIONALES");
-    private VBox productosAdicionalesVBox = new VBox();
-    private Label productosAdicioanelesVBoxLabel = new Label("SERVICIOS ADICIONALES");
-    private VBox descuentosVBox = new VBox();
+    private final VBox tarifasVBox = new VBox();
+    private final Label tarifasVBoxLabel = new Label("TARIFAS");
+    private final VBox lineasAdicionalesVBox = new VBox();
+    private final Label lineasAdicionalesVBoxLabel = new Label("LÍNEAS ADICIONALES");
+    private final VBox productosAdicionalesVBox = new VBox();
+    private final Label productosAdicioanelesVBoxLabel = new Label("SERVICIOS ADICIONALES");
+    private final VBox descuentosVBox = new VBox();
 
     private final Label descuentoLabel = new Label("Descuento:");
-    private VBox resumenVBox = new VBox();
-    private Label resumenVBoxLabel = new Label("RESUMEN");
-    private HBox totalHBox = new HBox();
+    private final VBox resumenVBox = new VBox();
+    private final Label resumenVBoxLabel = new Label("RESUMEN");
+    private final HBox totalHBox = new HBox();
     private final Label totalLabel = new Label("TOTAL:");
-    private TextField totalField = new TextField();
-    private TextField presupuestoField = new TextField();
-    private HBox buttonsHBox = new HBox();
+    private final TextField totalField = new TextField();
+    private final TextField presupuestoField = new TextField();
+    private final HBox buttonsHBox = new HBox();
 
-    private ComboBox<TarifasDTO> tarifasCombo = new ComboBox<>();
-    private ComboBox<FibrasDTO> fibraCombo = new ComboBox<>();
-    private ComboBox<StreamingDTO> streamingCombo = new ComboBox<>();
-    private ComboBox<DescuentosDTO> descuentoCombo = new ComboBox<>();
-    private ComboBox<CentralitasDTO> centralitaCombo = new ComboBox<>();
-    private ComboBox<PacksFutbolDTO> packsFutbolCombo = new ComboBox<>();
-    private ListView<HBox> lineasAdicionalesView = new ListView<>();
-    private TableView<ResumentTableItem> resumenView = new TableView<>();
-    private Button saveButton = new Button("Guardar");
-    private Button loadButton = new Button("Abrir");
-    private Button actualizarButton = new Button("Actualizar");
-    private Button eliminarButton = new Button("Eliminar");
-    private Button nuevoButton = new Button("Nuevo");
-    private Button generarPdfButton = new Button("Generar PDF");
+    private final ComboBox<TarifasDTO> tarifasCombo = new ComboBox<>();
+    private final ComboBox<FibrasDTO> fibraCombo = new ComboBox<>();
+    private final ComboBox<StreamingDTO> streamingCombo = new ComboBox<>();
+    private final ComboBox<DescuentosDTO> descuentoCombo = new ComboBox<>();
+    private final ComboBox<CentralitasDTO> centralitaCombo = new ComboBox<>();
+    private final ComboBox<PacksFutbolDTO> packsFutbolCombo = new ComboBox<>();
+    private final ListView<HBox> lineasAdicionalesView = new ListView<>();
+    private final TableView<ResumentTableItem> resumenView = new TableView<>();
+    private final Button saveButton = new Button("Guardar");
+    private final Button loadButton = new Button("Abrir");
+    private final Button actualizarButton = new Button("Actualizar");
+    private final Button eliminarButton = new Button("Eliminar");
+    private final Button nuevoButton = new Button("Nuevo");
+    private final Button generarPdfButton = new Button("Generar PDF");
     private final Label presupuestoLabel = new Label("Presupuestos");
     private final Label tarifaLabel = new Label("Tarifa:");
     private final Label fibraLabel = new Label("Fibra:");
@@ -63,7 +63,7 @@ public class PresupuestosView extends GridPane{
     public PresupuestosView() {
         this.getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
         this.getStylesheets().add(getClass().getResource("/css/presupuestos.css").toExternalForm());
-        this.getStyleClass().add("grid_pane");
+        this.getStyleClass().add("gridpane");
 
         presupuestoLabel.setId("presupuestos_title");
         totalLabel.setId("total_label");
@@ -84,128 +84,64 @@ public class PresupuestosView extends GridPane{
         return tarifasCombo;
     }
 
-    public void setTarifasCombo(ComboBox<TarifasDTO> tarifasCombo) {
-        this.tarifasCombo = tarifasCombo;
-    }
-
     public ComboBox<FibrasDTO> getFibraCombo() {
         return fibraCombo;
-    }
-
-    public void setFibraCombo(ComboBox<FibrasDTO> fibraCombo) {
-        this.fibraCombo = fibraCombo;
     }
 
     public ComboBox<StreamingDTO> getStreamingCombo() {
         return streamingCombo;
     }
 
-    public void setStreamingCombo(ComboBox<StreamingDTO> streamingCombo) {
-        this.streamingCombo = streamingCombo;
-    }
-    
     public ComboBox<DescuentosDTO> getDescuentoCombo() {
         return descuentoCombo;
-    }
-
-    public void setDescuentoCombo(ComboBox<DescuentosDTO> descuentoCombo) {
-        this.descuentoCombo = descuentoCombo;
     }
 
     public ComboBox<CentralitasDTO> getCentralitaCombo() {
         return centralitaCombo;
     }
 
-    public void setCentralitaCombo(ComboBox<CentralitasDTO> centralitaCombo) {
-        this.centralitaCombo = centralitaCombo;
-    }
-
     public ComboBox<PacksFutbolDTO> getPacksFutbolCombo() {
         return packsFutbolCombo;
-    }
-
-    public void setPacksFutbolCombo(ComboBox<PacksFutbolDTO> packsFutbolCombo) {
-        this.packsFutbolCombo = packsFutbolCombo;
     }
 
     public ListView<HBox> getLineasAdicionalesView() {
         return lineasAdicionalesView;
     }
 
-    public void setLineasAdicionalesView(ListView<HBox> lineasAdicionalesView) {
-        this.lineasAdicionalesView = lineasAdicionalesView;
-    }
-
     public Button getSaveButton() {
         return saveButton;
-    }
-
-    public void setSaveButton(Button saveButton) {
-        this.saveButton = saveButton;
     }
 
     public Button getLoadButton() {
         return loadButton;
     }
 
-    public void setLoadButton(Button loadButton) {
-        this.loadButton = loadButton;
-    }
-
     public TableView<ResumentTableItem> getResumenView() {
         return resumenView;
-    }
-
-    public void setResumenView(TableView<ResumentTableItem> resumenView) {
-        this.resumenView = resumenView;
     }
 
     public String getTotalFieldText() {
         return totalField.getText();
     }
 
-    public void setTotalField(TextField totaField) {
-        this.totalField = totaField;
-    }
-
     public Button getNuevoButton() {
         return nuevoButton;
-    }
-
-    public void setNuevoButton(Button nuevoButton) {
-        this.nuevoButton = nuevoButton;
     }
 
     public Button getGenerarPdfButton() {
         return generarPdfButton;
     }
 
-    public void setGenerarPdfButton(Button generarPdfButton) {
-        this.generarPdfButton = generarPdfButton;
-    }
-
     public VBox getTarifasVBox() {
         return tarifasVBox;
-    }
-
-    public void setTarifasVBox(VBox tarifasVBox) {
-        this.tarifasVBox = tarifasVBox;
     }
 
     public VBox getLineasAdicionalesVBox() {
         return lineasAdicionalesVBox;
     }
 
-    public void setLineasAdicionalesVBox(VBox lineasAdicionalesVBox) {
-        this.lineasAdicionalesVBox = lineasAdicionalesVBox;
-    }
-
     public VBox getProductosAdicionalesVBox() {
         return productosAdicionalesVBox;
-    }
-
-    public void setProductosAdicionalesVBox(VBox productosAdicionalesVBox) {
-        this.productosAdicionalesVBox = productosAdicionalesVBox;
     }
 
     public Label getPresupuestoLabel() {
@@ -252,82 +188,43 @@ public class PresupuestosView extends GridPane{
         return tarifasVBoxLabel;
     }
 
-    public void setTarifasVBoxLabel(Label tarifasVBoxLabel) {
-        this.tarifasVBoxLabel = tarifasVBoxLabel;
-    }
     public Label getLineasAdicionalesVBoxLabel() {
         return lineasAdicionalesVBoxLabel;
     }
-    public void setLineasAdicionalesVBoxLabel(Label lineasAdicionalesVBoxLabel) {
-        this.lineasAdicionalesVBoxLabel = lineasAdicionalesVBoxLabel;
-    }
+
     public Label getProductosAdicioanelesVBoxLabel() {
         return productosAdicioanelesVBoxLabel;
     }
-    public void setProductosAdicioanelesVBoxLabel(Label productosAdicioanelesVBoxLabel) {
-        this.productosAdicioanelesVBoxLabel = productosAdicioanelesVBoxLabel;
-    }   
 
     public VBox getResumenVBox() {
         return resumenVBox;
-    }
-
-    public void setResumenVBox(VBox resumenVBox) {
-        this.resumenVBox = resumenVBox;
     }
 
     public Label getResumenVBoxLabel() {
         return resumenVBoxLabel;
     }
 
-    public void setResumenVBoxLabel(Label resumenVBoxLabel) {
-        this.resumenVBoxLabel = resumenVBoxLabel;
-    }
-
     public HBox getTotalHBox() {
         return totalHBox;
-    }
-
-    public void setTotalHBox(HBox totalHBox) {
-        this.totalHBox = totalHBox;
     }
 
     public Button getActualizarButton() {
         return actualizarButton;
     }
 
-    public void setActualizarButton(Button actualizarButton) {
-        this.actualizarButton = actualizarButton;
-    }
-
     public Button getEliminarButton() {
         return eliminarButton;
     }
 
-    public void setEliminarButton(Button eliminarButton) {
-        this.eliminarButton = eliminarButton;
-    }
     public TextField getPresupuestoField() {
         return presupuestoField;
-    }
-
-    public void setPresupuestoField(TextField presupuestoField) {
-        this.presupuestoField = presupuestoField;
     }
 
     public HBox getButtonsHBox() {
         return buttonsHBox;
     }
 
-    public void setButtonsHBox(HBox buttonsHBox) {
-        this.buttonsHBox = buttonsHBox;
-    }
-
     public VBox getDescuentosVBox() {
         return descuentosVBox;
-    }
-
-    public void setDescuentosVBox(VBox descuentosVBox) {
-        this.descuentosVBox = descuentosVBox;
     }
 }
