@@ -1,10 +1,12 @@
 package com.budgetsgenerator.views;
 
 import com.budgetsgenerator.config.UIUtil;
+import com.budgetsgenerator.dto.FibrasDTO;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -38,7 +40,8 @@ public class TarifasView extends GridPane{
     private final TextField fibraNombreTextField = new TextField();
     private final Label fibraSobrecargoLabel = new Label("Sobrecargo: ");
     private final TextField fibraSobrecargoTextField = new TextField();
-    
+    private final ListView<FibrasDTO> fibrasListView = new ListView<>();
+
     private final VBox serviciosBox = new VBox();
     private final Label serviciosBoxLabel = new Label("SERVICIOS ADICIONALES");
     private final Label serviciosRoamingLabel = new Label("Roaming:");
@@ -73,9 +76,9 @@ public class TarifasView extends GridPane{
         this.getColumnConstraints().get(1).setPercentWidth(50);
 
         this.add(buttonsBox, 0, 0, 2, 1);
-        this.add(tarifasBox, 0, 1, 1, 2);
-        this.add(fibrasBox, 0, 3, 1, 2);
-        this.add(serviciosBox, 1, 1, 1, 3);
+        this.add(tarifasBox, 0, 1, 1, 1);
+        this.add(fibrasBox, 0, 3, 1, 1);
+        this.add(serviciosBox, 1, 1, 1, 2);
     }
 
     public HBox getButtonsBox() {
@@ -260,5 +263,9 @@ public class TarifasView extends GridPane{
 
     public TextField getServiciosDescuentoBeneficiosTextField() {
         return serviciosDescuentoBeneficiosTextField;
+    }
+
+    public ListView<FibrasDTO> getFibrasListView() {
+        return fibrasListView;
     }
 }

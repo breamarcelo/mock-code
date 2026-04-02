@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.budgetsgenerator.config.UIUtil;
+import com.budgetsgenerator.services.impl.FibrasService;
 import com.budgetsgenerator.views.TarifasView;
 
 import javafx.geometry.Insets;
@@ -27,12 +28,11 @@ public class TarifasController {
         view.getButtonsBox().getChildren().addAll(view.getNuevoButton(), view.getAbrirButton(), view.getActualizarutton(), view.getGuardarButton());
         view.getButtonsBox().getStyleClass().add("menu-bar");
         view.getButtonsBox().setPrefWidth(Double.MAX_VALUE);
-        
-        // for(Node node : view.getButtonsBox().getChildren()){
-        //     if(view.getButtonsBox().getChildren().indexOf(node) <= 5) {
-        //         view.getButtonsBox().setMargin(node, new Insets(0, 20, 0, 0));
-        //     }
-        // }
+        for(Node node : view.getButtonsBox().getChildren()){
+            if(view.getButtonsBox().getChildren().indexOf(node) < view.getButtonsBox().getChildren().size()-1) {
+                view.getButtonsBox().setMargin(node, new Insets(0, 20, 0, 0));
+            }
+        }
 
         view.getCheckboxesBox().getChildren().addAll(view.getTarifaTvLabel(), view.getTarifaTvCheckBox(), view.getTarifaStreamingLabel(), view.getTarifaStreamingCheckBox());
         for(Node node : view.getCheckboxesBox().getChildren()) {
@@ -58,9 +58,10 @@ public class TarifasController {
             } else {
                 view.getFibraSobrecargoTextField().setText("");
                 view.getFibraSobrecargoTextField().setText(matcher.group() + ".00€");
-            }
+            } 
         });
 
+        
         view.getServiciosCheckboxes1Box().getChildren().addAll(view.getServiciosLegalitasLabel(), view.getServiciosLegalitasBox(), view.getServiciosCloudLabel(), view.getServiciosCloudBox());
         view.getServiciosCheckboxes2Box().getChildren().addAll(view.getServiciosCiberProteccionLabel(), view.getServiciosCiberProteccionBox(), view.getServiciosAtencionPersonalizadaLabel(), view.getServiciosAtencionPersonalizadaBox());
         
@@ -81,9 +82,10 @@ public class TarifasController {
                 view.getCheckboxesBox().setMargin(node, new Insets(0, 20, 0, 0));
             }
         }
-
+        
         UIUtil.populateVBox(view.getTarifasBox(), new ArrayList<>(Arrays.asList(view.getTarifasBoxLabel(), view.getTarifaNombreLabel(), view.getTarifaNombreTextField(), view.getTarifaTipoLabel(), view.getTarifaTipoTextField(), view.getTarifaPrecioLabel(), view.getTarifaPrecioTextField(), view.getCheckboxesBox())));
-        UIUtil.populateVBox(view.getFibrasBox(), new ArrayList<>(Arrays.asList(view.getFibrasBoxLabel(), view.getFibraNombreLabel(), view.getFibraNombreTextField(), view.getFibraSobrecargoLabel(), view.getFibraSobrecargoTextField())));
+        UIUtil.populateVBox(view.getFibrasBox(), new ArrayList<>(Arrays.asList(view.getFibrasBoxLabel(), view.getFibraNombreLabel(), view.getFibraNombreTextField(), view.getFibraSobrecargoLabel(), view.getFibraSobrecargoTextField(), view.getFibrasListView())));
         UIUtil.populateVBox(view.getServiciosBox(), new ArrayList<>(Arrays.asList(view.getServiciosBoxLabel(), view.getServiciosRoamingLabel(), view.getServiciosRoamingTextField(), view.getServiciosInternacionalLabel(), view.getServiciosInternacionalTextField(), view.getServiciosCheckboxes1Box(), view.getServiciosCheckboxes2Box(), view.getServiciosCentralitaLabel(), view.getServiciosCentralitaTextField(), view.getServiciosNumBeneficiosLabel(), view.getServiciosNumBeneficiosTextField(), view.getServiciosDescuentoBeneficiosLabel(), view.getServiciosDescuentoBeneficiosTextField())));
+        view.getFibrasListView().getItems().addAll(FibrasService.getInstance().getAll());
     }
 }

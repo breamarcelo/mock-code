@@ -75,7 +75,7 @@ public class PresupuestosController {
         view.getButtonsHBox().setPrefWidth(Double.MAX_VALUE);
         view.getPresupuestoField().setEditable(false);
         for(Node node : view.getButtonsHBox().getChildren()){
-            if(view.getButtonsHBox().getChildren().indexOf(node) <= 5) {
+            if(view.getButtonsHBox().getChildren().indexOf(node) < view.getButtonsHBox().getChildren().size()-1) {
                 view.getButtonsHBox().setMargin(node, new Insets(0, 20, 0, 0));
             }
         }
