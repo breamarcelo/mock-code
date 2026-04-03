@@ -2,8 +2,6 @@ package com.budgetsgenerator.controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.budgetsgenerator.config.UIUtil;
 import com.budgetsgenerator.services.impl.FibrasService;
@@ -13,7 +11,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
 
 public class TarifasController {
     public TarifasView view;
@@ -45,20 +42,14 @@ public class TarifasController {
         }
         
         view.getFibraSobrecargoTextField().setOnKeyReleased(eh -> {
-            if(eh.getCode() == KeyCode.BACK_SPACE) {
-                counter--;
+            int num = 0;
+            num = Integer.parseInt(eh.getText());
+            try {
+            } catch (Exception e) {
+                
+            } finally {
+                System.out.println(num);
             }
-            String text = view.getFibraSobrecargoTextField().getText();
-            Pattern pattern = Pattern.compile("^\\d{1,3}\\b");
-            Matcher matcher = pattern.matcher(text);
-            if(matcher.find()){
-                counter++;
-                view.getFibraSobrecargoTextField().setText(matcher.group() + ".00€");
-                view.getFibraSobrecargoTextField().positionCaret(counter);
-            } else {
-                view.getFibraSobrecargoTextField().setText("");
-                view.getFibraSobrecargoTextField().setText(matcher.group() + ".00€");
-            } 
         });
 
         
