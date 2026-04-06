@@ -4,13 +4,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.budgetsgenerator.config.UIUtil;
+import com.budgetsgenerator.dto.TarifasDTO;
 import com.budgetsgenerator.services.impl.FibrasService;
+import com.budgetsgenerator.services.impl.TarifasService;
 import com.budgetsgenerator.views.TarifasView;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 
 public class TarifasController {
     public TarifasView view;
@@ -31,6 +40,55 @@ public class TarifasController {
             }
         }
 
+        view.getAbrirButton().setOnAction(eh -> {
+            TextInputDialog dialog = new TextInputDialog();
+            
+            dialog.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
+            dialog.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
+            dialog.getDialogPane().getStyleClass().add("dialog");
+            dialog.setTitle("Abrir presupuesto");
+            dialog.setGraphic(null);
+            dialog.setHeaderText("Seleccione un presupuesto:");
+
+            Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
+            cancelButton.setText("Cancelar");
+            cancelButton.getStyleClass().add("cancel-btn");
+
+            Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+            okButton.setText("Abrir");
+            
+            TextField node = (TextField) dialog.getDialogPane().lookup("TextField");
+            node.setVisible(false);
+
+            ListView<TarifasDTO> tarifasListView = new ListView<>();
+            tarifasListView.getItems().setAll(TarifasService.getInstance().getAll());
+            
+            tarifasListView.setCellFactory(param -> new ListCell<TarifasDTO>() {
+                @Override
+                protected void updateItem(TarifasDTO item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(item.getNombre());
+                    }
+                }
+            });
+
+            dialog.getDialogPane().setContent(tarifasListView);
+
+            okButton.addEventFilter(ActionEvent.ACTION, e -> {
+                TarifasDTO selected = tarifasListView.getSelectionModel().getSelectedItem();
+                if(selected != null) {  
+                    // loadTarifaDTO(selected);
+                    dialog.close();
+                }
+                eh.consume();
+            });
+
+            dialog.showAndWait();
+        });
+
         view.getCheckboxesBox().getChildren().addAll(view.getTarifaTvLabel(), view.getTarifaTvCheckBox(), view.getTarifaStreamingLabel(), view.getTarifaStreamingCheckBox());
         for(Node node : view.getCheckboxesBox().getChildren()) {
             if(node instanceof Label) {
@@ -40,20 +98,6 @@ public class TarifasController {
                 view.getCheckboxesBox().setMargin(node, new Insets(0, 20, 0, 0));
             }
         }
-        
-        view.getFibraSobrecargoTextField().setOnKeyReleased(eh -> {
-            // added comment
-            
-            int num = 0;
-            num = Integer.parseInt(eh.getText());
-            try {
-            } catch (Exception e) {
-
-            } finally {
-                System.out.println(num);
-            }
-        });
-
         
         view.getServiciosCheckboxes1Box().getChildren().addAll(view.getServiciosLegalitasLabel(), view.getServiciosLegalitasBox(), view.getServiciosCloudLabel(), view.getServiciosCloudBox());
         view.getServiciosCheckboxes2Box().getChildren().addAll(view.getServiciosCiberProteccionLabel(), view.getServiciosCiberProteccionBox(), view.getServiciosAtencionPersonalizadaLabel(), view.getServiciosAtencionPersonalizadaBox());

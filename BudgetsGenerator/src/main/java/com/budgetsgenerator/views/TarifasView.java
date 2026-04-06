@@ -77,7 +77,7 @@ public class TarifasView extends GridPane{
 
         this.add(buttonsBox, 0, 0, 2, 1);
         this.add(tarifasBox, 0, 1, 1, 1);
-        this.add(fibrasBox, 0, 3, 1, 1);
+        this.add(fibrasBox, 0, 2, 1, 2);
         this.add(serviciosBox, 1, 1, 1, 2);
     }
 
