@@ -24,9 +24,11 @@ import javafx.scene.control.TextInputDialog;
 public class TarifasController {
     public TarifasView view;
     public int counter = 0;
+    public TarifasDTO tarifasDTO;
 
     public TarifasController(TarifasView view) {
         this.view = view;
+        this.tarifasDTO = new TarifasDTO();
         load();
     }
 
