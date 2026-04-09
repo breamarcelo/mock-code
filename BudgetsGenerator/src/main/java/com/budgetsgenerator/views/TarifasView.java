@@ -42,6 +42,15 @@ public class TarifasView extends GridPane{
     private final TextField fibraSobrecargoTextField = new TextField();
     private final ListView<FibrasDTO> fibrasListView = new ListView<>();
 
+    private final VBox lineasBox = new VBox();
+    private final Label lineasBoxLabel = new Label("LÍNEAS MÓVILES");
+    private final Label lineasNumLabel = new Label("Número de líneas:");
+    private final TextField lineasNumField = new TextField();
+    private final Label lineasLlamadasabel = new Label("Llamadas móvil:");
+    private final TextField lineasLlamadasField = new TextField();
+    private final Label lineasGbLabel = new Label("Gb móvil:");
+    private final TextField lineasGbField = new TextField();
+
     private final VBox serviciosBox = new VBox();
     private final Label serviciosBoxLabel = new Label("SERVICIOS ADICIONALES");
     private final Label serviciosRoamingLabel = new Label("Roaming:");
@@ -60,7 +69,6 @@ public class TarifasView extends GridPane{
     private final CheckBox serviciosAtencionPersonalizadaBox = new CheckBox();
     private final Label serviciosCentralitaLabel = new Label("Centralita:");
     private final TextField serviciosCentralitaTextField = new TextField();
-
     private final Label serviciosNumBeneficiosLabel = new Label("Número de beneficios:");
     private final TextField serviciosNumBeneficiosTextField = new TextField();
     private final Label serviciosDescuentoBeneficiosLabel = new Label("Descuento beneficios:");
@@ -78,7 +86,8 @@ public class TarifasView extends GridPane{
         this.add(buttonsBox, 0, 0, 2, 1);
         this.add(tarifasBox, 0, 1, 1, 1);
         this.add(fibrasBox, 0, 2, 1, 2);
-        this.add(serviciosBox, 1, 1, 1, 2);
+        this.add(lineasBox, 1, 1, 1, 1);
+        this.add(serviciosBox, 1, 2, 1, 2);
     }
 
     public HBox getButtonsBox() {
@@ -268,4 +277,37 @@ public class TarifasView extends GridPane{
     public ListView<FibrasDTO> getFibrasListView() {
         return fibrasListView;
     }
+
+    public VBox getLineasBox() {
+        return lineasBox;
+    }
+
+    public Label getLineasBoxLabel() {
+        return lineasBoxLabel;
+    }
+
+    public Label getLineasNumLabel() {
+        return lineasNumLabel;
+    }
+
+    public TextField getLineasNumField() {
+        return lineasNumField;
+    }
+
+    public Label getLineasLlamadasabel() {
+        return lineasLlamadasabel;
+    }
+
+    public TextField getLineasLlamadasField() {
+        return lineasLlamadasField;
+    }
+
+    public Label getLineasGbLabel() {
+        return lineasGbLabel;
+    }
+
+    public TextField getLineasGbField() {
+        return lineasGbField;
+    }
+    
 }

@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import com.budgetsgenerator.config.UIUtil;
 import com.budgetsgenerator.dto.TarifasDTO;
-import com.budgetsgenerator.services.impl.FibrasService;
 import com.budgetsgenerator.services.impl.TarifasService;
 import com.budgetsgenerator.views.TarifasView;
 
@@ -24,11 +23,11 @@ import javafx.scene.control.TextInputDialog;
 public class TarifasController {
     public TarifasView view;
     public int counter = 0;
-    public TarifasDTO tarifasDTO;
+    public TarifasDTO tarifas;
 
     public TarifasController(TarifasView view) {
         this.view = view;
-        this.tarifasDTO = new TarifasDTO();
+        this.tarifas = new TarifasDTO();
         load();
     }
 
@@ -125,6 +124,26 @@ public class TarifasController {
         UIUtil.populateVBox(view.getTarifasBox(), new ArrayList<>(Arrays.asList(view.getTarifasBoxLabel(), view.getTarifaNombreLabel(), view.getTarifaNombreTextField(), view.getTarifaTipoLabel(), view.getTarifaTipoTextField(), view.getTarifaPrecioLabel(), view.getTarifaPrecioTextField(), view.getCheckboxesBox())));
         UIUtil.populateVBox(view.getFibrasBox(), new ArrayList<>(Arrays.asList(view.getFibrasBoxLabel(), view.getFibraNombreLabel(), view.getFibraNombreTextField(), view.getFibraSobrecargoLabel(), view.getFibraSobrecargoTextField(), view.getFibrasListView())));
         UIUtil.populateVBox(view.getServiciosBox(), new ArrayList<>(Arrays.asList(view.getServiciosBoxLabel(), view.getServiciosRoamingLabel(), view.getServiciosRoamingTextField(), view.getServiciosInternacionalLabel(), view.getServiciosInternacionalTextField(), view.getServiciosCheckboxes1Box(), view.getServiciosCheckboxes2Box(), view.getServiciosCentralitaLabel(), view.getServiciosCentralitaTextField(), view.getServiciosNumBeneficiosLabel(), view.getServiciosNumBeneficiosTextField(), view.getServiciosDescuentoBeneficiosLabel(), view.getServiciosDescuentoBeneficiosTextField())));
-        view.getFibrasListView().getItems().addAll(FibrasService.getInstance().getAll());
+        
+    }
+
+    public void loadTarifaDTO(TarifasDTO selected) {
+        tarifas = selected;
+        view.getTarifaNombreTextField().setText(selected.getNombre());
+        view.getTarifaTipoTextField().setText(selected.getTipo());
+        view.getTarifaPrecioTextField().setText(Double.toString(selected.getPrecio()));
+        view.getTarifaTvCheckBox().setSelected(selected.isTv());
+        view.getTarifaStreamingCheckBox().setSelected(selected.isStreaming());
+        view.getFibrasListView().getItems().clear();
+        view.getFibrasListView().getItems().addAll(selected.getFibras());
+        view.getServiciosRoamingTextField().setText(selected.getServiciosAdicionales().getRoaming()); 
+        view.getServiciosInternacionalTextField().setText(selected.getServiciosAdicionales().getInternacional());
+        view.getServiciosCentralitaTextField().setText(selected.getServiciosAdicionales().getCentralita()); 
+        view.getServiciosNumBeneficiosTextField().setText(Integer.toString(selected.getServiciosAdicionales().getNumBeneficios())); 
+        view.getServiciosDescuentoBeneficiosTextField().setText(selected.getServiciosAdicionales().getDescuentoBeneficios());
+        view.getServiciosLegalitasBox().setSelected(selected.getServiciosAdicionales().isLegalitas()); 
+        view.getServiciosCloudBox().setSelected(selected.getServiciosAdicionales().isCloud());
+        view.getServiciosCiberProteccionBox().setSelected(selected.getServiciosAdicionales().isCiberProteccion()); 
+        view.getServiciosAtencionPersonalizadaBox().setSelected(selected.getServiciosAdicionales().isAtencionPersonalizada());
     }
 }
