@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.budgetsgenerator.config.UIUtil;
+import com.budgetsgenerator.dto.FibrasDTO;
 import com.budgetsgenerator.dto.TarifasDTO;
 import com.budgetsgenerator.services.impl.TarifasService;
 import com.budgetsgenerator.views.TarifasView;
@@ -81,7 +82,7 @@ public class TarifasController {
             okButton.addEventFilter(ActionEvent.ACTION, e -> {
                 TarifasDTO selected = tarifasListView.getSelectionModel().getSelectedItem();
                 if(selected != null) {  
-                    // loadTarifaDTO(selected);
+                    loadTarifaDTO(selected);
                     dialog.close();
                 }
                 eh.consume();
@@ -120,11 +121,30 @@ public class TarifasController {
                 view.getCheckboxesBox().setMargin(node, new Insets(0, 20, 0, 0));
             }
         }
+
+        view.getFibrasListView().setCellFactory(param -> new ListCell<FibrasDTO>() {
+            @Override
+            public void updateItem(FibrasDTO item, boolean empty) {
+                super.updateItem(item, empty);
+                if(empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getNombre());
+                }
+            }
+        });
+
+
+        view.getFibrasListView().setOnMouseClicked(eh-> {
+            FibrasDTO selected = view.getFibrasListView().getSelectionModel().getSelectedItem();
+            view.getFibraNombreTextField().setText(selected.getNombre()); 
+            view.getFibraSobrecargoTextField().setText(Double.toString(selected.getSobrecargo()));
+        });
         
         UIUtil.populateVBox(view.getTarifasBox(), new ArrayList<>(Arrays.asList(view.getTarifasBoxLabel(), view.getTarifaNombreLabel(), view.getTarifaNombreTextField(), view.getTarifaTipoLabel(), view.getTarifaTipoTextField(), view.getTarifaPrecioLabel(), view.getTarifaPrecioTextField(), view.getCheckboxesBox())));
         UIUtil.populateVBox(view.getFibrasBox(), new ArrayList<>(Arrays.asList(view.getFibrasBoxLabel(), view.getFibraNombreLabel(), view.getFibraNombreTextField(), view.getFibraSobrecargoLabel(), view.getFibraSobrecargoTextField(), view.getFibrasListView())));
+        UIUtil.populateVBox(view.getLineasBox(), new ArrayList<>(Arrays.asList(view.getLineasBoxLabel(), view.getLineasNumLabel(), view.getLineasNumField(), view.getLineasLlamadasabel(), view.getLineasLlamadasField(), view.getLineasGbLabel(), view.getLineasGbField())));
         UIUtil.populateVBox(view.getServiciosBox(), new ArrayList<>(Arrays.asList(view.getServiciosBoxLabel(), view.getServiciosRoamingLabel(), view.getServiciosRoamingTextField(), view.getServiciosInternacionalLabel(), view.getServiciosInternacionalTextField(), view.getServiciosCheckboxes1Box(), view.getServiciosCheckboxes2Box(), view.getServiciosCentralitaLabel(), view.getServiciosCentralitaTextField(), view.getServiciosNumBeneficiosLabel(), view.getServiciosNumBeneficiosTextField(), view.getServiciosDescuentoBeneficiosLabel(), view.getServiciosDescuentoBeneficiosTextField())));
-        
     }
 
     public void loadTarifaDTO(TarifasDTO selected) {
@@ -136,6 +156,9 @@ public class TarifasController {
         view.getTarifaStreamingCheckBox().setSelected(selected.isStreaming());
         view.getFibrasListView().getItems().clear();
         view.getFibrasListView().getItems().addAll(selected.getFibras());
+        view.getLineasNumField().setText(Integer.toString(selected.getLineasMoviles()));
+        view.getLineasLlamadasField().setText(selected.getLlamadasMovil());
+        view.getLineasGbField().setText(selected.getGbMovil());
         view.getServiciosRoamingTextField().setText(selected.getServiciosAdicionales().getRoaming()); 
         view.getServiciosInternacionalTextField().setText(selected.getServiciosAdicionales().getInternacional());
         view.getServiciosCentralitaTextField().setText(selected.getServiciosAdicionales().getCentralita()); 
