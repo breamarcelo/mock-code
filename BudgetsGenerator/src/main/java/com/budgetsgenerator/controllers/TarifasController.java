@@ -42,6 +42,11 @@ public class TarifasController {
             }
         }
 
+        view.getNuevoButton().setOnAction(eh -> {
+            tarifas = new TarifasDTO();
+            limpiarFormulario();
+        });
+
         view.getAbrirButton().setOnAction(eh -> {
             TextInputDialog dialog = new TextInputDialog();
             
@@ -147,6 +152,29 @@ public class TarifasController {
         UIUtil.populateVBox(view.getServiciosBox(), new ArrayList<>(Arrays.asList(view.getServiciosBoxLabel(), view.getServiciosRoamingLabel(), view.getServiciosRoamingTextField(), view.getServiciosInternacionalLabel(), view.getServiciosInternacionalTextField(), view.getServiciosCheckboxes1Box(), view.getServiciosCheckboxes2Box(), view.getServiciosCentralitaLabel(), view.getServiciosCentralitaTextField(), view.getServiciosNumBeneficiosLabel(), view.getServiciosNumBeneficiosTextField(), view.getServiciosDescuentoBeneficiosLabel(), view.getServiciosDescuentoBeneficiosTextField())));
     }
 
+    public void limpiarFormulario() {
+        view.getTarifaNombreTextField().setText("");
+        view.getTarifaTipoTextField().setText("");
+        view.getTarifaPrecioTextField().setText("");
+        view.getTarifaTvCheckBox().setSelected(false);
+        view.getTarifaStreamingCheckBox().setSelected(false);
+        view.getFibraNombreTextField().setText("");
+        view.getFibraSobrecargoTextField().setText("");
+        view.getFibrasListView().getItems().clear();
+        view.getLineasNumField().setText("");
+        view.getLineasLlamadasField().setText("");
+        view.getLineasGbField().setText("");
+        view.getServiciosRoamingTextField().setText(""); 
+        view.getServiciosInternacionalTextField().setText("");
+        view.getServiciosCentralitaTextField().setText(""); 
+        view.getServiciosNumBeneficiosTextField().setText(""); 
+        view.getServiciosDescuentoBeneficiosTextField().setText("");
+        view.getServiciosLegalitasBox().setSelected(false); 
+        view.getServiciosCloudBox().setSelected(false);
+        view.getServiciosCiberProteccionBox().setSelected(false); 
+        view.getServiciosAtencionPersonalizadaBox().setSelected(false);
+    }
+
     public void loadTarifaDTO(TarifasDTO selected) {
         tarifas = selected;
         view.getTarifaNombreTextField().setText(selected.getNombre());
@@ -154,6 +182,8 @@ public class TarifasController {
         view.getTarifaPrecioTextField().setText(Double.toString(selected.getPrecio()));
         view.getTarifaTvCheckBox().setSelected(selected.isTv());
         view.getTarifaStreamingCheckBox().setSelected(selected.isStreaming());
+        view.getFibraNombreTextField().setText("");
+        view.getFibraSobrecargoTextField().setText("");
         view.getFibrasListView().getItems().clear();
         view.getFibrasListView().getItems().addAll(selected.getFibras());
         view.getLineasNumField().setText(Integer.toString(selected.getLineasMoviles()));
