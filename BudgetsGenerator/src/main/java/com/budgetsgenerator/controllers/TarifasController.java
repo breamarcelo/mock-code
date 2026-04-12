@@ -96,6 +96,8 @@ public class TarifasController {
             dialog.showAndWait();
         });
 
+        // implement save button
+
         view.getCheckboxesBox().getChildren().addAll(view.getTarifaTvLabel(), view.getTarifaTvCheckBox(), view.getTarifaStreamingLabel(), view.getTarifaStreamingCheckBox());
         for(Node node : view.getCheckboxesBox().getChildren()) {
             if(node instanceof Label) {
