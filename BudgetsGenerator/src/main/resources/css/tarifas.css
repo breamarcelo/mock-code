@@ -98,3 +98,7 @@ ListView .list-cell:selected {
     -fx-background-color: -selection-background;
     -fx-text-fill: -light-font-fill;
 }
+
+.cancel-btn {
+    -fx-background-color: -cancel-btn-background;
+}

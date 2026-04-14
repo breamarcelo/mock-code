@@ -2,6 +2,7 @@ package com.budgetsgenerator.controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.budgetsgenerator.config.UIUtil;
 import com.budgetsgenerator.dto.FibrasDTO;
@@ -25,10 +26,12 @@ public class TarifasController {
     public TarifasView view;
     public int counter = 0;
     public TarifasDTO tarifas;
+    public List<FibrasDTO> fibrasList;
 
     public TarifasController(TarifasView view) {
         this.view = view;
         this.tarifas = new TarifasDTO();
+        this.fibrasList = new ArrayList<>();
         load();
     }
 
@@ -147,9 +150,15 @@ public class TarifasController {
             view.getFibraNombreTextField().setText(selected.getNombre()); 
             view.getFibraSobrecargoTextField().setText(Double.toString(selected.getSobrecargo()));
         });
+
+        view.getBotonesFibrasHBox().getChildren().addAll(view.getAgregarFibraButton(), view.getModificarFibraButton(), view.getEliminarFibraButton());
+        view.getEliminarFibraButton().getStyleClass().add("cancel-btn");
+        for(Node node : view.getBotonesFibrasHBox().getChildren()) {
+            view.getBotonesFibrasHBox().setMargin(node, new Insets(0, 20, 0, 0));
+        }
         
         UIUtil.populateVBox(view.getTarifasBox(), new ArrayList<>(Arrays.asList(view.getTarifasBoxLabel(), view.getTarifaNombreLabel(), view.getTarifaNombreTextField(), view.getTarifaTipoLabel(), view.getTarifaTipoTextField(), view.getTarifaPrecioLabel(), view.getTarifaPrecioTextField(), view.getCheckboxesBox())));
-        UIUtil.populateVBox(view.getFibrasBox(), new ArrayList<>(Arrays.asList(view.getFibrasBoxLabel(), view.getFibraNombreLabel(), view.getFibraNombreTextField(), view.getFibraSobrecargoLabel(), view.getFibraSobrecargoTextField(), view.getFibrasListView())));
+        UIUtil.populateVBox(view.getFibrasBox(), new ArrayList<>(Arrays.asList(view.getFibrasBoxLabel(), view.getFibraNombreLabel(), view.getFibraNombreTextField(), view.getFibraSobrecargoLabel(), view.getFibraSobrecargoTextField(), view.getBotonesFibrasHBox(), view.getFibrasListView())));
         UIUtil.populateVBox(view.getLineasBox(), new ArrayList<>(Arrays.asList(view.getLineasBoxLabel(), view.getLineasNumLabel(), view.getLineasNumField(), view.getLineasLlamadasabel(), view.getLineasLlamadasField(), view.getLineasGbLabel(), view.getLineasGbField())));
         UIUtil.populateVBox(view.getServiciosBox(), new ArrayList<>(Arrays.asList(view.getServiciosBoxLabel(), view.getServiciosRoamingLabel(), view.getServiciosRoamingTextField(), view.getServiciosInternacionalLabel(), view.getServiciosInternacionalTextField(), view.getServiciosCheckboxes1Box(), view.getServiciosCheckboxes2Box(), view.getServiciosCentralitaLabel(), view.getServiciosCentralitaTextField(), view.getServiciosNumBeneficiosLabel(), view.getServiciosNumBeneficiosTextField(), view.getServiciosDescuentoBeneficiosLabel(), view.getServiciosDescuentoBeneficiosTextField())));
     }
@@ -162,6 +171,7 @@ public class TarifasController {
         view.getTarifaStreamingCheckBox().setSelected(false);
         view.getFibraNombreTextField().setText("");
         view.getFibraSobrecargoTextField().setText("");
+        fibrasList.clear();
         view.getFibrasListView().getItems().clear();
         view.getLineasNumField().setText("");
         view.getLineasLlamadasField().setText("");
@@ -186,8 +196,10 @@ public class TarifasController {
         view.getTarifaStreamingCheckBox().setSelected(selected.isStreaming());
         view.getFibraNombreTextField().setText("");
         view.getFibraSobrecargoTextField().setText("");
+        fibrasList.clear();
+        fibrasList.addAll(selected.getFibras());
         view.getFibrasListView().getItems().clear();
-        view.getFibrasListView().getItems().addAll(selected.getFibras());
+        view.getFibrasListView().getItems().addAll(fibrasList);
         view.getLineasNumField().setText(Integer.toString(selected.getLineasMoviles()));
         view.getLineasLlamadasField().setText(selected.getLlamadasMovil());
         view.getLineasGbField().setText(selected.getGbMovil());

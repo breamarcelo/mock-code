@@ -41,6 +41,10 @@ public class TarifasView extends GridPane{
     private final Label fibraSobrecargoLabel = new Label("Sobrecargo: ");
     private final TextField fibraSobrecargoTextField = new TextField();
     private final ListView<FibrasDTO> fibrasListView = new ListView<>();
+    private final HBox botonesFibrasHBox = new HBox();
+    private final Button agregarFibraButton = new Button("Añadir");
+    private final Button modificarFibraButton = new Button("Modificar");
+    private final Button eliminarFibraButton = new Button("Eliminar");
 
     private final VBox lineasBox = new VBox();
     private final Label lineasBoxLabel = new Label("LÍNEAS MÓVILES");
@@ -309,5 +313,22 @@ public class TarifasView extends GridPane{
     public TextField getLineasGbField() {
         return lineasGbField;
     }
+
+    public HBox getBotonesFibrasHBox() {
+        return botonesFibrasHBox;
+    }
+
+    public Button getAgregarFibraButton() {
+        return agregarFibraButton;
+    }
+
+    public Button getModificarFibraButton() {
+        return modificarFibraButton;
+    }
+
+    public Button getEliminarFibraButton() {
+        return eliminarFibraButton;
+    }
+    
     
 }

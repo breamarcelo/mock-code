@@ -21,8 +21,8 @@ public class ProyectoInicialSpringApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		
 		
-		//Empleado empleado = new Empleado(0, "Pepe");
-		// empleadoService.save(empleado);
+		Empleado empleado = new Empleado(null, "Maria");
+		empleadoService.save(empleado);
 		// empleadoRepository.save(empleado);
 	}
 
