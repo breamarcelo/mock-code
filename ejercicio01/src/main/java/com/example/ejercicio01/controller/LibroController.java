@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ejercicio01.model.Libro;
 import com.example.ejercicio01.repository.LibroRepository;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/libros")
@@ -34,12 +37,12 @@ public class LibroController {
 	}
 	
 	@PostMapping("/")
-	public void guardarLibro(Libro libro) {
+	public void guardarLibro(@Valid @RequestBody Libro libro) {
 		libroRepository.save(libro);
 	}
 	
 	@PutMapping("/{id}")
-	public void actualizarLibro(@PathVariable Long id, Libro libro) {
+	public void actualizarLibro(@PathVariable Long id, @RequestBody Libro libro) {
 		if(libroRepository.existsById(id)) {
 			libroRepository.save(libro);
 		}
