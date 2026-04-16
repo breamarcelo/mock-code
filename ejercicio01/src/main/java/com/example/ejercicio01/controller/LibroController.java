@@ -39,14 +39,14 @@ public class LibroController {
 	}
 	
 	@PutMapping("/{id}")
-	public void actualizarLibro(Long id, Libro libro) {
+	public void actualizarLibro(@PathVariable Long id, Libro libro) {
 		if(libroRepository.existsById(id)) {
 			libroRepository.save(libro);
 		}
 	}
 	
 	@DeleteMapping("/{id}")
-	public void eliminarLinbro(Long id) {
+	public void eliminarLinbro(@PathVariable Long id) {
 		libroRepository.deleteById(id);
 	}
 }
