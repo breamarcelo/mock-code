@@ -50,32 +50,32 @@ public class PresupuestosDAO extends GenericDAOImpl<PresupuestosEntity, Integer,
 
     public PresupuestosEntity updatePresupuesto(PresupuestosDTO dto, PresupuestosEntity presuspuestoEntity, List<LineasPresupuestoEntity> lineasPresupuestoEntitys, EntityManager em) {
         if(dto.getTarifa() != null) {
-                presuspuestoEntity.setTarifa(TarifasMapper.getInstance().toEntity(dto.getTarifa(), em));
+            presuspuestoEntity.setTarifa(TarifasMapper.getInstance().toEntity(dto.getTarifa(), em));
+        }
+        if(dto.getFibra() != null){
+            presuspuestoEntity.setFibra(FibrasMapper.getInstance().toEntity(dto.getFibra(), em));
+        }
+        if(dto.getStreaming() != null) {
+            presuspuestoEntity.setStreaming(StreamingMapper.getInstance().toEntity(dto.getStreaming(), em));
+        }
+        if(dto.getCentralita() != null) {
+            presuspuestoEntity.setCentralita(CentralitasMapper.getInstance().toEntity(dto.getCentralita(), em));
+        }
+        if(dto.getPackFutbol() != null) {
+            presuspuestoEntity.setPackFutbol(PacksFutbolMapper.getInstance().toEntity(dto.getPackFutbol(), em));
+        }
+        if(dto.getDescuento() != null) {
+            presuspuestoEntity.setDescuento(DescuentosMapper.getInstance().toEntity(dto.getDescuento(), em));
+        }
+        presuspuestoEntity.getLineasPresupuesto().clear();
+        em.flush();
+        if(lineasPresupuestoEntitys != null) {
+            for(LineasPresupuestoEntity lineaEntity : lineasPresupuestoEntitys) {
+                lineaEntity.setPresupuesto(presuspuestoEntity);
+                presuspuestoEntity.getLineasPresupuesto().add(lineaEntity);
             }
-            if(dto.getFibra() != null){
-                presuspuestoEntity.setFibra(FibrasMapper.getInstance().toEntity(dto.getFibra(), em));
-            }
-            if(dto.getStreaming() != null) {
-                presuspuestoEntity.setStreaming(StreamingMapper.getInstance().toEntity(dto.getStreaming(), em));
-            }
-            if(dto.getCentralita() != null) {
-                presuspuestoEntity.setCentralita(CentralitasMapper.getInstance().toEntity(dto.getCentralita(), em));
-            }
-            if(dto.getPackFutbol() != null) {
-                presuspuestoEntity.setPackFutbol(PacksFutbolMapper.getInstance().toEntity(dto.getPackFutbol(), em));
-            }
-            if(dto.getDescuento() != null) {
-                presuspuestoEntity.setDescuento(DescuentosMapper.getInstance().toEntity(dto.getDescuento(), em));
-            }
-            presuspuestoEntity.getLineasPresupuesto().clear();
-            em.flush();
-            if(lineasPresupuestoEntitys != null) {
-                for(LineasPresupuestoEntity lineaEntity : lineasPresupuestoEntitys) {
-                    lineaEntity.setPresupuesto(presuspuestoEntity);
-                    presuspuestoEntity.getLineasPresupuesto().add(lineaEntity);
-                }
-                presuspuestoEntity = em.merge(presuspuestoEntity);
-            }
+            presuspuestoEntity = em.merge(presuspuestoEntity);
+        }
         return presuspuestoEntity;
     }
 }
