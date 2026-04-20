@@ -39,7 +39,7 @@ public class TarifasController {
         tarifas = new TarifasDTO();
         fibrasList = new ArrayList<>();
         serviciosAdicionales = new ServiciosAdicionalesDTO();
-        
+
         view.getButtonsBox().getChildren().addAll(view.getNuevoButton(), view.getAbrirButton(), view.getActualizarutton(), view.getGuardarButton());
         view.getButtonsBox().getStyleClass().add("menu-bar");
         view.getButtonsBox().setPrefWidth(Double.MAX_VALUE);
@@ -124,7 +124,7 @@ public class TarifasController {
             tarifas.setLlamadasMovil(view.getLineasLlamadasField().getText());
             tarifas.setGbMovil(view.getLineasGbField().getText());
             tarifas.setServiciosAdicionales(serviciosAdicionales);
-            TarifasService.getInstance().save(tarifas);
+            TarifasService.getInstance().saveTarifa(serviciosAdicionales, tarifas, fibrasList, null);
         });
 
         view.getCheckboxesBox().getChildren().addAll(view.getTarifaTvLabel(), view.getTarifaTvCheckBox(), view.getTarifaStreamingLabel(), view.getTarifaStreamingCheckBox());

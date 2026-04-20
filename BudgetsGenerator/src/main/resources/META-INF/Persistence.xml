@@ -17,11 +17,11 @@
         <class>com.budgetsgenerator.models.LineasPresupuestoEntity</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-            <property name="jakarta.persistence.jdbc.user" value="marcelo" />
+            <property name="jakarta.persistence.jdbc.user" value="root" />
             <property name="jakarta.persistence.jdbc.password" value="R2daH$R4urL" />
             <property name="hibernate.show_sql" value="true" />
             <property name="jakarta.persistence.jdbc.url"
-                value="jdbc:mysql://192.168.1.20/budgets_generator" />
+                value="jdbc:mysql://localhost/budgets_generator" />
             <property name="jakarta.persistence.schema-generation.database.action" value="update" />
         </properties>
     </persistence-unit>

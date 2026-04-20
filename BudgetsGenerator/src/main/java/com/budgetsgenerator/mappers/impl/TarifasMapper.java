@@ -52,7 +52,7 @@ public class TarifasMapper implements EntityMapper<TarifasEntity, TarifasDTO, En
         entity.setLineasMoviles(dto.getLineasMoviles());
         entity.setLlamadasMovil(dto.getLlamadasMovil());
         entity.setGbMovil(dto.getGbMovil());
-        entity.setFibras(tarifasDAO.findByIdWithFibras(dto.getId()).getFibras());
+        //entity.setFibras(tarifasDAO.findByIdWithFibras(dto.getId()).getFibras());
         entity.setPrecio(dto.getPrecio());
         entity.setServiciosAdicionales(ServiciosAdicionalesMapper.getInstance().toEntity(dto.getServiciosAdicionales(), em));
         entity.setTv(dto.isTv());
