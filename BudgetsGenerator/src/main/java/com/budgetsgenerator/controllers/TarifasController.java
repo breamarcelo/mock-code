@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.budgetsgenerator.config.UIUtil;
 import com.budgetsgenerator.dto.FibrasDTO;
+import com.budgetsgenerator.dto.ServiciosAdicionalesDTO;
 import com.budgetsgenerator.dto.TarifasDTO;
 import com.budgetsgenerator.services.impl.TarifasService;
 import com.budgetsgenerator.views.TarifasView;
@@ -27,15 +28,18 @@ public class TarifasController {
     public int counter = 0;
     public TarifasDTO tarifas;
     public List<FibrasDTO> fibrasList;
+    public ServiciosAdicionalesDTO serviciosAdicionales;
 
     public TarifasController(TarifasView view) {
         this.view = view;
-        this.tarifas = new TarifasDTO();
-        this.fibrasList = new ArrayList<>();
         load();
     }
-
+    
     public void load() {
+        tarifas = new TarifasDTO();
+        fibrasList = new ArrayList<>();
+        serviciosAdicionales = new ServiciosAdicionalesDTO();
+        
         view.getButtonsBox().getChildren().addAll(view.getNuevoButton(), view.getAbrirButton(), view.getActualizarutton(), view.getGuardarButton());
         view.getButtonsBox().getStyleClass().add("menu-bar");
         view.getButtonsBox().setPrefWidth(Double.MAX_VALUE);
@@ -99,7 +103,29 @@ public class TarifasController {
             dialog.showAndWait();
         });
 
-        // implement save button
+        view.getGuardarButton().setOnAction(eh -> {
+            serviciosAdicionales.setRoaming(view.getServiciosRoamingTextField().getText());
+            serviciosAdicionales.setInternacional(view.getServiciosInternacionalTextField().getText());
+            serviciosAdicionales.setLegalitas(view.getServiciosLegalitasBox().isSelected());
+            serviciosAdicionales.setCloud(view.getServiciosCloudBox().isSelected());
+            serviciosAdicionales.setCiberProteccion(view.getServiciosCiberProteccionBox().isSelected());
+            serviciosAdicionales.setAtencionPersonalizada(view.getServiciosAtencionPersonalizadaBox().isSelected());
+            serviciosAdicionales.setCentralita(view.getServiciosCentralitaTextField().getText());
+            serviciosAdicionales.setNumBeneficios(Integer.parseInt(view.getServiciosNumBeneficiosTextField().getText()));
+            serviciosAdicionales.setDescuentoBeneficios(view.getServiciosDescuentoBeneficiosTextField().getText());
+
+            tarifas.setNombre(view.getTarifaNombreTextField().getText());
+            tarifas.setTipo(view.getTarifaTipoTextField().getText());
+            tarifas.setPrecio(Double.parseDouble(view.getTarifaPrecioTextField().getText()));
+            tarifas.setTv(view.getTarifaTvCheckBox().isSelected());
+            tarifas.setStreaming(view.getTarifaStreamingCheckBox().isSelected());
+            tarifas.setFibras(fibrasList);
+            tarifas.setLineasMoviles(Integer.parseInt(view.getLineasNumField().getText()));
+            tarifas.setLlamadasMovil(view.getLineasLlamadasField().getText());
+            tarifas.setGbMovil(view.getLineasGbField().getText());
+            tarifas.setServiciosAdicionales(serviciosAdicionales);
+            TarifasService.getInstance().save(tarifas);
+        });
 
         view.getCheckboxesBox().getChildren().addAll(view.getTarifaTvLabel(), view.getTarifaTvCheckBox(), view.getTarifaStreamingLabel(), view.getTarifaStreamingCheckBox());
         for(Node node : view.getCheckboxesBox().getChildren()) {

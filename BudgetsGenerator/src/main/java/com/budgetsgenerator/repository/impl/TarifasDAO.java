@@ -3,8 +3,8 @@ package com.budgetsgenerator.repository.impl;
 import java.util.List;
 
 import com.budgetsgenerator.config.JPAUtil;
-import com.budgetsgenerator.dto.TarifasDTO;
 import com.budgetsgenerator.models.FibrasEntity;
+import com.budgetsgenerator.models.ServiciosAdicionalesEntity;
 import com.budgetsgenerator.models.TarifasEntity;
 import com.budgetsgenerator.repository.GenericDAOImpl;
 
@@ -29,7 +29,10 @@ public class TarifasDAO extends GenericDAOImpl<TarifasEntity, Integer, EntityMan
         }
     }
 
-    public TarifasEntity saveTarifa(TarifasDTO dto, TarifasEntity tarifaEntity, List<FibrasEntity> fibrasEntitys, EntityManager em) {
+    public TarifasEntity saveTarifa(ServiciosAdicionalesEntity serviciosEntity, TarifasEntity tarifaEntity, List<FibrasEntity> fibrasEntitys, EntityManager em) {
+        ServiciosAdicionalesEntity savedServicios = em.merge(serviciosEntity);
+        em.flush();
+        tarifaEntity.setServiciosAdicionales(savedServicios);
         TarifasEntity savedTarifa = em.merge(tarifaEntity);
         em.flush();
         if(fibrasEntitys != null) {
