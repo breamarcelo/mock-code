@@ -102,3 +102,7 @@ ListView .list-cell:selected {
 .cancel-btn {
     -fx-background-color: -cancel-btn-background;
 }
+
+Button:hover {
+    -fx-opacity: 0.7;
+}

@@ -182,6 +182,15 @@ public class TarifasController {
         for(Node node : view.getBotonesFibrasHBox().getChildren()) {
             view.getBotonesFibrasHBox().setMargin(node, new Insets(0, 20, 0, 0));
         }
+
+        view.getAgregarFibraButton().setOnAction(eh -> {
+            FibrasDTO nuevoFibra = new FibrasDTO();
+            nuevoFibra.setNombre(view.getFibraNombreTextField().getText()); 
+            nuevoFibra.setSobrecargo(Double.parseDouble(view.getFibraSobrecargoTextField().getText()));
+            fibrasList.add(nuevoFibra); 
+            view.getFibrasListView().getItems().clear();
+            view.getFibrasListView().getItems().addAll(fibrasList);
+        });
         
         UIUtil.populateVBox(view.getTarifasBox(), new ArrayList<>(Arrays.asList(view.getTarifasBoxLabel(), view.getTarifaNombreLabel(), view.getTarifaNombreTextField(), view.getTarifaTipoLabel(), view.getTarifaTipoTextField(), view.getTarifaPrecioLabel(), view.getTarifaPrecioTextField(), view.getCheckboxesBox())));
         UIUtil.populateVBox(view.getFibrasBox(), new ArrayList<>(Arrays.asList(view.getFibrasBoxLabel(), view.getFibraNombreLabel(), view.getFibraNombreTextField(), view.getFibraSobrecargoLabel(), view.getFibraSobrecargoTextField(), view.getBotonesFibrasHBox(), view.getFibrasListView())));
