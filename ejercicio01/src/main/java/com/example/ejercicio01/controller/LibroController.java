@@ -20,8 +20,8 @@ import com.example.ejercicio01.repository.LibroRepository;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/libros")
 @CrossOrigin(origins = "http://localhost:4200") 
+@RequestMapping("/api/libros")
 public class LibroController {
 	@Autowired
 	private LibroRepository libroRepository;
