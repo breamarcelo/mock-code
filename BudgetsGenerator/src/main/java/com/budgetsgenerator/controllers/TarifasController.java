@@ -14,6 +14,7 @@ import com.budgetsgenerator.views.TarifasView;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
@@ -104,27 +105,40 @@ public class TarifasController {
         });
 
         view.getGuardarButton().setOnAction(eh -> {
-            serviciosAdicionales.setRoaming(view.getServiciosRoamingTextField().getText());
-            serviciosAdicionales.setInternacional(view.getServiciosInternacionalTextField().getText());
+            serviciosAdicionales.setRoaming(view.getServiciosRoamingTextField().getText() != "" ? view.getServiciosRoamingTextField().getText() : null);
+            serviciosAdicionales.setInternacional(view.getServiciosInternacionalTextField().getText() != "" ? view.getServiciosInternacionalTextField().getText() : null);
             serviciosAdicionales.setLegalitas(view.getServiciosLegalitasBox().isSelected());
             serviciosAdicionales.setCloud(view.getServiciosCloudBox().isSelected());
             serviciosAdicionales.setCiberProteccion(view.getServiciosCiberProteccionBox().isSelected());
             serviciosAdicionales.setAtencionPersonalizada(view.getServiciosAtencionPersonalizadaBox().isSelected());
-            serviciosAdicionales.setCentralita(view.getServiciosCentralitaTextField().getText());
-            serviciosAdicionales.setNumBeneficios(Integer.parseInt(view.getServiciosNumBeneficiosTextField().getText()));
-            serviciosAdicionales.setDescuentoBeneficios(view.getServiciosDescuentoBeneficiosTextField().getText());
+            serviciosAdicionales.setCentralita(view.getServiciosCentralitaTextField().getText() != "" ? view.getServiciosCentralitaTextField().getText() : null);
+            serviciosAdicionales.setNumBeneficios(view.getServiciosNumBeneficiosTextField().getText() != "" ? Integer.parseInt(view.getServiciosNumBeneficiosTextField().getText()) : 0);
+            serviciosAdicionales.setDescuentoBeneficios(view.getServiciosDescuentoBeneficiosTextField().getText() != "" ? view.getServiciosDescuentoBeneficiosTextField().getText() : null);
 
-            tarifas.setNombre(view.getTarifaNombreTextField().getText());
-            tarifas.setTipo(view.getTarifaTipoTextField().getText());
-            tarifas.setPrecio(Double.parseDouble(view.getTarifaPrecioTextField().getText()));
+            tarifas.setNombre(view.getTarifaNombreTextField().getText() != "" ? view.getTarifaNombreTextField().getText() : null);
+            tarifas.setTipo(view.getTarifaTipoTextField().getText() != "" ? view.getTarifaTipoTextField().getText() : null);
+            tarifas.setPrecio(view.getTarifaPrecioTextField().getText() != "" ? Double.parseDouble(view.getTarifaPrecioTextField().getText()) :  0.00);
             tarifas.setTv(view.getTarifaTvCheckBox().isSelected());
             tarifas.setStreaming(view.getTarifaStreamingCheckBox().isSelected());
             tarifas.setFibras(fibrasList);
-            tarifas.setLineasMoviles(Integer.parseInt(view.getLineasNumField().getText()));
-            tarifas.setLlamadasMovil(view.getLineasLlamadasField().getText());
-            tarifas.setGbMovil(view.getLineasGbField().getText());
+            tarifas.setLineasMoviles(view.getLineasNumField().getText() != "" ? Integer.parseInt(view.getLineasNumField().getText()) : 0);
+            tarifas.setLlamadasMovil(view.getLineasLlamadasField().getText() != "" ? view.getLineasLlamadasField().getText(): null);
+            tarifas.setGbMovil(view.getLineasGbField().getText() != "" ? view.getLineasGbField().getText() : null);
             tarifas.setServiciosAdicionales(serviciosAdicionales);
             TarifasService.getInstance().saveTarifa(serviciosAdicionales, tarifas, fibrasList, null);
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
+            alert.getDialogPane().getStyleClass().add("dialog");
+            alert.setContentText("Tarifa guardada correctamente.");
+            alert.setHeaderText("");
+            alert.setTitle("Confirmación");
+            alert.setGraphic(null);
+            alert.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
+            alert.showAndWait();
+
+            limpiarFormulario();
         });
 
         view.getCheckboxesBox().getChildren().addAll(view.getTarifaTvLabel(), view.getTarifaTvCheckBox(), view.getTarifaStreamingLabel(), view.getTarifaStreamingCheckBox());
@@ -170,7 +184,6 @@ public class TarifasController {
             }
         });
 
-
         view.getFibrasListView().setOnMouseClicked(eh-> {
             FibrasDTO selected = view.getFibrasListView().getSelectionModel().getSelectedItem();
             view.getFibraNombreTextField().setText(selected.getNombre()); 
@@ -188,6 +201,22 @@ public class TarifasController {
             nuevoFibra.setNombre(view.getFibraNombreTextField().getText()); 
             nuevoFibra.setSobrecargo(Double.parseDouble(view.getFibraSobrecargoTextField().getText()));
             fibrasList.add(nuevoFibra); 
+            view.getFibrasListView().getItems().clear();
+            view.getFibrasListView().getItems().addAll(fibrasList);
+        });
+
+        view.getModificarFibraButton().setOnAction(eh -> {
+            int index = fibrasList.indexOf(view.getFibrasListView().getSelectionModel().getSelectedItem());
+            FibrasDTO selection = view.getFibrasListView().getSelectionModel().getSelectedItem();
+            selection.setNombre(view.getFibraNombreTextField().getText());
+            selection.setSobrecargo(Double.parseDouble(view.getFibraSobrecargoTextField().getText()));
+            fibrasList.set(index, selection);
+            view.getFibrasListView().getItems().clear();
+            view.getFibrasListView().getItems().addAll(fibrasList);
+        });
+
+        view.getEliminarFibraButton().setOnAction(eh -> {
+            fibrasList.remove(fibrasList.indexOf(view.getFibrasListView().getSelectionModel().getSelectedItem()));
             view.getFibrasListView().getItems().clear();
             view.getFibrasListView().getItems().addAll(fibrasList);
         });
