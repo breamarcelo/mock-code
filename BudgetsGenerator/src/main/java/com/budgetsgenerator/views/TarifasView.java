@@ -17,7 +17,7 @@ public class TarifasView extends GridPane{
     private final HBox buttonsBox = new HBox();
     private final Button nuevoButton = new Button("Nuevo");
     private final Button abrirButton = new Button("Abrir");
-    private final Button actualizarutton = new Button("Actualizar");
+    private final Button actualizarButton = new Button("Actualizar");
     private final Button guardarButton = new Button("Guardar");
 
     private final VBox tarifasBox = new VBox();
@@ -106,8 +106,8 @@ public class TarifasView extends GridPane{
         return abrirButton;
     }
 
-    public Button getActualizarutton() {
-        return actualizarutton;
+    public Button getActualizarButton() {
+        return actualizarButton;
     }
 
     public Button getGuardarButton() {

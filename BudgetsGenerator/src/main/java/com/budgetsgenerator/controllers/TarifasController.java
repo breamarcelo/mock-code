@@ -41,7 +41,7 @@ public class TarifasController {
         fibrasList = new ArrayList<>();
         serviciosAdicionales = new ServiciosAdicionalesDTO();
 
-        view.getButtonsBox().getChildren().addAll(view.getNuevoButton(), view.getAbrirButton(), view.getActualizarutton(), view.getGuardarButton());
+        view.getButtonsBox().getChildren().addAll(view.getNuevoButton(), view.getAbrirButton(), view.getActualizarButton(), view.getGuardarButton());
         view.getButtonsBox().getStyleClass().add("menu-bar");
         view.getButtonsBox().setPrefWidth(Double.MAX_VALUE);
         for(Node node : view.getButtonsBox().getChildren()){
@@ -102,6 +102,42 @@ public class TarifasController {
             });
 
             dialog.showAndWait();
+        });
+
+        view.getActualizarButton().setOnAction(eh -> {
+            tarifas.setNombre(view.getTarifaNombreTextField().getText() != "" ? view.getTarifaNombreTextField().getText() : null);
+            tarifas.setTipo(view.getTarifaTipoTextField().getText() != "" ? view.getTarifaTipoTextField().getText() : null);
+            tarifas.setPrecio(view.getTarifaPrecioTextField().getText() != "" ? Double.parseDouble(view.getTarifaPrecioTextField().getText()) : 0.00);
+            tarifas.setTv(view.getTarifaTvCheckBox().isSelected());
+            tarifas.setStreaming(view.getTarifaStreamingCheckBox().isSelected());
+            tarifas.setFibras(fibrasList);
+            tarifas.setLineasMoviles(view.getLineasNumField().getText() != "" ? Integer.parseInt(view.getLineasNumField().getText()) : 0);
+            tarifas.setLlamadasMovil(view.getLineasLlamadasField().getText() != "" ? view.getLineasLlamadasField().getText() : null);
+            tarifas.setGbMovil(view.getLineasGbField().getText() != "" ? view.getLineasGbField().getText() : null);
+            tarifas.setPrecio(view.getTarifaPrecioTextField().getText() != "" ? Double.parseDouble(view.getTarifaPrecioTextField().getText()) : 0.00);
+
+            serviciosAdicionales.setRoaming(view.getServiciosRoamingTextField().getText() != null ? view.getServiciosRoamingTextField().getText() : null);
+            serviciosAdicionales.setInternacional(view.getServiciosInternacionalTextField().getText() != null ? view.getServiciosInternacionalTextField().getText() : null);
+            serviciosAdicionales.setLegalitas(view.getServiciosLegalitasBox().isSelected());
+            serviciosAdicionales.setCloud(view.getServiciosCloudBox().isSelected());
+            serviciosAdicionales.setCiberProteccion(view.getServiciosCiberProteccionBox().isSelected());
+            serviciosAdicionales.setAtencionPersonalizada(view.getServiciosAtencionPersonalizadaBox().isSelected());
+            serviciosAdicionales.setCentralita(view.getServiciosCentralitaTextField().getText() != null ? view.getServiciosCentralitaTextField().getText() : null);
+            serviciosAdicionales.setNumBeneficios(view.getServiciosNumBeneficiosTextField().getText() != "" ? Integer.parseInt(view.getServiciosNumBeneficiosTextField().getText()) : 0);
+            serviciosAdicionales.setDescuentoBeneficios(view.getServiciosDescuentoBeneficiosTextField().getText() != "" ? view.getServiciosDescuentoBeneficiosTextField().getText() : null);
+            tarifas.setServiciosAdicionales(serviciosAdicionales);
+            TarifasService.getInstance().updateTarifa(tarifas, null);
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
+            alert.getDialogPane().getStyleClass().add("dialog");
+            alert.setContentText("Tarifa actualizada correctamente.");
+            alert.setHeaderText("");
+            alert.setTitle("Confirmación");
+            alert.setGraphic(null);
+            alert.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
+            alert.showAndWait();
         });
 
         view.getGuardarButton().setOnAction(eh -> {
@@ -179,7 +215,7 @@ public class TarifasController {
                 if(empty || item == null) {
                     setText(null);
                 } else {
-                    setText(item.getNombre());
+                    setText(item.getNombre() + (item.getSobrecargo() > 0.00 ? " (+" + item.getSobrecargo() + "€)" : ""));
                 }
             }
         });
@@ -203,6 +239,8 @@ public class TarifasController {
             fibrasList.add(nuevoFibra); 
             view.getFibrasListView().getItems().clear();
             view.getFibrasListView().getItems().addAll(fibrasList);
+            view.getFibraNombreTextField().setText("");
+            view.getFibraSobrecargoTextField().setText("");
         });
 
         view.getModificarFibraButton().setOnAction(eh -> {
@@ -253,6 +291,7 @@ public class TarifasController {
 
     public void loadTarifaDTO(TarifasDTO selected) {
         tarifas = selected;
+        serviciosAdicionales = selected.getServiciosAdicionales();
         view.getTarifaNombreTextField().setText(selected.getNombre());
         view.getTarifaTipoTextField().setText(selected.getTipo());
         view.getTarifaPrecioTextField().setText(Double.toString(selected.getPrecio()));

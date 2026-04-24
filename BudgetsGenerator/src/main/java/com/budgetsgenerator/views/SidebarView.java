@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 public class SidebarView extends VBox{
     private Button presupuestosButton = new Button("PRESUPUESTOS");
     private Button tarifasButton = new Button("TARIFAS");
+    private Button lineasAdicionalesButton = new Button("LÍNEAS ADICIONALES");
     private Button productosButton = new Button("PRODUCTOS");
     private Button ajustesButton = new Button("AJUSTES");
 
@@ -25,8 +26,8 @@ public class SidebarView extends VBox{
     public void load() {
         Region start = new Region();
         Region end = new Region();
-
-        this.getChildren().addAll(start, this.getPresupuestosButton(), this.getTarifasButton(), this.getProductosButton(), this.getAjustesButton(), end);
+        
+        this.getChildren().addAll(start, this.getPresupuestosButton(), this.getTarifasButton(), this.getLineasAdicionalesButton(),this.getProductosButton(), this.getAjustesButton(), end);
         for(Node node : this.getChildren()){
             if(node instanceof Button) {
                 this.setMargin(node, new Insets(0, 0, 10, 0));
@@ -45,7 +46,11 @@ public class SidebarView extends VBox{
 
         Region phoneIcon = new Region();
         phoneIcon.getStyleClass().addAll("icon", "phone-icon");
-        this.getProductosButton().setGraphic(phoneIcon);
+        this.getLineasAdicionalesButton().setGraphic(phoneIcon);
+
+        Region shoppingIcon = new Region();
+        shoppingIcon.getStyleClass().addAll("icon", "shopping-icon");
+        this.getProductosButton().setGraphic(shoppingIcon);
         
         Region gearIcon = new Region();
         gearIcon.getStyleClass().addAll("icon", "gear-icon");
@@ -82,6 +87,10 @@ public class SidebarView extends VBox{
 
     public void setAjustesButton(Button ajustesButton) {
         this.ajustesButton = ajustesButton;
+    }
+
+    public Button getLineasAdicionalesButton() {
+        return lineasAdicionalesButton;
     }
 
     

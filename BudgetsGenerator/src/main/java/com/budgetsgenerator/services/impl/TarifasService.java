@@ -53,4 +53,20 @@ public class TarifasService extends GenericServiceImpl<TarifasDTO, TarifasMapper
             em.close();
         }
     }
+
+    public static void updateTarifa(TarifasDTO tarifa, EntityManager em) {
+        em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            TarifasEntity tarifasEntity = TarifasMapper.getInstance().toEntity(tarifa, em);
+            TarifasDAO.updateTarifa(tarifasEntity, em);
+        } catch(Exception e) {
+          if(em.getTransaction().isActive()) {
+            em.getTransaction().rollback();
+          } 
+          throw e;
+        } finally {
+            em.close();
+        }
+    }
 }
