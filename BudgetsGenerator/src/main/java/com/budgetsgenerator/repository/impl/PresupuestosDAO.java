@@ -38,6 +38,7 @@ public class PresupuestosDAO extends GenericDAOImpl<PresupuestosEntity, Integer,
     public PresupuestosEntity savePresupuesto(PresupuestosEntity presuspuestoEntity, List<LineasPresupuestoEntity> lineasPresupuestoEntitys, EntityManager em) {
         PresupuestosEntity savedPresupuesto = em.merge(presuspuestoEntity);
         em.flush();
+        savedPresupuesto.getLineasPresupuesto().clear();
         if(lineasPresupuestoEntitys != null) {
             for(LineasPresupuestoEntity lineaEntity : lineasPresupuestoEntitys){
                 lineaEntity.setPresupuesto(savedPresupuesto);

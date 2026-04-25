@@ -54,12 +54,15 @@ public class TarifasService extends GenericServiceImpl<TarifasDTO, TarifasMapper
         }
     }
 
-    public static void updateTarifa(TarifasDTO tarifa, EntityManager em) {
-        em = JPAUtil.getEntityManager();
+    public static void updateTarifa(TarifasDTO tarifa, List<FibrasDTO> fibrasDTOs) {
+        EntityManager em = JPAUtil.getEntityManager();
+        TarifasDAO tarifasDAO = new TarifasDAO(TarifasEntity.class);
         try {
             em.getTransaction().begin();
             TarifasEntity tarifasEntity = TarifasMapper.getInstance().toEntity(tarifa, em);
-            TarifasDAO.updateTarifa(tarifasEntity, em);
+            List<FibrasEntity> fibrasEntitys = FibrasMapper.getInstance().toEntityList(fibrasDTOs, em);
+            tarifasDAO.updateTarifa(tarifasEntity, fibrasEntitys, em);
+            em.getTransaction().commit();
         } catch(Exception e) {
           if(em.getTransaction().isActive()) {
             em.getTransaction().rollback();

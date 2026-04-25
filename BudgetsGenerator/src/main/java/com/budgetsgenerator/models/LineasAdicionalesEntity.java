@@ -17,7 +17,7 @@ public class LineasAdicionalesEntity {
     @Id
     @Column(name="PK_ID")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name="Nombre")
     private String nombre;
@@ -46,7 +46,7 @@ public class LineasAdicionalesEntity {
     public LineasAdicionalesEntity() {
     }
 
-    public LineasAdicionalesEntity(int id, String nombre, String tipo, int numLineas, String llamadas, String gb,
+    public LineasAdicionalesEntity(Integer id, String nombre, String tipo, int numLineas, String llamadas, String gb,
             String fibra, double precio) {
         this.id = id;
         this.nombre = nombre;
@@ -58,11 +58,11 @@ public class LineasAdicionalesEntity {
         this.precio = precio;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

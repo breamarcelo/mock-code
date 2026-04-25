@@ -126,7 +126,7 @@ public class TarifasController {
             serviciosAdicionales.setNumBeneficios(view.getServiciosNumBeneficiosTextField().getText() != "" ? Integer.parseInt(view.getServiciosNumBeneficiosTextField().getText()) : 0);
             serviciosAdicionales.setDescuentoBeneficios(view.getServiciosDescuentoBeneficiosTextField().getText() != "" ? view.getServiciosDescuentoBeneficiosTextField().getText() : null);
             tarifas.setServiciosAdicionales(serviciosAdicionales);
-            TarifasService.getInstance().updateTarifa(tarifas, null);
+            TarifasService.getInstance().updateTarifa(tarifas, fibrasList);
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());

@@ -77,7 +77,7 @@ public class PresupuestosView extends GridPane{
         this.add(productosAdicionalesVBox, 0, 3, 1, 1);
         this.add(lineasAdicionalesVBox, 0, 4, 1, 2);
         this.add(descuentosVBox, 1, 1, 1, 1);
-        this.add(resumenVBox, 1, 2, 1, 3);
+        this.add(resumenVBox, 1, 3, 1, 3);
     }
 
     public ComboBox<TarifasDTO> getTarifasCombo() {

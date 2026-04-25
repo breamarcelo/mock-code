@@ -1,6 +1,5 @@
 package com.budgetsgenerator.repository.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.budgetsgenerator.config.JPAUtil;
@@ -46,19 +45,18 @@ public class TarifasDAO extends GenericDAOImpl<TarifasEntity, Integer, EntityMan
         return savedTarifa;
     }
 
-    public static void updateTarifa(TarifasEntity tarifasEntity, EntityManager em) {
+    public static void updateTarifa(TarifasEntity tarifasEntity, List<FibrasEntity> fibrasEntitys, EntityManager em) {
         ServiciosAdicionalesEntity savedServicios = em.merge(tarifasEntity.getServiciosAdicionales());
         em.flush();
         tarifasEntity.setServiciosAdicionales(savedServicios);
-        TarifasEntity savedTarifa = em.merge(tarifasEntity);
+        tarifasEntity.getFibras().clear();
         em.flush();
-        savedTarifa.setFibras(new ArrayList<>());
-        if(tarifasEntity.getFibras() != null) {
-            for(FibrasEntity fibrasEntity : tarifasEntity.getFibras()) {
-                fibrasEntity.setTarifa(savedTarifa);
-                savedTarifa.getFibras().add(fibrasEntity);
+        if(fibrasEntitys != null) {
+            for(FibrasEntity fibraEntity : fibrasEntitys) {
+                fibraEntity.setTarifa(tarifasEntity);
+                tarifasEntity.getFibras().add(fibraEntity);
             }
-            savedTarifa = em.merge(savedTarifa);
+            em.merge(tarifasEntity);
         }
 
     }
