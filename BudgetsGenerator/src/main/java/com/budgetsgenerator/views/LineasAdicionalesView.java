@@ -18,7 +18,7 @@ public class LineasAdicionalesView extends GridPane {
     private final Button guardarButton = new Button("Guardar");
 
     private final VBox formularioVBox = new VBox();
-    private final Label formularioLabel = new Label("FORMULARIO");
+    private final Label formularioLabel = new Label("LÍNEAS ADICIONALES");
     private final Label formularioNombreLabel = new Label("Nombre");
     private final TextField formularioNombreTextField = new TextField();
     private final Label formularioTipoLabel = new Label("Tipo");
@@ -33,9 +33,6 @@ public class LineasAdicionalesView extends GridPane {
     private final TextField formularioFibraTextField = new TextField();
     private final Label formularioPrecioLabel = new Label("Precio");
     private final TextField formularioPrecioTextField = new TextField();
-
-    private final VBox listaVBox = new VBox();
-    private final Label listaLabel = new Label("LISTA");
     private final HBox listaButtonsBox = new HBox();
     private final Button agregarLineaButton = new Button("Añadir");
     private final Button modificarLineaButton = new Button("Modificar");
@@ -52,8 +49,7 @@ public class LineasAdicionalesView extends GridPane {
         this.getColumnConstraints().get(1).setPercentWidth(50);
         
         this.add(buttonsHBox, 0, 0, 2, 1);
-        this.add(formularioVBox, 0, 1, 1, 2);
-        this.add(listaVBox, 1, 1, 1, 2);
+        this.add(formularioVBox, 0, 1, 2, 1);
     }
 
     public HBox getButtonsHBox() {
@@ -130,14 +126,6 @@ public class LineasAdicionalesView extends GridPane {
 
     public TextField getFormularioPrecioTextField() {
         return formularioPrecioTextField;
-    }
-
-    public VBox getListaVBox() {
-        return listaVBox;
-    }
-
-    public Label getListaLabel() {
-        return listaLabel;
     }
 
     public ListView<LineasAdicionalesDTO> getListaView() {

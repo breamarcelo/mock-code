@@ -88,9 +88,8 @@ public class LineasAdicionalesController {
             limpiarFormulario();
         });
 
-        UIUtil.populateVBox(view.getFormularioVBox(), new ArrayList<>(Arrays.asList(view.getFormularioLabel(), view.getFormularioNombreLabel(), view.getFormularioNombreTextField(), view.getFormularioTipoLabel(), view.getFormularioTipoTextField(), view.getFormularioNumLineasLabel(), view.getFormularioNumLineasTextField(), view.getFormularioLlamadasLabel(), view.getFormularioLlamadasTextField(), view.getFormularioGbLabel(), view.getFormularioGbTextField(), view.getFormularioFibraLabel(), view.getFormularioFibraTextField(), view.getFormularioPrecioLabel(), view.getFormularioPrecioTextField())));
-        UIUtil.populateVBox(view.getListaVBox(), new ArrayList<>(Arrays.asList(view.getListaLabel(), view.getListaButtonsBox(), view.getListaView())));
-        
+        UIUtil.populateVBox(view.getFormularioVBox(), new ArrayList<>(Arrays.asList(view.getFormularioLabel(), view.getFormularioNombreLabel(), view.getFormularioNombreTextField(), view.getFormularioTipoLabel(), view.getFormularioTipoTextField(), view.getFormularioNumLineasLabel(), view.getFormularioNumLineasTextField(), view.getFormularioLlamadasLabel(), view.getFormularioLlamadasTextField(), view.getFormularioGbLabel(), view.getFormularioGbTextField(), view.getFormularioFibraLabel(), view.getFormularioFibraTextField(), view.getFormularioPrecioLabel(), view.getFormularioPrecioTextField(), view.getListaButtonsBox(), view.getListaView())));
+    
         view.getListaView().getItems().addAll(lineasAdcicionaleList);
 
         view.getListaView().setCellFactory(param -> new ListCell<LineasAdicionalesDTO>() {

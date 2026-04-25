@@ -20,7 +20,7 @@ public void load() {
         Region start = new Region();
         Region end = new Region();
         
-        view.getChildren().addAll(start, view.getPresupuestosButton(), view.getTarifasButton(), view.getLineasAdicionalesButton(),view.getProductosButton(), view.getAjustesButton(), end);
+        view.getChildren().addAll(start, view.getPresupuestosButton(), view.getTarifasButton(), view.getLineasAdicionalesButton(),view.getProductosButton(), end, view.getAjustesButton());
         for(Node node : view.getChildren()){
             if(node instanceof Button) {
                 view.setMargin(node, new Insets(0, 0, 10, 0));

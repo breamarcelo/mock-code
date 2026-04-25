@@ -3,6 +3,7 @@ package com.budgetsgenerator.controllers;
 import com.budgetsgenerator.views.LineasAdicionalesView;
 import com.budgetsgenerator.views.MainView;
 import com.budgetsgenerator.views.PresupuestosView;
+import com.budgetsgenerator.views.ProductosView;
 import com.budgetsgenerator.views.TarifasView;
 
 import javafx.scene.Node;
@@ -39,6 +40,14 @@ public class MainController {
             unselectButtons();
             view.getSidebar().getLineasAdicionalesButton().getStyleClass().add("selected");
             view.setCenterContent(lineasAdicionalesView);
+        });
+
+        view.getSidebar().getProductosButton().setOnAction(e -> {
+            ProductosView productosView = new ProductosView();
+            ProductosController productosController = new ProductosController(productosView);
+            unselectButtons();
+            view.getSidebar().getProductosButton().getStyleClass().add("selected");
+            view.setCenterContent(productosView);
         });
     }
 
