@@ -58,6 +58,37 @@ public class ProductosController {
             view.getDescuentosPorcientoTextField().setText(Integer.toString(selected.getPorciento()));
         });
 
+        view.getDescuentosAgregarButton().setOnAction(eh -> {
+            if(!view.getDescuentosPorcientoTextField().getText().isEmpty()) {
+                DescuentosDTO nuevo = new DescuentosDTO();
+                nuevo.setPorciento(Integer.parseInt(view.getDescuentosPorcientoTextField().getText()));
+                descuentoDTOs.add(nuevo);
+                view.getDescuentosListView().getItems().clear();
+                view.getDescuentosListView().getItems().addAll(descuentoDTOs);
+                view.getDescuentosPorcientoTextField().setText("");
+            }
+        });
+
+        view.getDescuentosModificarButton().setOnAction(eh -> {
+            int index = view.getDescuentosListView().getSelectionModel().getSelectedIndex();
+            DescuentosDTO selected = view.getDescuentosListView().getSelectionModel().getSelectedItem();
+            if(!view.getDescuentosPorcientoTextField().getText().isEmpty()) {
+                selected.setPorciento(Integer.parseInt(view.getDescuentosPorcientoTextField().getText()));
+            }
+            descuentoDTOs.set(index, selected);
+            view.getDescuentosListView().getItems().clear();
+            view.getDescuentosListView().getItems().addAll(descuentoDTOs);
+            view.getDescuentosPorcientoTextField().setText("");
+        });
+
+        view.getDescuentosEliminarButton().setOnAction(eh-> {
+            int index = view.getDescuentosListView().getSelectionModel().getSelectedIndex();
+            descuentoDTOs.remove(index);
+            view.getDescuentosListView().getItems().clear();
+            view.getDescuentosListView().getItems().addAll(descuentoDTOs);
+            view.getDescuentosPorcientoTextField().setText("");
+        });
+
         view.getStreamingListView().setCellFactory(param -> new ListCell<StreamingDTO>() {
             @Override
             public void updateItem(StreamingDTO item, boolean empty) {
@@ -73,6 +104,37 @@ public class ProductosController {
         view.getStreamingListView().setOnMouseClicked(eh -> {
             StreamingDTO selected = view.getStreamingListView().getSelectionModel().getSelectedItem();
             view.getStreamingNombreTextField().setText(selected.getNombre());
+        });
+
+        view.getStreamingAgregarButton().setOnAction(eh -> {
+            if(!view.getStreamingNombreTextField().getText().isEmpty()) {
+                StreamingDTO nuevo = new StreamingDTO();
+                nuevo.setNombre(view.getStreamingNombreTextField().getText());
+                streamingDTOs.add(nuevo);
+                view.getStreamingListView().getItems().clear();
+                view.getStreamingListView().getItems().addAll(streamingDTOs);
+                view.getStreamingNombreTextField().setText("");
+            }
+        });
+
+        view.getStreamingModificarButton().setOnAction(eh -> {
+            int index = view.getStreamingListView().getSelectionModel().getSelectedIndex();
+            StreamingDTO selected = view.getStreamingListView().getSelectionModel().getSelectedItem();
+            if(!view.getStreamingNombreTextField().getText().isEmpty()) {
+                selected.setNombre(view.getStreamingNombreTextField().getText());
+            }
+            streamingDTOs.set(index, selected);
+            view.getStreamingListView().getItems().clear();
+            view.getStreamingListView().getItems().addAll(streamingDTOs);
+            view.getStreamingNombreTextField().setText("");
+        });
+
+        view.getStreamingEliminarButton().setOnAction(eh-> {
+            int index = view.getStreamingListView().getSelectionModel().getSelectedIndex();
+            streamingDTOs.remove(index);
+            view.getStreamingListView().getItems().clear();
+            view.getStreamingListView().getItems().addAll(streamingDTOs);
+            view.getStreamingNombreTextField().setText("");
         });
         
         view.getPacksFutbolListView().setCellFactory(param -> new ListCell<PacksFutbolDTO>() {
@@ -92,6 +154,42 @@ public class ProductosController {
             view.getPacksFutbolNombreTextField().setText(selected.getNombre());
             view.getPacksFutbolPrecioTextField().setText(Double.toString(selected.getPrecio()));
         });
+
+        view.getPacksFutbolAgregarButton().setOnAction(eh -> {
+            if(!view.getPacksFutbolNombreTextField().getText().isEmpty()) {
+                PacksFutbolDTO nuevo = new PacksFutbolDTO();
+                nuevo.setNombre(view.getPacksFutbolNombreTextField().getText());
+                nuevo.setPrecio(Double.parseDouble(view.getPacksFutbolPrecioTextField().getText()));
+                packsFutbolDTOs.add(nuevo);
+                view.getPacksFutbolListView().getItems().clear();
+                view.getPacksFutbolListView().getItems().addAll(packsFutbolDTOs);
+                view.getPacksFutbolNombreTextField().setText("");
+                view.getPacksFutbolPrecioTextField().setText("");
+            }
+        });
+        
+        view.getPacksFutbolModificarButton().setOnAction(eh -> {
+            int index = view.getPacksFutbolListView().getSelectionModel().getSelectedIndex();
+            PacksFutbolDTO selected = view.getPacksFutbolListView().getSelectionModel().getSelectedItem();
+            if(!view.getPacksFutbolNombreTextField().getText().isEmpty() && !view.getPacksFutbolPrecioTextField().getText().isEmpty()) {
+                selected.setNombre(view.getPacksFutbolNombreTextField().getText());
+                selected.setPrecio(Double.parseDouble(view.getPacksFutbolPrecioTextField().getText()));
+            }
+            packsFutbolDTOs.set(index, selected);
+            view.getPacksFutbolListView().getItems().clear();
+            view.getPacksFutbolListView().getItems().addAll(packsFutbolDTOs);
+            view.getPacksFutbolNombreTextField().setText("");
+            view.getPacksFutbolPrecioTextField().setText("");
+        });
+
+        view.getPacksFutbolEliminarButton().setOnAction(eh-> {
+            int index = view.getPacksFutbolListView().getSelectionModel().getSelectedIndex();
+            packsFutbolDTOs.remove(index);
+            view.getPacksFutbolListView().getItems().clear();
+            view.getPacksFutbolListView().getItems().addAll(packsFutbolDTOs);
+            view.getPacksFutbolNombreTextField().setText("");
+            view.getPacksFutbolPrecioTextField().setText("");
+        });
         
         view.getCentralitasListView().setCellFactory(param -> new ListCell<CentralitasDTO>() {
             @Override
@@ -109,6 +207,42 @@ public class ProductosController {
             CentralitasDTO selected = view.getCentralitasListView().getSelectionModel().getSelectedItem();
             view.getCentralitasNombreTextField().setText(selected.getNombre());
             view.getCentralitasPrecioTextField().setText(Double.toString(selected.getPrecio()));
+        });
+
+        view.getCentralitasAgregarButton().setOnAction(eh -> {
+            if(!view.getCentralitasNombreTextField().getText().isEmpty()) {
+                CentralitasDTO nuevo = new CentralitasDTO();
+                nuevo.setNombre(view.getCentralitasNombreTextField().getText());
+                nuevo.setPrecio(Double.parseDouble(view.getCentralitasPrecioTextField().getText()));
+                centralitasDTOs.add(nuevo);
+                view.getCentralitasListView().getItems().clear();
+                view.getCentralitasListView().getItems().addAll(centralitasDTOs);
+                view.getCentralitasNombreTextField().setText("");
+                view.getCentralitasPrecioTextField().setText("");
+            }
+        });
+        
+        view.getCentralitasModificarButton().setOnAction(eh -> {
+            int index = view.getCentralitasListView().getSelectionModel().getSelectedIndex();
+            CentralitasDTO selected = view.getCentralitasListView().getSelectionModel().getSelectedItem();
+            if(!view.getCentralitasNombreTextField().getText().isEmpty() && !view.getCentralitasPrecioTextField().getText().isEmpty()) {
+                selected.setNombre(view.getCentralitasNombreTextField().getText());
+                selected.setPrecio(Double.parseDouble(view.getCentralitasPrecioTextField().getText()));
+            }
+            centralitasDTOs.set(index, selected);
+            view.getCentralitasListView().getItems().clear();
+            view.getCentralitasListView().getItems().addAll(centralitasDTOs);
+            view.getCentralitasNombreTextField().setText("");
+            view.getCentralitasPrecioTextField().setText("");
+        });
+
+        view.getCentralitasEliminarButton().setOnAction(eh-> {
+            int index = view.getCentralitasListView().getSelectionModel().getSelectedIndex();
+            centralitasDTOs.remove(index);
+            view.getCentralitasListView().getItems().clear();
+            view.getCentralitasListView().getItems().addAll(centralitasDTOs);
+            view.getCentralitasNombreTextField().setText("");
+            view.getCentralitasPrecioTextField().setText("");
         });
 
         view.getButtonsHBox().getChildren().addAll(view.getLimpiarButton(), view.getGuardarButton());
@@ -149,5 +283,9 @@ public class ProductosController {
         UIUtil.populateVBox(view.getCentralitasVBox(), new ArrayList<>(Arrays.asList(view.getCentralitasVBoxLabel(), view.getCentralitasNombreLabel(), view.getCentralitasNombreTextField(), view.getCentralitasPrecioLabel(), view.getCentralitasPrecioTextField(), view.getCentralitasButtonsBox(), view.getCentralitasListView())));
         UIUtil.populateVBox(view.getPacksFutbolVBox(), new ArrayList<>(Arrays.asList(view.getPacksFutbolVBoxLabel(), view.getPacksFutbolNombreLabel(), view.getPacksFutbolNombreTextField(), view.getPacksFutbolPrecioLabel(), view.getPacksFutbolPrecioTextField(), view.getPacksFutbolButtonsBox(), view.getPacksFutbolListView())));
 
+    }
+
+    public void limpiarDescuentos() {
+        view.getDescuentosPorcientoTextField().setText("");
     }
 }
