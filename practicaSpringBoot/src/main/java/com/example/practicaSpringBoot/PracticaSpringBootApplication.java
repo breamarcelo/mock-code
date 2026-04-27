@@ -10,8 +10,8 @@ import com.example.practicaSpringBoot.entity.Cliente;
 
 @SpringBootApplication
 public class PracticaSpringBootApplication implements CommandLineRunner {
-	//@Autowired
-	//private ClienteController clienteController;
+	@Autowired
+	private ClienteController clienteController;
 
 	public static void main(String[] args) {
 		SpringApplication.run(PracticaSpringBootApplication.class, args);
@@ -19,11 +19,11 @@ public class PracticaSpringBootApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		//Cliente c1 = new Cliente(null, "Marcelo", "marcelo@mail.com");
-		//Cliente c2 = new Cliente(null, "Juan", "juan@mail.com");
+		Cliente c1 = new Cliente(null, "Marcelo", "marcelo@mail.com");
+		Cliente c2 = new Cliente(null, "Juan", "juan@mail.com");
 		
-		//clienteController.crear(c1);
-		//clienteController.crear(c2);
+		// clienteController.crear(c1);
+		// clienteController.crear(c2);
 	}
 
 }
