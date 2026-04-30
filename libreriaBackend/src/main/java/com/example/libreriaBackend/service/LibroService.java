@@ -13,26 +13,26 @@ import com.example.libreriaBackend.repository.LibroRepository;
 public class LibroService {
 	@Autowired
 	private LibroRepository repository;
-	
+
 	public List<Libro> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public Optional<Libro> findById(Long id) {
 		return repository.findById(id);
 	}
-	
+
 	public Libro save(Libro libro) {
 		return repository.save(libro);
 	}
-	
+
 	public Libro update(Long id, Libro libro) {
 		if(repository.existsById(id)) {
 			return repository.save(libro);
 		}
 		return null;
 	}
-	
+
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}

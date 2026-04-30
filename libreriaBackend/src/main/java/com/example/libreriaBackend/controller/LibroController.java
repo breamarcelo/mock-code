@@ -18,32 +18,32 @@ import com.example.libreriaBackend.entity.Libro;
 import com.example.libreriaBackend.service.LibroService;
 
 @RestController
-@CrossOrigin(origins="gttp://localhost:4200")
+@CrossOrigin(origins="http://localhost:4200")
 @RequestMapping("/api/libros")
 public class LibroController {
 	@Autowired
 	private LibroService service;
-	
+
 	@GetMapping("/")
 	public List<Libro> findAll() {
 		return service.findAll();
 	}
-	
+
 	@GetMapping("/{id}")
 	public Optional<Libro> findById(@PathVariable Long id) {
 		return service.findById(id);
 	}
-	
+
 	@PostMapping("/")
 	public Libro save(@RequestBody Libro libro) {
 		return service.save(libro);
 	}
-	
+
 	@PutMapping("/{id}")
 	public Libro update(@PathVariable Long id, @RequestBody Libro libro) {
 		return service.update(id, libro);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public void delete(Long id) {
 		service.delete(id);

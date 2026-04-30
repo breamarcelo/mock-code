@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import com.example.views.LibrosView;
 import com.example.views.MainView;
 
 import javafx.scene.Node;
@@ -15,11 +16,11 @@ public class MainController {
 
     public void load() {
         view.getSidebar().getLibrosButton().setOnAction(e -> {
-            // PresupuestosView presupuestosView = new PresupuestosView();
-            // PresupuestosController presupuestosController = new PresupuestosController(presupuestosView);
+            LibrosView librosView = new LibrosView();
+            LibrosController controller = new LibrosController(librosView);
             unselectButtons();
             view.getSidebar().getLibrosButton().getStyleClass().add("selected");
-            view.setCenterContent(null);
+            view.setCenterContent(librosView);
         });
         
     //     view.getSidebar().getTarifasButton().setOnAction(e -> {
