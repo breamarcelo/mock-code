@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<catalogo>
+    <Libros>
+        <Libro>
+            <Titulo>La Divina Comedia</Titulo>
+            <Autor>Dante Alighieri</Autor>
+            <ISBN>ISBN-13: 9781518711374</ISBN>
+            <AnioPublicacion>2015</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/512ts006FKL._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>Don Quijote de la Mancha</Titulo>
+            <Autor>Miguel de Cervantes</Autor>
+            <ISBN>ISBN-13: 9788420412146</ISBN>
+            <AnioPublicacion>2016</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/41VgBuQ-omL._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>Bodas de Sangre</Titulo>
+            <Autor>Federico Garcia Lorca</Autor>
+            <ISBN>ISBN-13: 9781545305881</ISBN>
+            <AnioPublicacion>2017</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/41YY5EMX-2L._SL160_.jpg</ImgURL>
+        </Libro>
+    </Libros>
+</catalogo>

@@ -5,5 +5,7 @@ module com.example {
     requires jakarta.xml.bind;
 
     opens com.example to javafx.fxml, jakarta.xml.bind;
+    opens com.example.models to jakarta.xml.bind;
     exports com.example;
+    
 }

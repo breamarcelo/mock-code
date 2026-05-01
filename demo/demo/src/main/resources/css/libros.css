@@ -34,15 +34,12 @@ VBox {
 .card-container {
     -fx-background-color: transparent;
     -fx-padding: 20;
-
 }
 
 TilePane {
-    -fx-pref-tile-width: 297;
+    -fx-pref-tile-width: 296.5;
     -fx-pref-tile-height: 378;
 }
-
-VBox .card {}
 
 Label {
     -fx-text-fill: -main-font-fill;
@@ -149,4 +146,39 @@ ComboBox .list-cell {
 
 ComboBox .list-cell:hover {
     -fx-background-color: -panel-background;
+}
+
+.titulo {
+    -fx-text-fill: -header-fill;
+    -fx-font-weight: bold;
+    -fx-font-size: 18;
+    -fx-padding: 20 0 0 0;
+}
+
+.autor {
+    -fx-text-fill: -light-font-fill;
+    -fx-padding: 0 0 10 0;
+    -fx-font-size: 14;
+    -fx-font-weight: light;
+}
+
+.detalles {
+    -fx-border-color: -main-font-fill;
+    -fx-border-style: solid;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 10 0 30 0;
+    -fx-font-size: 16;
+}
+
+.buttons-box {
+    -fx-padding: 0;
+}
+
+.modificar-button,
+.eliminar-button {
+    -fx-pref-width: 500;
+}
+
+.eliminar-button {
+    -fx-background-color: -cancel-btn-background;
 }
