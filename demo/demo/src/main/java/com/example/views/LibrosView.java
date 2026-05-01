@@ -15,6 +15,8 @@ public class LibrosView extends BorderPane{
     private final TextField searchBarTextField = new TextField();
     private final ComboBox filterComboBox = new ComboBox<>();
     private final Button nuevButton = new Button("Nuevo");
+    private final HBox footer = new HBox();
+    private final Button footerButton = new Button("<");
 
     public LibrosView() {
         this.getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
@@ -23,6 +25,7 @@ public class LibrosView extends BorderPane{
 
         this.setTop(menuHBox);
         this.setCenter(tilePane);
+        this.setBottom(footer);
     }
 
     public TilePane getTilePane() {
@@ -43,6 +46,14 @@ public class LibrosView extends BorderPane{
 
     public Button getNuevButton() {
         return nuevButton;
+    }
+
+    public HBox getFooter() {
+        return footer;
+    }
+
+    public Button getFooterButton() {
+        return footerButton;
     }
 
     

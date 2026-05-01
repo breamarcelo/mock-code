@@ -1,4 +1,4 @@
-.gridpane {
+.border-pane {
     -fx-padding: 20;
     -fx-vgap: 20;
     -fx-hgap: 20;
@@ -31,6 +31,19 @@ VBox {
     -fx-background-color: -card-background;
 }
 
+.card-container {
+    -fx-background-color: transparent;
+    -fx-padding: 20;
+
+}
+
+TilePane {
+    -fx-pref-tile-width: 297;
+    -fx-pref-tile-height: 378;
+}
+
+VBox .card {}
+
 Label {
     -fx-text-fill: -main-font-fill;
 }
@@ -41,11 +54,14 @@ Label {
 }
 
 TextField {
-    -fx-background-color: -selection-background;
-    -fx-background-radius: 5;
-    -fx-border-style: none;
-    -fx-text-fill: -main-font-fill;
+    -fx-background-color: transparent;
+    -fx-text-fill: -light-font-fill;
     -fx-pref-height: 20;
+    -fx-border-color: -light-font-fill;
+    -fx-border-radius: 5;
+    -fx-border-width: 1;
+    -fx-border-style: solid;
+    -fx-alignment: center-left;
 }
 
 CheckBox .box {
@@ -109,6 +125,7 @@ Button:hover {
 
 ComboBox {
     -fx-pref-height: 20;
+    -fx-pref-width: 100;
     -fx-background-color: -selection-background;
     -fx-border-style: none;
     -fx-background-radius: 5;
