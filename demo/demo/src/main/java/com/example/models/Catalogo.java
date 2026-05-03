@@ -16,6 +16,10 @@ public class Catalogo {
     @XmlElement(name="Libro")
     private List<Libro> libros;
 
+    @XmlElementWrapper(name="Videojuegos")
+    @XmlElement(name="Videojuego")
+    private List<Videojuego> videojuegos;
+
     public Catalogo(){
     }
 
@@ -25,6 +29,14 @@ public class Catalogo {
 
     public void setLibros(List<Libro> libros) {
         this.libros = libros;
+    }
+
+    public List<Videojuego> getVideojuegos() {
+        return videojuegos;
+    }
+
+    public void setVideojuegos(List<Videojuego> videojuegos) {
+        this.videojuegos = videojuegos;
     }
 
     

@@ -148,6 +148,18 @@ ComboBox .list-cell:hover {
     -fx-background-color: -panel-background;
 }
 
+.filter-combo .arrow {
+    -fx-shape: "M32 64C19.1 64 7.4 71.8 2.4 83.8S.2 109.5 9.4 118.6L192 301.3 192 416c0 8.5 3.4 16.6 9.4 22.6l64 64c9.2 9.2 22.9 11.9 34.9 6.9S320 492.9 320 480l0-178.7 182.6-182.6c9.2-9.2 11.9-22.9 6.9-34.9S492.9 64 480 64L32 64z";
+    -fx-pref-width: 15;
+    -fx-pref-height: 10;
+}
+
+.order-combo .arrow {
+    -fx-shape: "M246.6 374.6l-96 96c-12.5 12.5-32.8 12.5-45.3 0l-96-96c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L96 370.7 96 64c0-17.7 14.3-32 32-32s32 14.3 32 32l0 306.7 41.4-41.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3zM320 480c-17.7 0-32-14.3-32-32s14.3-32 32-32l32 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-32 0zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-96 0zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32l160 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-160 0zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L320 96z";
+    -fx-pref-width: 15;
+    -fx-pref-height: 10;
+}
+
 .titulo {
     -fx-text-fill: -header-fill;
     -fx-font-weight: bold;
@@ -158,8 +170,8 @@ ComboBox .list-cell:hover {
 .autor {
     -fx-text-fill: -light-font-fill;
     -fx-padding: 0 0 10 0;
-    -fx-font-size: 14;
-    -fx-font-weight: light;
+
+    -fx-font-weight: lighter;
 }
 
 .detalles {
@@ -167,7 +179,7 @@ ComboBox .list-cell:hover {
     -fx-border-style: solid;
     -fx-border-width: 1 0 0 0;
     -fx-padding: 10 0 30 0;
-    -fx-font-size: 16;
+    -fx-font-weight: normal;
 }
 
 .buttons-box {
@@ -181,4 +193,27 @@ ComboBox .list-cell:hover {
 
 .eliminar-button {
     -fx-background-color: -cancel-btn-background;
+}
+
+.footer {
+    -fx-alignment: center;
+}
+
+.footer-button {
+    -fx-pref-width: 5;
+    -fx-pref-height: 5;
+}
+
+.previous-button {
+    -fx-shape: "M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z";
+}
+
+.next-button {
+    -fx-shape: "M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z";
+}
+
+.footer>Label {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-padding: 5;
 }

@@ -10,8 +10,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 
-public class LibrosView extends BorderPane{
-    private final TilePane tilePane = new TilePane();
+public class VideojuegosView extends BorderPane{
+private final TilePane tilePane = new TilePane();
     private final HBox menuHBox = new HBox();
     private final TextField searchBarTextField = new TextField();
     private final ComboBox<String> filterComboBox = new ComboBox<>();
@@ -24,7 +24,7 @@ public class LibrosView extends BorderPane{
     private final Label totalPagesLabel = new Label("1");
     private final Button nextButton = new Button();
 
-    public LibrosView() {
+    public VideojuegosView() {
         this.getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
         this.getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
         this.getStyleClass().add("border-pane");

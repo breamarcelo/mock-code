@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 
 public class SidebarView extends VBox{
     private Button librosButton = new Button("LIBROS");
-    private Button revistasButton = new Button("REVISTAS");
+    private Button revistasButton = new Button("COMICS");
     private Button peliculasButton = new Button("PELÍCULAS");
     private Button seriesButton = new Button("SERIES");
     private Button videojuegosButton = new Button("VIDEOJUEGOS");
