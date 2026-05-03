@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.example.config.UIUtil;
-import com.example.models.Catalogo;
+import com.example.models.CatalogoVideojuegos;
 import com.example.models.Videojuego;
 import com.example.services.XmlService;
 import com.example.views.VideojuegosView;
@@ -31,25 +31,18 @@ public class VideojuegosController {
     private List<Videojuego> vistaVideojuegos;
     private int pageNum;
     private int totalPages;
+    private CatalogoVideojuegos catalogo;
 
     public VideojuegosController(VideojuegosView view){
         this.view = view;
-        generate();
         load();
     }
 
-    public void generate() {
-        
-        Catalogo c = new Catalogo();
-        c.setVideojuegos(new ArrayList<>(Arrays.asList(new Videojuego("Super Mario Bros. 3", "NES", "Nintendo", "Plataforma", 1988, "https://images.igdb.com/igdb/image/upload/t_cover_small/co7ozx.png"))));
-        XmlService.getInstance().guardarCatalogo(c);
-    }
-    
     public void load() {
-        listaVideojuegos = XmlService.getInstance().leerCatalogo().getVideojuegos();
+        catalogo = new CatalogoVideojuegos();
         cargarVista();
-        pageNum = vistaVideojuegos.size() > 0 ? 1 : 0;
-        totalPages = (int) Math.ceil((double) vistaVideojuegos.size()/8); 
+        pageNum = 1;
+        totalPages = 1;
         view.getPageNumLabel().setText(Integer.toString(pageNum));
         view.getTotalPagesLabel().setText(Integer.toString(totalPages));
 
@@ -62,14 +55,16 @@ public class VideojuegosController {
         view.getMenuHBox().setMargin(view.getFilterComboBox(), new Insets(0, 10, 0, 0));
         view.getMenuHBox().setMargin(view.getOrderComboBox(), new Insets(0, 10, 0, 0));
 
-        List<String> campos = new ArrayList<>(Arrays.asList("Título", "Autor", "ISBN", "Año"));
+        List<String> campos = new ArrayList<>(Arrays.asList("Título", "Consola", "Editorial", "Género", "Año"));
         view.getFilterComboBox().getItems().addAll(campos);
         view.getFilterComboBox().getStyleClass().add("filter-combo");
         view.getOrderComboBox().getItems().addAll(campos);
         view.getOrderComboBox().getStyleClass().add("order-combo");
        
         view.getPreviousButton().getStyleClass().addAll("footer-button", "previous-button");
+        view.getPreviousButton().setDisable(true);
         view.getNextButton().getStyleClass().addAll("footer-button", "next-button");
+        view.getNextButton().setDisable(true);
         view.getFooter().getChildren().addAll(view.getPreviousButton(), view.getPageNumLabel(), new Label("/"), view.getTotalPagesLabel(), view.getNextButton());
         view.getFooter().getStyleClass().add("footer");
         view.getFooter().setMargin(view.getPreviousButton(), new Insets(0, 20, 0, 0));
@@ -153,12 +148,11 @@ public class VideojuegosController {
 
 
             okButton.addEventFilter(ActionEvent.ACTION, e -> {
-                Catalogo catalogo = new Catalogo();
                 Videojuego nuevoVideojuego = new Videojuego(nuevoTituloTextField.getText(), nuevoConsolaTextField.getText(), nuevoEditorialTextField.getText(), nuevoGeneroTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
                 listaVideojuegos.add(nuevoVideojuego);
-                catalogo.setVideojuegos(listaVideojuegos);
+                catalogo.saveList(listaVideojuegos);
                 XmlService.getInstance().guardarCatalogo(catalogo);
-                listaVideojuegos = XmlService.getInstance().leerCatalogo().getVideojuegos();
+                listaVideojuegos = XmlService.getInstance().leerCatalogo(catalogo).getList();
                 cargarVista();
                 generarTiles(vistaVideojuegos);
                 eh.consume();
@@ -169,123 +163,129 @@ public class VideojuegosController {
     }
 
     public void cargarVista() {
+        listaVideojuegos = XmlService.getInstance().leerCatalogo(catalogo).getList() != null ? XmlService.getInstance().leerCatalogo(catalogo).getList() : new ArrayList<>();
         vistaVideojuegos = new ArrayList<>();
-        for(Videojuego Videojuego : listaVideojuegos) {
-            vistaVideojuegos.add(Videojuego);
+        if(listaVideojuegos.size() > 0) {
+            for(Videojuego Videojuego : listaVideojuegos) {
+                vistaVideojuegos.add(Videojuego);
+            }
         }
     }
 
     public void generarTiles(List<Videojuego> videojuegos){
         view.getTilePane().getChildren().clear();
-        
-        List<Videojuego> pagina = new ArrayList<>();
-        int first = (pageNum -1)*8;
-        int last = (pageNum*8)-1 < (vistaVideojuegos.size() - 1) ? (pageNum*8)-1  : vistaVideojuegos.size() - 1;
-        for(int i = first; i <= last; i++) {
-            pagina.add(vistaVideojuegos.get(i));
+        if(videojuegos.size() > 0) {
+            totalPages = (int) Math.ceil((double) vistaVideojuegos.size()/8);
+            view.getTotalPagesLabel().setText(Integer.toString(totalPages));
+            view.getPreviousButton().setDisable(pageNum == 1);
+            view.getNextButton().setDisable(pageNum == totalPages);
+            List<Videojuego> pagina = new ArrayList<>();
+            int first = (pageNum -1)*8;
+            int last = (pageNum*8)-1 < (vistaVideojuegos.size() - 1) ? (pageNum*8)-1  : vistaVideojuegos.size() - 1;
+            for(int i = first; i <= last; i++) {
+                pagina.add(vistaVideojuegos.get(i));
+            }
+            
+            for(Videojuego videojuego : pagina) {
+                HBox containerBox = new HBox();
+                containerBox.getStyleClass().add("card-container");
+                
+                VBox card = new VBox();
+                card.getStyleClass().add("card");
+                
+                ImageView img = new ImageView(new Image(videojuego.getImgURL()));
+                Label titulo = new Label(videojuego.getTitulo());
+                titulo.getStyleClass().add("titulo");
+                Label consola = new Label(videojuego.getConsola());
+                consola.getStyleClass().add("Consola");
+                // CONTINUE: HERE!!!
+                Label detalles = new Label("Editorial: " + videojuego.getEditorial() + "\nGénero: " + videojuego.getGenero() + "\nAño de publicación: " + videojuego.getAnioPublicacion());
+                detalles.getStyleClass().add("detalles");
+                Button modificarButton = new Button("Modificar");
+                Button eliminarButton = new Button("Eliminar");
+                eliminarButton.getStyleClass().add("eliminar-button");
+                HBox buttonsBox = new HBox();
+                Region space = new Region();
+                HBox.setHgrow(space, Priority.ALWAYS);
+                buttonsBox.getChildren().addAll(modificarButton, space, eliminarButton);
+                
+                
+                modificarButton.setOnAction(eh -> {
+                    TextInputDialog dialog = new TextInputDialog();
+                    
+                    dialog.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
+                    dialog.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
+                    dialog.getDialogPane().getStyleClass().add("dialog");
+                    dialog.setTitle("Modificar");
+                    dialog.setGraphic(null);
+                    dialog.setHeaderText("Detalles del videojuego:");
+                    
+                    Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
+                    cancelButton.setText("Cancelar");
+                    cancelButton.getStyleClass().add("cancel-btn");
+                    
+                    Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+                    okButton.setText("Guardar");
+                    
+                    TextField node = (TextField) dialog.getDialogPane().lookup("TextField");
+                    node.setVisible(false);
+                    
+                    Label nuevoTituloLabel = new Label("Título:");
+                    TextField nuevoTituloTextField = new TextField(videojuego.getTitulo());
+                    Label nuevoConsolaLabel = new Label("Consola:");
+                    TextField nuevoConsolaTextField = new TextField(videojuego.getConsola());
+                    Label nuevoEditorialLabel = new Label("Editorial:");
+                    TextField nuevoEditorialTextField = new TextField(videojuego.getEditorial());
+                    Label nuevoGeneroLabel = new Label("Género:");
+                    TextField nuevoGeneroTextField = new TextField(videojuego.getGenero());
+                    Label nuevoAnioPublicacionLabel = new Label("Año de publicación:");
+                    TextField nuevoAnioPublicacionTextField = new TextField(Integer.toString(videojuego.getAnioPublicacion()));
+                    Label nuevoImgLabel = new Label("URL de imágen:");
+                    TextField nuevoImgTextField = new TextField(videojuego.getImgURL());
+                    VBox nueVBox = new VBox();
+                    nueVBox.getChildren().addAll(nuevoTituloLabel, nuevoTituloTextField, nuevoConsolaLabel, nuevoConsolaTextField, nuevoEditorialLabel, nuevoEditorialTextField, nuevoGeneroLabel, nuevoGeneroTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
+                    nueVBox.getChildren().forEach(e -> {
+                        nueVBox.setMargin(e, new Insets(0, 0, 10, 0));
+                    });
+                    
+                    dialog.getDialogPane().setContent(nueVBox);
+                    
+                    okButton.addEventFilter(ActionEvent.ACTION, e -> {
+                        catalogo = new CatalogoVideojuegos();
+                        Videojuego actualizado = new Videojuego(nuevoTituloTextField.getText(), nuevoConsolaTextField.getText(), nuevoEditorialTextField.getText(), nuevoGeneroTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
+                        listaVideojuegos.set(listaVideojuegos.indexOf(videojuego), actualizado);
+                        listaVideojuegos.stream().forEach(vg -> System.out.println(vg.getTitulo()));
+                        catalogo.saveList(listaVideojuegos);
+                        catalogo.getList().stream().forEach(vg -> System.out.println(vg.getTitulo()));
+                        XmlService.getInstance().guardarCatalogo(catalogo);
+                        listaVideojuegos = XmlService.getInstance().leerCatalogo(catalogo).getList();
+                        cargarVista();
+                        generarTiles(vistaVideojuegos);
+                        eh.consume();
+                    });
+                    
+                    dialog.showAndWait();
+                });
+                
+                eliminarButton.setOnAction(eh -> {
+                    listaVideojuegos.remove(listaVideojuegos.indexOf(videojuego));
+                    catalogo.saveList(listaVideojuegos);
+                    XmlService.getInstance().guardarCatalogo(catalogo);
+                    listaVideojuegos = XmlService.getInstance().leerCatalogo(catalogo).getList();
+                    cargarVista();
+                    generarTiles(vistaVideojuegos);
+                });
+                
+                card.getChildren().addAll(img, titulo, consola, detalles, buttonsBox);
+                card.setAlignment(Pos.TOP_CENTER);
+                containerBox.getChildren().add(card);
+                containerBox.setHgrow(card, Priority.ALWAYS);
+                view.getTilePane().getChildren().add(containerBox);
+            }
+            
+            view.getTilePane().setTileAlignment(Pos.CENTER);
         }
-
-        for(Videojuego videojuego : pagina) {
-            HBox containerBox = new HBox();
-            containerBox.getStyleClass().add("card-container");
-
-            VBox card = new VBox();
-            card.getStyleClass().add("card");
-            
-            ImageView img = new ImageView(new Image(videojuego.getImgURL()));
-            Label titulo = new Label(videojuego.getTitulo());
-            titulo.getStyleClass().add("titulo");
-            Label Consola = new Label(videojuego.getConsola());
-            Consola.getStyleClass().add("Consola");
-            // CONTINUE: HERE!!!
-            Label detalles = new Label("Editorial: " + videojuego.getEditorial() + "\nGénero: " + videojuego.getGenero() + "\nAño de publicación: " + videojuego.getAnioPublicacion());
-            detalles.getStyleClass().add("detalles");
-            Button modificarButton = new Button("Modificar");
-            modificarButton.getStyleClass().add("modificar-button");
-            Button eliminarButton = new Button("Eliminar");
-            eliminarButton.getStyleClass().add("eliminar-button");
-            Region empty = new Region();
-            VBox buttonsBox = new VBox();
-            buttonsBox.getStyleClass().add("buttons-box");
-            buttonsBox.getChildren().addAll(modificarButton, eliminarButton);
-            buttonsBox.setMargin(eliminarButton, new Insets(10, 0, 0, 0));
-
-            modificarButton.setOnAction(eh -> {
-                TextInputDialog dialog = new TextInputDialog();
-            
-                dialog.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
-                dialog.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
-                dialog.getDialogPane().getStyleClass().add("dialog");
-                dialog.setTitle("Modificar");
-                dialog.setGraphic(null);
-                dialog.setHeaderText("Detalles del videojuego:");
-
-            Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
-            cancelButton.setText("Cancelar");
-            cancelButton.getStyleClass().add("cancel-btn");
-
-            Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
-            okButton.setText("Guardar");
-            
-            TextField node = (TextField) dialog.getDialogPane().lookup("TextField");
-            node.setVisible(false);
-
-            Label nuevoTituloLabel = new Label("Título:");
-            TextField nuevoTituloTextField = new TextField(videojuego.getTitulo());
-            Label nuevoConsolaLabel = new Label("Consola:");
-            TextField nuevoConsolaTextField = new TextField(videojuego.getConsola());
-            Label nuevoEditorialLabel = new Label("Editorial:");
-            TextField nuevoEditorialTextField = new TextField(videojuego.getEditorial());
-            Label nuevoGeneroLabel = new Label("Género:");
-            TextField nuevoGeneroTextField = new TextField(videojuego.getGenero());
-            Label nuevoAnioPublicacionLabel = new Label("Año de publicación:");
-            TextField nuevoAnioPublicacionTextField = new TextField(Integer.toString(videojuego.getAnioPublicacion()));
-            Label nuevoImgLabel = new Label("URL de imágen:");
-            TextField nuevoImgTextField = new TextField(videojuego.getImgURL());
-            VBox nueVBox = new VBox();
-            nueVBox.getChildren().addAll(nuevoTituloLabel, nuevoTituloTextField, nuevoConsolaLabel, nuevoConsolaTextField, nuevoEditorialLabel, nuevoEditorialTextField, nuevoGeneroLabel, nuevoGeneroTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
-            nueVBox.getChildren().forEach(e -> {
-                nueVBox.setMargin(e, new Insets(0, 0, 10, 0));
-            });
-            
-            dialog.getDialogPane().setContent(nueVBox);
-
-
-            okButton.addEventFilter(ActionEvent.ACTION, e -> {
-                Catalogo catalogo = new Catalogo();
-                Videojuego actualizado = new Videojuego(nuevoTituloTextField.getText(), nuevoConsolaTextField.getText(), nuevoEditorialTextField.getText(), nuevoGeneroTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
-                listaVideojuegos.set(listaVideojuegos.indexOf(videojuego), actualizado);
-                catalogo.setVideojuegos(videojuegos);
-                XmlService.getInstance().guardarCatalogo(catalogo);
-                listaVideojuegos = XmlService.getInstance().leerCatalogo().getVideojuegos();
-                cargarVista();
-                generarTiles(vistaVideojuegos);
-                eh.consume();
-            });
-
-            dialog.showAndWait();
-            });
-            
-            eliminarButton.setOnAction(eh -> {
-                Catalogo catalogo = new Catalogo();
-                listaVideojuegos.remove(listaVideojuegos.indexOf(videojuego));
-                catalogo.setVideojuegos(listaVideojuegos);
-                XmlService.getInstance().guardarCatalogo(catalogo);
-                listaVideojuegos = XmlService.getInstance().leerCatalogo().getVideojuegos();
-                cargarVista();
-                generarTiles(vistaVideojuegos);
-            });
-
-            card.getChildren().addAll(img, titulo, detalles, buttonsBox);
-            card.setAlignment(Pos.TOP_CENTER);
-            containerBox.getChildren().add(card);
-            containerBox.setHgrow(card, Priority.ALWAYS);
-            view.getTilePane().getChildren().add(containerBox);
-        }
-        
-        view.getTilePane().setTileAlignment(Pos.CENTER);
     }
-
 
     public void ordenar(List<Videojuego> videojuegos) {
         String orden = view.getOrderComboBox().getValue();

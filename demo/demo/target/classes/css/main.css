@@ -161,6 +161,7 @@ ComboBox .list-cell:hover {
 }
 
 .titulo {
+    -fx-text-alignment: center;
     -fx-text-fill: -header-fill;
     -fx-font-weight: bold;
     -fx-font-size: 18;
@@ -168,13 +169,14 @@ ComboBox .list-cell:hover {
 }
 
 .autor {
+    -fx-text-alignment: center;
     -fx-text-fill: -light-font-fill;
     -fx-padding: 0 0 10 0;
-
     -fx-font-weight: lighter;
 }
 
 .detalles {
+    -fx-text-alignment: center;
     -fx-border-color: -main-font-fill;
     -fx-border-style: solid;
     -fx-border-width: 1 0 0 0;
@@ -182,13 +184,8 @@ ComboBox .list-cell:hover {
     -fx-font-weight: normal;
 }
 
-.buttons-box {
-    -fx-padding: 0;
-}
-
-.modificar-button,
-.eliminar-button {
-    -fx-pref-width: 500;
+.buttons-box>Button {
+    -fx-pref-width: 80;
 }
 
 .eliminar-button {

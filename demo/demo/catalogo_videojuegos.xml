@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<catalogoVideojuegos>
+    <Videojuegos>
+        <Videojuego>
+            <Titulo>Super Mario Bros. 3</Titulo>
+            <Consola>NES</Consola>
+            <Editorial>Nintendo</Editorial>
+            <Genero>Plataforma</Genero>
+            <AnioPublicacion>1988</AnioPublicacion>
+            <ImgURL>https://images.igdb.com/igdb/image/upload/t_cover_small/co7ozx.png</ImgURL>
+        </Videojuego>
+        <Videojuego>
+            <Titulo>Arkanoid</Titulo>
+            <Consola>NES</Consola>
+            <Editorial>Taito</Editorial>
+            <Genero>Arcade</Genero>
+            <AnioPublicacion>1986</AnioPublicacion>
+            <ImgURL>https://images.igdb.com/igdb/image/upload/t_cover_small/co7o2j.png</ImgURL>
+        </Videojuego>
+        <Videojuego>
+            <Titulo>Pac-Man</Titulo>
+            <Consola>NES</Consola>
+            <Editorial>Namco</Editorial>
+            <Genero>Arcade</Genero>
+            <AnioPublicacion>1984</AnioPublicacion>
+            <ImgURL>https://images.igdb.com/igdb/image/upload/t_cover_small/co4ula.png</ImgURL>
+        </Videojuego>
+        <Videojuego>
+            <Titulo>DuckTales</Titulo>
+            <Consola>NES</Consola>
+            <Editorial>Capcom</Editorial>
+            <Genero>Platform</Genero>
+            <AnioPublicacion>1989</AnioPublicacion>
+            <ImgURL>https://images.igdb.com/igdb/image/upload/t_cover_small/co3wks.png</ImgURL>
+        </Videojuego>
+        <Videojuego>
+            <Titulo>Castlevania: Symphony of the Night</Titulo>
+            <Consola>PlayStation</Consola>
+            <Editorial>Konami</Editorial>
+            <Genero>Plataforma / RPG</Genero>
+            <AnioPublicacion>1997</AnioPublicacion>
+            <ImgURL>https://images.igdb.com/igdb/image/upload/t_cover_small/co53m8.png</ImgURL>
+        </Videojuego>
+        <Videojuego>
+            <Titulo>Metal Gear Solid</Titulo>
+            <Consola>PlayStation</Consola>
+            <Editorial>Konami</Editorial>
+            <Genero>Tactical / Adventure</Genero>
+            <AnioPublicacion>1998</AnioPublicacion>
+            <ImgURL>https://images.igdb.com/igdb/image/upload/t_cover_small/cobpak.png</ImgURL>
+        </Videojuego>
+        <Videojuego>
+            <Titulo>Final Fantasy VII</Titulo>
+            <Consola>PlayStation</Consola>
+            <Editorial>Square Enix</Editorial>
+            <Genero>RPG</Genero>
+            <AnioPublicacion>1997</AnioPublicacion>
+            <ImgURL>https://images.igdb.com/igdb/image/upload/t_cover_small/co2kx2.png</ImgURL>
+        </Videojuego>
+        <Videojuego>
+            <Titulo>Metroid Prime</Titulo>
+            <Consola>GameCube</Consola>
+            <Editorial>Nintendo</Editorial>
+            <Genero>Shooter / Adventure</Genero>
+            <AnioPublicacion>2002</AnioPublicacion>
+            <ImgURL>https://images.igdb.com/igdb/image/upload/t_cover_small/co3w4w.png</ImgURL>
+        </Videojuego>
+        <Videojuego>
+            <Titulo>Super Smash Bros. Melee</Titulo>
+            <Consola>GameCube</Consola>
+            <Editorial>Nintendo</Editorial>
+            <Genero>Fighting</Genero>
+            <AnioPublicacion>2001</AnioPublicacion>
+            <ImgURL>https://images.igdb.com/igdb/image/upload/t_cover_small/co21yv.png</ImgURL>
+        </Videojuego>
+    </Videojuegos>
+</catalogoVideojuegos>

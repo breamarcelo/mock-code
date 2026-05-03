@@ -14,17 +14,8 @@ public class XmlService {
     private JAXBContext context;
     private Marshaller marshaller;
     private Unmarshaller unmarshaller;
-    private final String CATALOGO_XML = "./Catalogo.xml";
 
     private XmlService(){
-        try {
-            this.context = JAXBContext.newInstance(Catalogo.class);
-            this.marshaller = context.createMarshaller();
-            this.marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            this.unmarshaller = context.createUnmarshaller();
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
     }
 
     public static XmlService getInstance() {
@@ -34,10 +25,11 @@ public class XmlService {
         return instance;
     }
 
-    public Catalogo leerCatalogo() {
-        Catalogo catalogo = null;
+    public Catalogo leerCatalogo(Catalogo catalogo) {
         try {
-            catalogo = (Catalogo) unmarshaller.unmarshal(new FileReader(CATALOGO_XML));
+            this.context = JAXBContext.newInstance(catalogo.getClass());
+            this.unmarshaller = context.createUnmarshaller();
+            catalogo = (Catalogo) unmarshaller.unmarshal(new FileReader(catalogo.getCatalogoXml()));
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -46,8 +38,12 @@ public class XmlService {
 
     public void guardarCatalogo(Catalogo catalogo) {
         try {
-            marshaller.marshal(catalogo, new File(CATALOGO_XML));
+            this.context = JAXBContext.newInstance(catalogo.getClass());
+            this.marshaller = context.createMarshaller();
+            this.marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.marshal(catalogo, new File(catalogo.getCatalogoXml()));
         } catch (Exception e) {
+            System.out.println(e.toString());
         }
     }
 }

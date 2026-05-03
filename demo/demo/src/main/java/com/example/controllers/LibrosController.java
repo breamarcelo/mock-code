@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.example.config.UIUtil;
-import com.example.models.Catalogo;
+import com.example.models.CatalogoLibros;
 import com.example.models.Libro;
 import com.example.services.XmlService;
 import com.example.views.LibrosView;
@@ -31,6 +31,7 @@ public class LibrosController {
     private List<Libro> vistaLibros;
     private int pageNum;
     private int totalPages;
+    private CatalogoLibros catalogo;
 
     public LibrosController(LibrosView view){
         this.view = view;
@@ -38,10 +39,13 @@ public class LibrosController {
     }
     
     public void load() {
-        listaLibros = XmlService.getInstance().leerCatalogo().getLibros();
+        catalogo = new CatalogoLibros();
+        listaLibros = XmlService.getInstance().leerCatalogo(catalogo).getList();
         cargarVista();
-        pageNum = vistaLibros.size() > 0 ? 1 : 0;
-        totalPages = (int) Math.ceil((double) vistaLibros.size()/8); 
+        if(vistaLibros != null) {
+            pageNum = vistaLibros.size() > 0 ? 1 : 0;
+            totalPages = vistaLibros.size() > 0 ? (int) Math.ceil((double) vistaLibros.size()/8) : 1; 
+        }
         view.getPageNumLabel().setText(Integer.toString(pageNum));
         view.getTotalPagesLabel().setText(Integer.toString(totalPages));
 
@@ -143,12 +147,11 @@ public class LibrosController {
 
 
             okButton.addEventFilter(ActionEvent.ACTION, e -> {
-                Catalogo catalogo = new Catalogo();
                 Libro nuevoLibro = new Libro(nuevoTituloTextField.getText(), nuevoAutorTextField.getText(), nuevoIsbnTextField.getText(), Integer.parseInt(nuevoAnioTextField.getText()), nuevoImgTextField.getText());
                 listaLibros.add(nuevoLibro);
-                catalogo.setLibros(listaLibros);
-                XmlService.getInstance().guardarCatalogo(catalogo);
-                listaLibros = XmlService.getInstance().leerCatalogo().getLibros();
+                catalogo.saveList(listaLibros);
+                // XmlService.getInstance().guardarCatalogo(catalogo);
+                listaLibros = XmlService.getInstance().leerCatalogo(catalogo).getList();
                 cargarVista();
                 generarTiles(vistaLibros);
                 eh.consume();
@@ -159,115 +162,118 @@ public class LibrosController {
     }
 
     public void cargarVista() {
-        vistaLibros = new ArrayList<>();
-        for(Libro libro : listaLibros) {
-            vistaLibros.add(libro);
+        if(listaLibros != null) {
+            vistaLibros = new ArrayList<>();
+            for(Libro libro : listaLibros) {
+                vistaLibros.add(libro);
+            }
         }
     }
 
     public void generarTiles(List<Libro> libros){
-        view.getTilePane().getChildren().clear();
-        
-        List<Libro> pagina = new ArrayList<>();
-        int first = (pageNum -1)*8;
-        int last = (pageNum*8)-1 < (vistaLibros.size() - 1) ? (pageNum*8)-1  : vistaLibros.size() - 1;
-        for(int i = first; i <= last; i++) {
-            pagina.add(vistaLibros.get(i));
-        }
+        if(libros != null) {
 
-        for(Libro libro : pagina) {
-            HBox containerBox = new HBox();
-            containerBox.getStyleClass().add("card-container");
-
-            VBox card = new VBox();
-            card.getStyleClass().add("card");
+            view.getTilePane().getChildren().clear();
             
-            ImageView img = new ImageView(new Image(libro.getImgURL()));
-            Label titulo = new Label(libro.getTitulo());
-            titulo.getStyleClass().add("titulo");
-            Label autor = new Label(libro.getAutor());
-            autor.getStyleClass().add("autor");
-            Label detalles = new Label(libro.getIsbn() + "\nAño de publicación: " + libro.getAnioPublicacion());
-            detalles.getStyleClass().add("detalles");
-            Button modificarButton = new Button("Modificar");
-            modificarButton.getStyleClass().add("modificar-button");
-            Button eliminarButton = new Button("Eliminar");
-            eliminarButton.getStyleClass().add("eliminar-button");
-            Region empty = new Region();
-            VBox buttonsBox = new VBox();
-            buttonsBox.getStyleClass().add("buttons-box");
-            buttonsBox.getChildren().addAll(modificarButton, eliminarButton);
-            buttonsBox.setMargin(eliminarButton, new Insets(10, 0, 0, 0));
-
-            modificarButton.setOnAction(eh -> {
-                TextInputDialog dialog = new TextInputDialog();
+            List<Libro> pagina = new ArrayList<>();
+            int first = (pageNum -1)*8;
+            int last = (pageNum*8)-1 < (vistaLibros.size() - 1) ? (pageNum*8)-1  : vistaLibros.size() - 1;
+            for(int i = first; i <= last; i++) {
+                pagina.add(vistaLibros.get(i));
+            }
             
-                dialog.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
-                dialog.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
-                dialog.getDialogPane().getStyleClass().add("dialog");
-                dialog.setTitle("Modificar");
-                dialog.setGraphic(null);
-                dialog.setHeaderText("Detalles del libro:");
-
-            Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
-            cancelButton.setText("Cancelar");
-            cancelButton.getStyleClass().add("cancel-btn");
-
-            Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
-            okButton.setText("Guardar");
-            
-            TextField node = (TextField) dialog.getDialogPane().lookup("TextField");
-            node.setVisible(false);
-
-            Label nuevoTituloLabel = new Label("Título:");
-            TextField nuevoTituloTextField = new TextField(libro.getTitulo());
-            Label nuevoAutorLabel = new Label("Autor:");
-            TextField nuevoAutorTextField = new TextField(libro.getAutor());
-            Label nuevoIsbnLabel = new Label("ISBN:");
-            TextField nuevoIsbnTextField = new TextField(libro.getIsbn());
-            Label nuevoAnioLabel = new Label("Año de publicación:");
-            TextField nuevoAnioTextField = new TextField(Integer.toString(libro.getAnioPublicacion()));
-            Label nuevoImgLabel = new Label("URL de imágen:");
-            TextField nuevoImgTextField = new TextField(libro.getImgURL());
-            VBox nueVBox = new VBox();
-            nueVBox.getChildren().addAll(nuevoTituloLabel, nuevoTituloTextField, nuevoAutorLabel, nuevoAutorTextField, nuevoIsbnLabel, nuevoIsbnTextField, nuevoAnioLabel, nuevoAnioTextField, nuevoImgLabel, nuevoImgTextField);
-            nueVBox.getChildren().forEach(e -> {
-                nueVBox.setMargin(e, new Insets(0, 0, 10, 0));
-            });
-            
-            dialog.getDialogPane().setContent(nueVBox);
-
-
-            okButton.addEventFilter(ActionEvent.ACTION, e -> {
-                Catalogo catalogo = new Catalogo();
-                Libro actualizado = new Libro(nuevoTituloTextField.getText(), nuevoAutorTextField.getText(), nuevoIsbnTextField.getText(), Integer.parseInt(nuevoAnioTextField.getText()), nuevoImgTextField.getText());
-                listaLibros.set(listaLibros.indexOf(libro), actualizado);
-                catalogo.setLibros(listaLibros);
-                XmlService.getInstance().guardarCatalogo(catalogo);
-                listaLibros = XmlService.getInstance().leerCatalogo().getLibros();
-                cargarVista();
-                generarTiles(vistaLibros);
-                eh.consume();
-            });
-
-            dialog.showAndWait();
-            });
-            
-            eliminarButton.setOnAction(eh -> {
-                Catalogo catalogo = new Catalogo();
-                listaLibros.remove(listaLibros.indexOf(libro));
-                catalogo.setLibros(listaLibros);
-                XmlService.getInstance().guardarCatalogo(catalogo);
-                listaLibros = XmlService.getInstance().leerCatalogo().getLibros();
-                cargarVista();
-                generarTiles(vistaLibros);
-            });
-
-            card.getChildren().addAll(img, titulo, autor, detalles, buttonsBox);
-            card.setAlignment(Pos.TOP_CENTER);
-            containerBox.getChildren().add(card);
-            containerBox.setHgrow(card, Priority.ALWAYS);
-            view.getTilePane().getChildren().add(containerBox);
+            for(Libro libro : pagina) {
+                HBox containerBox = new HBox();
+                containerBox.getStyleClass().add("card-container");
+                
+                VBox card = new VBox();
+                card.getStyleClass().add("card");
+                
+                ImageView img = new ImageView(new Image(libro.getImgURL()));
+                Label titulo = new Label(libro.getTitulo());
+                titulo.getStyleClass().add("titulo");
+                Label autor = new Label(libro.getAutor());
+                autor.getStyleClass().add("autor");
+                Label detalles = new Label(libro.getIsbn() + "\nAño de publicación: " + libro.getAnioPublicacion());
+                detalles.getStyleClass().add("detalles");
+                Button modificarButton = new Button("Modificar");
+                modificarButton.getStyleClass().add("modificar-button");
+                Button eliminarButton = new Button("Eliminar");
+                eliminarButton.getStyleClass().add("eliminar-button");
+                Region empty = new Region();
+                VBox buttonsBox = new VBox();
+                buttonsBox.getStyleClass().add("buttons-box");
+                buttonsBox.getChildren().addAll(modificarButton, eliminarButton);
+                buttonsBox.setMargin(eliminarButton, new Insets(10, 0, 0, 0));
+                
+                modificarButton.setOnAction(eh -> {
+                    TextInputDialog dialog = new TextInputDialog();
+                    
+                    dialog.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
+                    dialog.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
+                    dialog.getDialogPane().getStyleClass().add("dialog");
+                    dialog.setTitle("Modificar");
+                    dialog.setGraphic(null);
+                    dialog.setHeaderText("Detalles del libro:");
+                    
+                    Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
+                    cancelButton.setText("Cancelar");
+                    cancelButton.getStyleClass().add("cancel-btn");
+                    
+                    Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+                    okButton.setText("Guardar");
+                    
+                    TextField node = (TextField) dialog.getDialogPane().lookup("TextField");
+                    node.setVisible(false);
+                    
+                    Label nuevoTituloLabel = new Label("Título:");
+                    TextField nuevoTituloTextField = new TextField(libro.getTitulo());
+                    Label nuevoAutorLabel = new Label("Autor:");
+                    TextField nuevoAutorTextField = new TextField(libro.getAutor());
+                    Label nuevoIsbnLabel = new Label("ISBN:");
+                    TextField nuevoIsbnTextField = new TextField(libro.getIsbn());
+                    Label nuevoAnioLabel = new Label("Año de publicación:");
+                    TextField nuevoAnioTextField = new TextField(Integer.toString(libro.getAnioPublicacion()));
+                    Label nuevoImgLabel = new Label("URL de imágen:");
+                    TextField nuevoImgTextField = new TextField(libro.getImgURL());
+                    VBox nueVBox = new VBox();
+                    nueVBox.getChildren().addAll(nuevoTituloLabel, nuevoTituloTextField, nuevoAutorLabel, nuevoAutorTextField, nuevoIsbnLabel, nuevoIsbnTextField, nuevoAnioLabel, nuevoAnioTextField, nuevoImgLabel, nuevoImgTextField);
+                    nueVBox.getChildren().forEach(e -> {
+                        nueVBox.setMargin(e, new Insets(0, 0, 10, 0));
+                    });
+                    
+                    dialog.getDialogPane().setContent(nueVBox);
+                    
+                    
+                    okButton.addEventFilter(ActionEvent.ACTION, e -> {
+                        Libro actualizado = new Libro(nuevoTituloTextField.getText(), nuevoAutorTextField.getText(), nuevoIsbnTextField.getText(), Integer.parseInt(nuevoAnioTextField.getText()), nuevoImgTextField.getText());
+                        listaLibros.set(listaLibros.indexOf(libro), actualizado);
+                        catalogo.saveList(listaLibros);
+                        // XmlService.getInstance().guardarCatalogo(catalogo);
+                        listaLibros = XmlService.getInstance().leerCatalogo(catalogo).getList();
+                        cargarVista();
+                        generarTiles(vistaLibros);
+                        eh.consume();
+                    });
+                    
+                    dialog.showAndWait();
+                });
+                
+                eliminarButton.setOnAction(eh -> {
+                    listaLibros.remove(listaLibros.indexOf(libro));
+                    catalogo.saveList(listaLibros);
+                    // XmlService.getInstance().guardarCatalogo(catalogo);
+                    listaLibros = XmlService.getInstance().leerCatalogo(catalogo).getList();
+                    cargarVista();
+                    generarTiles(vistaLibros);
+                });
+                
+                card.getChildren().addAll(img, titulo, autor, detalles, buttonsBox);
+                card.setAlignment(Pos.TOP_CENTER);
+                containerBox.getChildren().add(card);
+                containerBox.setHgrow(card, Priority.ALWAYS);
+                view.getTilePane().getChildren().add(containerBox);
+            }
         }
         
         view.getTilePane().setTileAlignment(Pos.CENTER);
