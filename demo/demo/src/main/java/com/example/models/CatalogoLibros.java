@@ -10,7 +10,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CatalogoLibros implements Catalogo<Object>{
+public class CatalogoLibros implements Catalogo<Libro>{
     private final String CATALOGO_XML = "./catalogo_libros.xml";
     
     @XmlElementWrapper(name="Libros")
@@ -27,13 +27,12 @@ public class CatalogoLibros implements Catalogo<Object>{
     }
 
     @Override
-    public List getList() {
+    public List<Libro> getList() {
         return libros;
     }
 
     @Override
-    public void saveList(List lista) {
-        this.libros.clear();
+    public void saveList(List<Libro> lista) {
         this.libros = lista;
     }
     

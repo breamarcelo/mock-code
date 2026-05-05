@@ -30,7 +30,9 @@ public class CatalogoVideojuegos implements Catalogo<Videojuego>{
 
     @Override
     public void saveList(List<Videojuego> lista) {
-        this.videojuegos.clear();
+        if(lista != null) {
+            this.videojuegos.clear();
+        }
         this.videojuegos = lista;
     }
     

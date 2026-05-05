@@ -146,16 +146,24 @@ public class VideojuegosController {
             
             dialog.getDialogPane().setContent(nueVBox);
 
-
             okButton.addEventFilter(ActionEvent.ACTION, e -> {
-                Videojuego nuevoVideojuego = new Videojuego(nuevoTituloTextField.getText(), nuevoConsolaTextField.getText(), nuevoEditorialTextField.getText(), nuevoGeneroTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
-                listaVideojuegos.add(nuevoVideojuego);
-                catalogo.saveList(listaVideojuegos);
-                XmlService.getInstance().guardarCatalogo(catalogo);
-                listaVideojuegos = XmlService.getInstance().leerCatalogo(catalogo).getList();
-                cargarVista();
-                generarTiles(vistaVideojuegos);
-                eh.consume();
+                boolean validado = true;
+                validar(nuevoTituloTextField, validado);
+                validar(nuevoConsolaTextField, validado);
+                validar(nuevoEditorialTextField, validado);
+                validar(nuevoGeneroTextField, validado);
+                validar(nuevoAnioPublicacionTextField, validado);
+                validar(nuevoImgTextField, validado);
+                if(validado){
+                    Videojuego nuevoVideojuego = new Videojuego(nuevoTituloTextField.getText(), nuevoConsolaTextField.getText(), nuevoEditorialTextField.getText(), nuevoGeneroTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
+                    listaVideojuegos.add(nuevoVideojuego);
+                    catalogo.saveList(listaVideojuegos);
+                    XmlService.getInstance().guardarCatalogo(catalogo);
+                    listaVideojuegos = XmlService.getInstance().leerCatalogo(catalogo).getList();
+                    cargarVista();
+                    generarTiles(vistaVideojuegos);
+                    eh.consume();
+                }
             });
 
             dialog.showAndWait();
@@ -197,8 +205,6 @@ public class VideojuegosController {
                 Label titulo = new Label(videojuego.getTitulo());
                 titulo.getStyleClass().add("titulo");
                 Label consola = new Label(videojuego.getConsola());
-                consola.getStyleClass().add("Consola");
-                // CONTINUE: HERE!!!
                 Label detalles = new Label("Editorial: " + videojuego.getEditorial() + "\nGénero: " + videojuego.getGenero() + "\nAño de publicación: " + videojuego.getAnioPublicacion());
                 detalles.getStyleClass().add("detalles");
                 Button modificarButton = new Button("Modificar");
@@ -247,21 +253,35 @@ public class VideojuegosController {
                     nueVBox.getChildren().forEach(e -> {
                         nueVBox.setMargin(e, new Insets(0, 0, 10, 0));
                     });
+
+                    nuevoAnioPublicacionTextField.setOnKeyReleased(event -> {
+                        String f = nuevoAnioPublicacionTextField.getText();
+                        if(f.matches("\\d")){
+                            nuevoAnioPublicacionTextField.setText(f);
+                        }
+                    });
                     
                     dialog.getDialogPane().setContent(nueVBox);
                     
                     okButton.addEventFilter(ActionEvent.ACTION, e -> {
-                        catalogo = new CatalogoVideojuegos();
-                        Videojuego actualizado = new Videojuego(nuevoTituloTextField.getText(), nuevoConsolaTextField.getText(), nuevoEditorialTextField.getText(), nuevoGeneroTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
-                        listaVideojuegos.set(listaVideojuegos.indexOf(videojuego), actualizado);
-                        listaVideojuegos.stream().forEach(vg -> System.out.println(vg.getTitulo()));
-                        catalogo.saveList(listaVideojuegos);
-                        catalogo.getList().stream().forEach(vg -> System.out.println(vg.getTitulo()));
-                        XmlService.getInstance().guardarCatalogo(catalogo);
-                        listaVideojuegos = XmlService.getInstance().leerCatalogo(catalogo).getList();
-                        cargarVista();
-                        generarTiles(vistaVideojuegos);
-                        eh.consume();
+                        boolean validado = true;
+                        validar(nuevoTituloTextField, validado);
+                        validar(nuevoConsolaTextField, validado);
+                        validar(nuevoEditorialTextField, validado);
+                        validar(nuevoGeneroTextField, validado);
+                        validar(nuevoAnioPublicacionTextField, validado);
+                        validar(nuevoImgTextField, validado);
+                        if(validado){
+                            catalogo = new CatalogoVideojuegos();
+                            Videojuego actualizado = new Videojuego(nuevoTituloTextField.getText(), nuevoConsolaTextField.getText(), nuevoEditorialTextField.getText(), nuevoGeneroTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
+                            listaVideojuegos.set(listaVideojuegos.indexOf(videojuego), actualizado);
+                            catalogo.saveList(listaVideojuegos);
+                            XmlService.getInstance().guardarCatalogo(catalogo);
+                            listaVideojuegos = XmlService.getInstance().leerCatalogo(catalogo).getList();
+                            cargarVista();
+                            generarTiles(vistaVideojuegos);
+                            eh.consume();
+                        }
                     });
                     
                     dialog.showAndWait();
@@ -285,6 +305,12 @@ public class VideojuegosController {
             
             view.getTilePane().setTileAlignment(Pos.CENTER);
         }
+    }
+
+    public void validar(TextField field, boolean validado) {
+        field.setPromptText("Debe rellenar el campo");
+        field.getStyleClass().add("error");
+        validado = false;
     }
 
     public void ordenar(List<Videojuego> videojuegos) {

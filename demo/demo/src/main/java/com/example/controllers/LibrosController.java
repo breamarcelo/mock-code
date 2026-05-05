@@ -37,15 +37,12 @@ public class LibrosController {
         this.view = view;
         load();
     }
-    
+
     public void load() {
         catalogo = new CatalogoLibros();
-        listaLibros = XmlService.getInstance().leerCatalogo(catalogo).getList();
         cargarVista();
-        if(vistaLibros != null) {
-            pageNum = vistaLibros.size() > 0 ? 1 : 0;
-            totalPages = vistaLibros.size() > 0 ? (int) Math.ceil((double) vistaLibros.size()/8) : 1; 
-        }
+        pageNum = 1;
+        totalPages = 1;
         view.getPageNumLabel().setText(Integer.toString(pageNum));
         view.getTotalPagesLabel().setText(Integer.toString(totalPages));
 
@@ -58,14 +55,16 @@ public class LibrosController {
         view.getMenuHBox().setMargin(view.getFilterComboBox(), new Insets(0, 10, 0, 0));
         view.getMenuHBox().setMargin(view.getOrderComboBox(), new Insets(0, 10, 0, 0));
 
-        List<String> campos = new ArrayList<>(Arrays.asList("Título", "Autor", "ISBN", "Año"));
+        List<String> campos = new ArrayList<>(Arrays.asList("Título", "Autor", "Editorial", "Género", "Año"));
         view.getFilterComboBox().getItems().addAll(campos);
         view.getFilterComboBox().getStyleClass().add("filter-combo");
         view.getOrderComboBox().getItems().addAll(campos);
         view.getOrderComboBox().getStyleClass().add("order-combo");
        
         view.getPreviousButton().getStyleClass().addAll("footer-button", "previous-button");
+        view.getPreviousButton().setDisable(true);
         view.getNextButton().getStyleClass().addAll("footer-button", "next-button");
+        view.getNextButton().setDisable(true);
         view.getFooter().getChildren().addAll(view.getPreviousButton(), view.getPageNumLabel(), new Label("/"), view.getTotalPagesLabel(), view.getNextButton());
         view.getFooter().getStyleClass().add("footer");
         view.getFooter().setMargin(view.getPreviousButton(), new Insets(0, 20, 0, 0));
@@ -129,32 +128,39 @@ public class LibrosController {
 
             Label nuevoTituloLabel = new Label("Título:");
             TextField nuevoTituloTextField = new TextField();
-            Label nuevoAutorLabel = new Label("Autor:");
-            TextField nuevoAutorTextField = new TextField();
+            Label nuevoautorLabel = new Label("autor:");
+            TextField nuevoautorTextField = new TextField();
             Label nuevoIsbnLabel = new Label("ISBN:");
             TextField nuevoIsbnTextField = new TextField();
-            Label nuevoAnioLabel = new Label("Año de publicación:");
-            TextField nuevoAnioTextField = new TextField();
+            Label nuevoAnioPublicacionLabel = new Label("Año de publicación:");
+            TextField nuevoAnioPublicacionTextField = new TextField();
             Label nuevoImgLabel = new Label("URL de imágen:");
             TextField nuevoImgTextField = new TextField();
-            VBox nueVBox = new VBox();
-            nueVBox.getChildren().addAll(nuevoTituloLabel, nuevoTituloTextField, nuevoAutorLabel, nuevoAutorTextField, nuevoIsbnLabel, nuevoIsbnTextField, nuevoAnioLabel, nuevoAnioTextField, nuevoImgLabel, nuevoImgTextField);
+            VBox nueVBox = new VBox(nuevoTituloLabel, nuevoTituloTextField, nuevoautorLabel, nuevoautorTextField, nuevoIsbnLabel, nuevoIsbnTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
+            nueVBox.getChildren().addAll();
             nueVBox.getChildren().forEach(e -> {
                 nueVBox.setMargin(e, new Insets(0, 0, 10, 0));
             });
             
             dialog.getDialogPane().setContent(nueVBox);
 
-
             okButton.addEventFilter(ActionEvent.ACTION, e -> {
-                Libro nuevoLibro = new Libro(nuevoTituloTextField.getText(), nuevoAutorTextField.getText(), nuevoIsbnTextField.getText(), Integer.parseInt(nuevoAnioTextField.getText()), nuevoImgTextField.getText());
-                listaLibros.add(nuevoLibro);
-                catalogo.saveList(listaLibros);
-                // XmlService.getInstance().guardarCatalogo(catalogo);
-                listaLibros = XmlService.getInstance().leerCatalogo(catalogo).getList();
-                cargarVista();
-                generarTiles(vistaLibros);
-                eh.consume();
+                boolean validado = true;
+                validar(nuevoTituloTextField, validado);
+                validar(nuevoautorTextField, validado);
+                validar(nuevoIsbnTextField, validado);
+                validar(nuevoAnioPublicacionTextField, validado);
+                validar(nuevoImgTextField, validado);
+                if(validado){
+                    Libro nuevoLibro = new Libro(nuevoTituloTextField.getText(), nuevoautorTextField.getText(), nuevoIsbnTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
+                    listaLibros.add(nuevoLibro);
+                    catalogo.saveList(listaLibros);
+                    XmlService.getInstance().guardarCatalogo(catalogo);
+                    listaLibros = XmlService.getInstance().leerCatalogo(catalogo).getList();
+                    cargarVista();
+                    generarTiles(vistaLibros);
+                    eh.consume();
+                }
             });
 
             dialog.showAndWait();
@@ -162,8 +168,9 @@ public class LibrosController {
     }
 
     public void cargarVista() {
-        if(listaLibros != null) {
-            vistaLibros = new ArrayList<>();
+        listaLibros = XmlService.getInstance().leerCatalogo(catalogo).getList() != null ? XmlService.getInstance().leerCatalogo(catalogo).getList() : new ArrayList<>();
+        vistaLibros = new ArrayList<>();
+        if(listaLibros.size() > 0) {
             for(Libro libro : listaLibros) {
                 vistaLibros.add(libro);
             }
@@ -171,10 +178,12 @@ public class LibrosController {
     }
 
     public void generarTiles(List<Libro> libros){
-        if(libros != null) {
-
-            view.getTilePane().getChildren().clear();
-            
+        view.getTilePane().getChildren().clear();
+        if(libros.size() > 0) {
+            totalPages = (int) Math.ceil((double) vistaLibros.size()/8);
+            view.getTotalPagesLabel().setText(Integer.toString(totalPages));
+            view.getPreviousButton().setDisable(pageNum == 1);
+            view.getNextButton().setDisable(pageNum == totalPages);
             List<Libro> pagina = new ArrayList<>();
             int first = (pageNum -1)*8;
             int last = (pageNum*8)-1 < (vistaLibros.size() - 1) ? (pageNum*8)-1  : vistaLibros.size() - 1;
@@ -193,18 +202,16 @@ public class LibrosController {
                 Label titulo = new Label(libro.getTitulo());
                 titulo.getStyleClass().add("titulo");
                 Label autor = new Label(libro.getAutor());
-                autor.getStyleClass().add("autor");
                 Label detalles = new Label(libro.getIsbn() + "\nAño de publicación: " + libro.getAnioPublicacion());
                 detalles.getStyleClass().add("detalles");
                 Button modificarButton = new Button("Modificar");
-                modificarButton.getStyleClass().add("modificar-button");
                 Button eliminarButton = new Button("Eliminar");
                 eliminarButton.getStyleClass().add("eliminar-button");
-                Region empty = new Region();
-                VBox buttonsBox = new VBox();
-                buttonsBox.getStyleClass().add("buttons-box");
-                buttonsBox.getChildren().addAll(modificarButton, eliminarButton);
-                buttonsBox.setMargin(eliminarButton, new Insets(10, 0, 0, 0));
+                HBox buttonsBox = new HBox();
+                Region space = new Region();
+                HBox.setHgrow(space, Priority.ALWAYS);
+                buttonsBox.getChildren().addAll(modificarButton, space, eliminarButton);
+                
                 
                 modificarButton.setOnAction(eh -> {
                     TextInputDialog dialog = new TextInputDialog();
@@ -232,28 +239,43 @@ public class LibrosController {
                     TextField nuevoAutorTextField = new TextField(libro.getAutor());
                     Label nuevoIsbnLabel = new Label("ISBN:");
                     TextField nuevoIsbnTextField = new TextField(libro.getIsbn());
-                    Label nuevoAnioLabel = new Label("Año de publicación:");
-                    TextField nuevoAnioTextField = new TextField(Integer.toString(libro.getAnioPublicacion()));
+                    Label nuevoAnioPublicacionLabel = new Label("Año de publicación:");
+                    TextField nuevoAnioPublicacionTextField = new TextField(Integer.toString(libro.getAnioPublicacion()));
                     Label nuevoImgLabel = new Label("URL de imágen:");
                     TextField nuevoImgTextField = new TextField(libro.getImgURL());
                     VBox nueVBox = new VBox();
-                    nueVBox.getChildren().addAll(nuevoTituloLabel, nuevoTituloTextField, nuevoAutorLabel, nuevoAutorTextField, nuevoIsbnLabel, nuevoIsbnTextField, nuevoAnioLabel, nuevoAnioTextField, nuevoImgLabel, nuevoImgTextField);
+                    nueVBox.getChildren().addAll(nuevoTituloLabel, nuevoTituloTextField, nuevoAutorLabel, nuevoAutorTextField, nuevoIsbnLabel, nuevoIsbnTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
                     nueVBox.getChildren().forEach(e -> {
                         nueVBox.setMargin(e, new Insets(0, 0, 10, 0));
+                    });
+
+                    nuevoAnioPublicacionTextField.setOnKeyReleased(event -> {
+                        String f = nuevoAnioPublicacionTextField.getText();
+                        if(f.matches("\\d")){
+                            nuevoAnioPublicacionTextField.setText(f);
+                        }
                     });
                     
                     dialog.getDialogPane().setContent(nueVBox);
                     
-                    
                     okButton.addEventFilter(ActionEvent.ACTION, e -> {
-                        Libro actualizado = new Libro(nuevoTituloTextField.getText(), nuevoAutorTextField.getText(), nuevoIsbnTextField.getText(), Integer.parseInt(nuevoAnioTextField.getText()), nuevoImgTextField.getText());
-                        listaLibros.set(listaLibros.indexOf(libro), actualizado);
-                        catalogo.saveList(listaLibros);
-                        // XmlService.getInstance().guardarCatalogo(catalogo);
-                        listaLibros = XmlService.getInstance().leerCatalogo(catalogo).getList();
-                        cargarVista();
-                        generarTiles(vistaLibros);
-                        eh.consume();
+                        boolean validado = true;
+                        validar(nuevoTituloTextField, validado);
+                        validar(nuevoAutorTextField, validado);
+                        validar(nuevoIsbnTextField, validado);
+                        validar(nuevoAnioPublicacionTextField, validado);
+                        validar(nuevoImgTextField, validado);
+                        if(validado){
+                            catalogo = new CatalogoLibros();
+                            Libro actualizado = new Libro(nuevoTituloTextField.getText(), nuevoAutorTextField.getText(), nuevoIsbnTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
+                            listaLibros.set(listaLibros.indexOf(libro), actualizado);
+                            catalogo.saveList(listaLibros);
+                            XmlService.getInstance().guardarCatalogo(catalogo);
+                            listaLibros = XmlService.getInstance().leerCatalogo(catalogo).getList();
+                            cargarVista();
+                            generarTiles(vistaLibros);
+                            eh.consume();
+                        }
                     });
                     
                     dialog.showAndWait();
@@ -262,7 +284,7 @@ public class LibrosController {
                 eliminarButton.setOnAction(eh -> {
                     listaLibros.remove(listaLibros.indexOf(libro));
                     catalogo.saveList(listaLibros);
-                    // XmlService.getInstance().guardarCatalogo(catalogo);
+                    XmlService.getInstance().guardarCatalogo(catalogo);
                     listaLibros = XmlService.getInstance().leerCatalogo(catalogo).getList();
                     cargarVista();
                     generarTiles(vistaLibros);
@@ -274,32 +296,37 @@ public class LibrosController {
                 containerBox.setHgrow(card, Priority.ALWAYS);
                 view.getTilePane().getChildren().add(containerBox);
             }
+            
+            view.getTilePane().setTileAlignment(Pos.CENTER);
         }
-        
-        view.getTilePane().setTileAlignment(Pos.CENTER);
     }
 
+    public void validar(TextField field, boolean validado) {
+        field.setPromptText("Debe rellenar el campo");
+        field.getStyleClass().add("error");
+        validado = false;
+    }
 
-    public void ordenar(List<Libro> libros) {
+    public void ordenar(List<Libro> libro) {
         String orden = view.getOrderComboBox().getValue();
         if(orden.equals("Título")) {
-            libros.sort( (l1, l2) -> {
+            libro.sort( (l1, l2) -> {
                 return l1.getTitulo().compareTo(l2.getTitulo());
             });
         } else if(orden.equals("Autor")) {
-            libros.sort((l1, l2) -> {
+            libro.sort((l1, l2) -> {
                 return l1.getAutor().compareTo(l2.getAutor());
             });
         } else if(orden.equals("ISBN")) {
-            libros.sort((l1, l2) -> {
+            libro.sort((l1, l2) -> {
                 return l1.getIsbn().compareTo(l2.getIsbn());
             });
         } else {
-            libros.sort((l1, l2) -> {
+            libro.sort((l1, l2) -> {
                 return l1.getAnioPublicacion() - l2.getAnioPublicacion();
             });
         }
-        generarTiles(libros);
+        generarTiles(libro);
     }
 
     public void buscar() {
@@ -313,7 +340,7 @@ public class LibrosController {
                 filtrada.add(libro);
             } else if(filtro.equals("Autor") && libro.getAutor().toLowerCase().contains(input)) {
                 filtrada.add(libro);
-            } else if(filtro.equals("ISBN") && libro.getIsbn().toLowerCase().contains(input)) {
+            } else if(filtro.equals("Editorial") && libro.getIsbn().toLowerCase().contains(input)) {
                 filtrada.add(libro);
             } else if(filtro.equals("Año") && Integer.toString(libro.getAnioPublicacion()).contains(input)) {
                 filtrada.add(libro);
