@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<catalogoComics>
+    <CATALOGO_XML>./catalogo_comics.xml</CATALOGO_XML>
+    <Comics>
+        <Comic>
+            <Titulo>Daken: Dark Wolverine Omnibus HC</Titulo>
+            <Autor>Daniel Way</Autor>
+            <ISBN>9781302966621</ISBN>
+            <Editorial>DC Comics</Editorial>
+            <AnioPublicacion>2026</AnioPublicacion>
+            <ImgURL>https://s3.amazonaws.com/comicgeeks/comics/covers/medium-1322775.jpg</ImgURL>
+        </Comic>
+        <Comic>
+            <Titulo>Batman #9</Titulo>
+            <Autor>Bruno Redondo</Autor>
+            <ISBN>76194139163200911</ISBN>
+            <Editorial>DC Comics</Editorial>
+            <AnioPublicacion>2025</AnioPublicacion>
+            <ImgURL>https://s3.amazonaws.com/comicgeeks/comics/covers/medium-1773295.jpg?1778024765</ImgURL>
+        </Comic>
+        <Comic>
+            <Titulo>Batgirl #19</Titulo>
+            <Autor>Tate Brombal</Autor>
+            <ISBN>76194138622501911</ISBN>
+            <Editorial>DC Comics</Editorial>
+            <AnioPublicacion>2026</AnioPublicacion>
+            <ImgURL>https://s3.amazonaws.com/comicgeeks/comics/covers/medium-1034362.jpg</ImgURL>
+        </Comic>
+        <Comic>
+            <Titulo>Nightwing: A Knight in Blüdhaven Compendium Book 3 TP</Titulo>
+            <Autor>Chuck Dixon</Autor>
+            <ISBN>9781799508120</ISBN>
+            <Editorial>DC Comics</Editorial>
+            <AnioPublicacion>2026</AnioPublicacion>
+            <ImgURL>https://s3.amazonaws.com/comicgeeks/comics/covers/medium-3717786.jpg</ImgURL>
+        </Comic>
+        <Comic>
+            <Titulo>Detective Comics #578</Titulo>
+            <Autor>Mike W. Barr</Autor>
+            <ISBN>76194139503600111</ISBN>
+            <Editorial>DC Comics</Editorial>
+            <AnioPublicacion>2026</AnioPublicacion>
+            <ImgURL>https://s3.amazonaws.com/comicgeeks/comics/covers/medium-2918808.jpg?1775788361</ImgURL>
+        </Comic>
+        <Comic>
+            <Titulo>Civil War: Unmasked #1</Titulo>
+            <Autor>Christos Gage</Autor>
+            <ISBN>75960621471600111</ISBN>
+            <Editorial>Marvel  Comics</Editorial>
+            <AnioPublicacion>2026</AnioPublicacion>
+            <ImgURL>https://s3.amazonaws.com/comicgeeks/comics/covers/medium-4921659.jpg</ImgURL>
+        </Comic>
+        <Comic>
+            <Titulo>The Incredible Hulk Epic Collection: Devolution TP</Titulo>
+            <Autor>Bill Mantlo</Autor>
+            <ISBN>9781302967413</ISBN>
+            <Editorial>Marvel  Comics</Editorial>
+            <AnioPublicacion>2026</AnioPublicacion>
+            <ImgURL>https://s3.amazonaws.com/comicgeeks/comics/covers/medium-7288657.jpg</ImgURL>
+        </Comic>
+        <Comic>
+            <Titulo>MegaGhost #2</Titulo>
+            <Autor>76156801511900211</Autor>
+            <ISBN>Gabe Soria</ISBN>
+            <Editorial>Dark Horse Comics</Editorial>
+            <AnioPublicacion>2026</AnioPublicacion>
+            <ImgURL>https://s3.amazonaws.com/comicgeeks/comics/covers/medium-5356925.jpg</ImgURL>
+        </Comic>
+        <Comic>
+            <Titulo>Mob Psycho 100 Vol. 16 TP</Titulo>
+            <Autor>One</Autor>
+            <ISBN>9781506738017</ISBN>
+            <Editorial>Dark Horse Comics</Editorial>
+            <AnioPublicacion>2026</AnioPublicacion>
+            <ImgURL>https://s3.amazonaws.com/comicgeeks/comics/covers/medium-5062790.jpg</ImgURL>
+        </Comic>
+        <Comic>
+            <Titulo>Godzilla #10</Titulo>
+            <Autor>Tim Seeley</Autor>
+            <ISBN>82771403433201011</ISBN>
+            <Editorial>IDW Publishing</Editorial>
+            <AnioPublicacion>2026</AnioPublicacion>
+            <ImgURL>https://s3.amazonaws.com/comicgeeks/comics/covers/medium-5887463.jpg</ImgURL>
+        </Comic>
+    </Comics>
+</catalogoComics>

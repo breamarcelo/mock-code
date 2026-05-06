@@ -20,16 +20,6 @@ public void load() {
         Region start = new Region();
         Region end = new Region();
 
-        view.getChildren().addAll(start, view.getLibrosButton(), view.getVideojuegosButton(), view.getRevistasButton(), view.getPeliculasButton(),view.getSeriesButton(), end, view.getAjustesButton());
-        for(Node node : view.getChildren()){
-            if(node instanceof Button) {
-                view.setMargin(node, new Insets(0, 0, 10, 0));
-            }
-        }
-        view.setVgrow(start, Priority.ALWAYS);
-        view.setVgrow(end, Priority.ALWAYS);
-
-
         Region videojuegoIcon = new Region();
         videojuegoIcon.getStyleClass().addAll("icon", "juego-icon");
         view.getVideojuegosButton().setGraphic(videojuegoIcon);
@@ -43,16 +33,13 @@ public void load() {
         revistaIcon.getStyleClass().addAll("icon", "revista-icon");
         view.getRevistasButton().setGraphic(revistaIcon);
 
-        Region peliculaIcon = new Region();
-        peliculaIcon.getStyleClass().addAll("icon", "pelicula-icon");
-        view.getPeliculasButton().setGraphic(peliculaIcon);
-
-        Region tvIcon = new Region();
-        tvIcon.getStyleClass().addAll("icon", "tv-icon");
-        view.getSeriesButton().setGraphic(tvIcon);
-
-        Region gearIcon = new Region();
-        gearIcon.getStyleClass().addAll("icon", "gear-icon");
-        view.getAjustesButton().setGraphic(gearIcon);
+        view.getChildren().addAll(start, view.getLibrosButton(), view.getVideojuegosButton(), view.getRevistasButton(), end);
+        for(Node node : view.getChildren()){
+            if(node instanceof Button) {
+                view.setMargin(node, new Insets(0, 0, 10, 0));
+            }
+        }
+        view.setVgrow(start, Priority.ALWAYS);
+        view.setVgrow(end, Priority.ALWAYS);
     }
 }

@@ -1,5 +1,150 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <catalogoLibros>
     <CATALOGO_XML>./catalogo_libros.xml</CATALOGO_XML>
-    <Libros/>
+    <Libros>
+        <Libro>
+            <Titulo>Don Quijote de la Mancha</Titulo>
+            <Autor>Miguel de Cervantes</Autor>
+            <ISBN>ISBN-13: 9788491050759</ISBN>
+            <Editorial>National Geographic Books</Editorial>
+            <AnioPublicacion>2019</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/41Cd8kHWeNL._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>La Divina Comedia</Titulo>
+            <Autor>Dante Alighieri</Autor>
+            <ISBN>ISBN-13: 9786074005523</ISBN>
+            <Editorial>Editorial Oceano de Mexico</Editorial>
+            <AnioPublicacion>2016</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/41x1qgCNiJS._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>Rayuela</Titulo>
+            <Autor>Julio Cortázar</Autor>
+            <ISBN>ISBN-13: 9789875780620</ISBN>
+            <Editorial>Punto de Lectura</Editorial>
+            <AnioPublicacion>2011</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/41HgFCOEyTL._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>La Montaña Mágica</Titulo>
+            <Autor>Thomas Mann</Autor>
+            <ISBN>ISBN-13: 9788435008914</ISBN>
+            <Editorial>Edhasa</Editorial>
+            <AnioPublicacion>2005</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/41oLYRYClJL._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>El Principito</Titulo>
+            <Autor>Antoine de Saint-Exupéry</Autor>
+            <ISBN>ISBN-13: 9786070730535</ISBN>
+            <Editorial>Planeta Publishing Corporation</Editorial>
+            <AnioPublicacion>2019</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/41uzsYrnoeL._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>A Portrait of the Artist as a Young Man</Titulo>
+            <Autor>James Joyce</Autor>
+            <ISBN>ISBN-13: 9780142437346</ISBN>
+            <Editorial>Penguin Publishing Group</Editorial>
+            <AnioPublicacion>2003</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/41F0s+k5dRL._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>Dubliners</Titulo>
+            <Autor>James Joyce</Autor>
+            <ISBN>ISBN-13: 9780140186475</ISBN>
+            <Editorial>Penguin</Editorial>
+            <AnioPublicacion>1993</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/41Eucg5g-2L._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>To Kill a Mockingbird</Titulo>
+            <Autor>Harper Lee</Autor>
+            <ISBN>ISBN-13: 9780060935467</ISBN>
+            <Editorial>Harper Perennial</Editorial>
+            <AnioPublicacion>2002</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/51IXWZzlgSL._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>Moby-Dick or, The Whale</Titulo>
+            <Autor>Herman Melville</Autor>
+            <ISBN>ISBN-13: 9780143105954</ISBN>
+            <Editorial>Penguin</Editorial>
+            <AnioPublicacion>2009</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/51HfDxpGT+L._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>The Old Man and the Sea</Titulo>
+            <Autor>Ernest Hemingway</Autor>
+            <ISBN>ISBN-13: 9781644730546</ISBN>
+            <Editorial>National Geographic Books</Editorial>
+            <AnioPublicacion>2019</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/31HjyMmio+L._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>Animal Farm</Titulo>
+            <Autor>George Orwell</Autor>
+            <ISBN>ISBN-13: 9784515263419</ISBN>
+            <Editorial>Signet</Editorial>
+            <AnioPublicacion>2004</AnioPublicacion>
+            <ImgURL>https://scottberkun.com/wp-content/uploads/2017/01/animal_farm_cover2014.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>La Regenta</Titulo>
+            <Autor>Leopoldo Alas</Autor>
+            <ISBN>ISBN-13: 9780140443462</ISBN>
+            <Editorial>Penguin Books Limited</Editorial>
+            <AnioPublicacion>1984</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/41qRzwLwdJS._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>La vida es sueño</Titulo>
+            <Autor>Pedro Calderón de la Barca</Autor>
+            <ISBN>ISBN-13: 9788467033953</ISBN>
+            <Editorial>Espasa Calpe</Editorial>
+            <AnioPublicacion>2010</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/51Z9VPCtQEL._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>La Metamorfosis</Titulo>
+            <Autor>Franz Kafka</Autor>
+            <ISBN>ISBN-13: 9789982470919</ISBN>
+            <Editorial>TAZIRI</Editorial>
+            <AnioPublicacion>2021</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/418c9HK2xgL._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>Les Miserables</Titulo>
+            <Autor>Victor Hugo</Autor>
+            <ISBN>ISBN-13: 9780451419439</ISBN>
+            <Editorial>National Geographic Books</Editorial>
+            <AnioPublicacion>2013</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/411JYpEGhiL._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>Ilíada</Titulo>
+            <Autor>Homero</Autor>
+            <ISBN>ISBN-13: 9788424926328</ISBN>
+            <Editorial>Gredos</Editorial>
+            <AnioPublicacion>2014</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/311x0TSAolL._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>Odisea</Titulo>
+            <Autor>Homero</Autor>
+            <ISBN>ISBN-13: 9788424926335</ISBN>
+            <Editorial>Gredos</Editorial>
+            <AnioPublicacion>2014</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/31hiAq9G+OL._SL160_.jpg</ImgURL>
+        </Libro>
+        <Libro>
+            <Titulo>El Arte de la Guerra</Titulo>
+            <Autor>Sun Tzu</Autor>
+            <ISBN>ISBN-13: 9788410096226</ISBN>
+            <Editorial>Penguin Random House Grupo Editorial</Editorial>
+            <AnioPublicacion>2025</AnioPublicacion>
+            <ImgURL>https://m.media-amazon.com/images/I/41n2kAcyzdL._SL160_.jpg</ImgURL>
+        </Libro>
+    </Libros>
 </catalogoLibros>

@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import com.example.views.ComicsView;
 import com.example.views.LibrosView;
 import com.example.views.MainView;
 import com.example.views.VideojuegosView;
@@ -32,21 +33,13 @@ public class MainController {
             view.setCenterContent(videojuegosView);
         });
 
-    //     view.getSidebar().getLineasAdicionalesButton().setOnAction(e -> {
-    //         LineasAdicionalesView lineasAdicionalesView = new LineasAdicionalesView();
-    //         LineasAdicionalesController lineasAdicionalesController = new LineasAdicionalesController(lineasAdicionalesView);
-    //         unselectButtons();
-    //         view.getSidebar().getLineasAdicionalesButton().getStyleClass().add("selected");
-    //         view.setCenterContent(lineasAdicionalesView);
-    //     });
-
-    //     view.getSidebar().getProductosButton().setOnAction(e -> {
-    //         ProductosView productosView = new ProductosView();
-    //         ProductosController productosController = new ProductosController(productosView);
-    //         unselectButtons();
-    //         view.getSidebar().getProductosButton().getStyleClass().add("selected");
-    //         view.setCenterContent(productosView);
-    //     });
+        view.getSidebar().getRevistasButton().setOnAction(e -> {
+            ComicsView comicsView = new ComicsView();
+            ComicsController comicsController = new ComicsController(comicsView);
+            unselectButtons();
+            view.getSidebar().getRevistasButton().getStyleClass().add("selected");
+            view.setCenterContent(comicsView);
+        });
     }
 
     public void unselectButtons() {

@@ -7,7 +7,7 @@ import jakarta.xml.bind.annotation.XmlType;
 
 @XmlType(propOrder={"titulo", "autor", "isbn", "editorial", "anioPublicacion", "imgURL"})
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Libro {
+public class Comic {
     @XmlElement(name="Titulo")
     private String titulo;
     @XmlElement(name="Autor")
@@ -21,10 +21,10 @@ public class Libro {
     @XmlElement(name="ImgURL")
     private String imgURL;
 
-    public Libro() {
+    public Comic() {
     }
 
-    public Libro(String titulo, String autor, String isbn, String editorial, int anioPublicacion, String imgUrl) {
+    public Comic(String titulo, String autor, String isbn, String editorial, int anioPublicacion, String imgUrl) {
         this.titulo = titulo;
         this.autor = autor;
         this.isbn = isbn;
@@ -81,6 +81,4 @@ public class Libro {
         this.editorial = editorial;
     }
 
-    
-    
 }

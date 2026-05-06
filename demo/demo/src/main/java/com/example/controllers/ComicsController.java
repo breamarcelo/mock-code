@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.example.config.UIUtil;
-import com.example.models.CatalogoVideojuegos;
-import com.example.models.Videojuego;
+import com.example.models.CatalogoComics;
+import com.example.models.Comic;
 import com.example.services.XmlService;
-import com.example.views.VideojuegosView;
+import com.example.views.ComicsView;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -25,21 +25,21 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
-public class VideojuegosController {
-    private VideojuegosView view;
-    private List<Videojuego> listaVideojuegos;
-    private List<Videojuego> vistaVideojuegos;
+public class ComicsController {
+    private ComicsView view;
+    private List<Comic> listaComics;
+    private List<Comic> vistaComics;
     private int pageNum;
     private int totalPages;
-    private CatalogoVideojuegos catalogo;
+    private CatalogoComics catalogo;
 
-    public VideojuegosController(VideojuegosView view){
+    public ComicsController(ComicsView view){
         this.view = view;
         load();
     }
 
     public void load() {
-        catalogo = new CatalogoVideojuegos();
+        catalogo = new CatalogoComics();
         cargarVista();
         pageNum = 1;
         totalPages = 1;
@@ -55,7 +55,7 @@ public class VideojuegosController {
         view.getMenuHBox().setMargin(view.getFilterComboBox(), new Insets(0, 10, 0, 0));
         view.getMenuHBox().setMargin(view.getOrderComboBox(), new Insets(0, 10, 0, 0));
 
-        List<String> campos = new ArrayList<>(Arrays.asList("Título", "Consola", "Editorial", "Género", "Año"));
+        List<String> campos = new ArrayList<>(Arrays.asList("Título", "Autor", "ISBN/UPC", "Editorial", "Año"));
         view.getFilterComboBox().getItems().addAll(campos);
         view.getFilterComboBox().getStyleClass().add("filter-combo");
         view.getOrderComboBox().getItems().addAll(campos);
@@ -69,20 +69,20 @@ public class VideojuegosController {
         view.getFooter().getStyleClass().add("footer");
         view.getFooter().setMargin(view.getPreviousButton(), new Insets(0, 20, 0, 0));
         view.getFooter().setMargin(view.getNextButton(), new Insets(0, 0, 0, 20));
-        generarTiles(vistaVideojuegos);
+        generarTiles(vistaComics);
         
         view.getPreviousButton().setOnAction(eh -> {
             pageNum--;
             view.getPageNumLabel().setText(Integer.toString(pageNum));
             
-            generarTiles(vistaVideojuegos);
+            generarTiles(vistaComics);
         });
         
         view.getNextButton().setOnAction(eh -> {
             pageNum++;
             view.getPageNumLabel().setText(Integer.toString(pageNum));
             
-            generarTiles(vistaVideojuegos);
+            generarTiles(vistaComics);
         });
 
         view.getSearchBarTextField().setOnKeyReleased(eh -> {
@@ -99,11 +99,11 @@ public class VideojuegosController {
             view.getOrderComboBox().setValue("");
             
             cargarVista();
-            generarTiles(vistaVideojuegos);
+            generarTiles(vistaComics);
         });
 
         view.getOrderComboBox().setOnAction(eh -> {
-            ordenar(vistaVideojuegos);
+            ordenar(vistaComics);
         });
         
         view.getNuevButton().setOnAction(eh -> {
@@ -114,7 +114,7 @@ public class VideojuegosController {
             dialog.getDialogPane().getStyleClass().add("dialog");
             dialog.setTitle("Agregar nuevo");
             dialog.setGraphic(null);
-            dialog.setHeaderText("Detalles del libro:");
+            dialog.setHeaderText("Detalles del Comic:");
 
             Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
             cancelButton.setText("Cancelar");
@@ -128,17 +128,17 @@ public class VideojuegosController {
 
             Label nuevoTituloLabel = new Label("Título:");
             TextField nuevoTituloTextField = new TextField();
-            Label nuevoConsolaLabel = new Label("Consola:");
-            TextField nuevoConsolaTextField = new TextField();
+            Label nuevoautorLabel = new Label("Autor:");
+            TextField nuevoautorTextField = new TextField();
+            Label nuevoIsbnLabel = new Label("ISBN/UPC:");
+            TextField nuevoIsbnTextField = new TextField();
             Label nuevoEditorialLabel = new Label("Editorial:");
             TextField nuevoEditorialTextField = new TextField();
-            Label nuevoGeneroLabel = new Label("Género:");
-            TextField nuevoGeneroTextField = new TextField();
             Label nuevoAnioPublicacionLabel = new Label("Año de publicación:");
             TextField nuevoAnioPublicacionTextField = new TextField();
             Label nuevoImgLabel = new Label("URL de imágen:");
             TextField nuevoImgTextField = new TextField();
-            VBox nueVBox = new VBox(nuevoTituloLabel, nuevoTituloTextField, nuevoConsolaLabel, nuevoConsolaTextField, nuevoEditorialLabel, nuevoEditorialTextField, nuevoGeneroLabel, nuevoGeneroTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
+            VBox nueVBox = new VBox(nuevoTituloLabel, nuevoTituloTextField, nuevoautorLabel, nuevoautorTextField, nuevoIsbnLabel, nuevoIsbnTextField, nuevoEditorialLabel, nuevoEditorialTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
             nueVBox.getChildren().addAll();
             nueVBox.getChildren().forEach(e -> {
                 nueVBox.setMargin(e, new Insets(0, 0, 10, 0));
@@ -149,19 +149,19 @@ public class VideojuegosController {
             okButton.addEventFilter(ActionEvent.ACTION, e -> {
                 boolean validado = true;
                 validar(nuevoTituloTextField, validado);
-                validar(nuevoConsolaTextField, validado);
+                validar(nuevoautorTextField, validado);
+                validar(nuevoIsbnTextField, validado);
                 validar(nuevoEditorialTextField, validado);
-                validar(nuevoGeneroTextField, validado);
                 validar(nuevoAnioPublicacionTextField, validado);
                 validar(nuevoImgTextField, validado);
                 if(validado){
-                    Videojuego nuevoVideojuego = new Videojuego(nuevoTituloTextField.getText(), nuevoConsolaTextField.getText(), nuevoEditorialTextField.getText(), nuevoGeneroTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
-                    listaVideojuegos.add(nuevoVideojuego);
-                    catalogo.saveList(listaVideojuegos);
+                    Comic nuevoComic = new Comic(nuevoTituloTextField.getText(), nuevoautorTextField.getText(), nuevoIsbnTextField.getText(), nuevoEditorialTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
+                    listaComics.add(nuevoComic);
+                    catalogo.saveList(listaComics);
                     XmlService.getInstance().guardarCatalogo(catalogo);
-                    listaVideojuegos = XmlService.getInstance().leerCatalogo(catalogo).getList();
+                    listaComics = XmlService.getInstance().leerCatalogo(catalogo).getList();
                     cargarVista();
-                    generarTiles(vistaVideojuegos);
+                    generarTiles(vistaComics);
                     eh.consume();
                 }
             });
@@ -171,44 +171,44 @@ public class VideojuegosController {
     }
 
     public void cargarVista() {
-        listaVideojuegos = XmlService.getInstance().leerCatalogo(catalogo).getList() != null ? XmlService.getInstance().leerCatalogo(catalogo).getList() : new ArrayList<>();
-        vistaVideojuegos = new ArrayList<>();
-        if(listaVideojuegos.size() > 0) {
-            for(Videojuego Videojuego : listaVideojuegos) {
-                vistaVideojuegos.add(Videojuego);
+        listaComics = XmlService.getInstance().leerCatalogo(catalogo).getList() != null ? XmlService.getInstance().leerCatalogo(catalogo).getList() : new ArrayList<>();
+        vistaComics = new ArrayList<>();
+        if(listaComics.size() > 0) {
+            for(Comic Comic : listaComics) {
+                vistaComics.add(Comic);
             }
         }
     }
 
-    public void generarTiles(List<Videojuego> videojuegos){
+    public void generarTiles(List<Comic> Comics){
         view.getTilePane().getChildren().clear();
-        if(videojuegos.size() > 0) {
-            totalPages = (int) Math.ceil((double) vistaVideojuegos.size()/8);
+        if(Comics.size() > 0) {
+            totalPages = (int) Math.ceil((double) vistaComics.size()/8);
             view.getTotalPagesLabel().setText(Integer.toString(totalPages));
             view.getPreviousButton().setDisable(pageNum == 1);
             view.getNextButton().setDisable(pageNum == totalPages);
-            List<Videojuego> pagina = new ArrayList<>();
+            List<Comic> pagina = new ArrayList<>();
             int first = (pageNum -1)*8;
-            int last = (pageNum*8)-1 < (vistaVideojuegos.size() - 1) ? (pageNum*8)-1  : vistaVideojuegos.size() - 1;
+            int last = (pageNum*8)-1 < (vistaComics.size() - 1) ? (pageNum*8)-1  : vistaComics.size() - 1;
             for(int i = first; i <= last; i++) {
-                pagina.add(vistaVideojuegos.get(i));
+                pagina.add(vistaComics.get(i));
             }
             
-            for(Videojuego videojuego : pagina) {
+            for(Comic comic : pagina) {
                 HBox containerBox = new HBox();
                 containerBox.getStyleClass().add("card-container");
                 
                 VBox card = new VBox();
                 card.getStyleClass().add("card");
                 
-                ImageView img = new ImageView(new Image(videojuego.getImgURL()));
+                ImageView img = new ImageView(new Image(comic.getImgURL()));
                 img.setFitHeight(120);
                 img.setFitWidth(90);
                 img.setPreserveRatio(true);
-                Label titulo = new Label(videojuego.getTitulo());
+                Label titulo = new Label(comic.getTitulo());
                 titulo.getStyleClass().add("titulo");
-                Label consola = new Label(videojuego.getConsola());
-                Label detalles = new Label("Editorial: " + videojuego.getEditorial() + "\nGénero: " + videojuego.getGenero() + "\nAño de publicación: " + videojuego.getAnioPublicacion());
+                Label autor = new Label(comic.getAutor());
+                Label detalles = new Label(comic.getIsbn() + "\nEditorial: " + comic.getEditorial() + "\nAño de publicación: " + comic.getAnioPublicacion());
                 detalles.getStyleClass().add("detalles");
                 Button modificarButton = new Button("Modificar");
                 Button eliminarButton = new Button("Eliminar");
@@ -217,6 +217,7 @@ public class VideojuegosController {
                 Region space = new Region();
                 HBox.setHgrow(space, Priority.ALWAYS);
                 buttonsBox.getChildren().addAll(modificarButton, space, eliminarButton);
+                buttonsBox.setAlignment(Pos.BOTTOM_CENTER);
                 
                 
                 modificarButton.setOnAction(eh -> {
@@ -227,7 +228,7 @@ public class VideojuegosController {
                     dialog.getDialogPane().getStyleClass().add("dialog");
                     dialog.setTitle("Modificar");
                     dialog.setGraphic(null);
-                    dialog.setHeaderText("Detalles del videojuego:");
+                    dialog.setHeaderText("Detalles del Comic:");
                     
                     Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
                     cancelButton.setText("Cancelar");
@@ -240,19 +241,19 @@ public class VideojuegosController {
                     node.setVisible(false);
                     
                     Label nuevoTituloLabel = new Label("Título:");
-                    TextField nuevoTituloTextField = new TextField(videojuego.getTitulo());
-                    Label nuevoConsolaLabel = new Label("Consola:");
-                    TextField nuevoConsolaTextField = new TextField(videojuego.getConsola());
+                    TextField nuevoTituloTextField = new TextField(comic.getTitulo());
+                    Label nuevoAutorLabel = new Label("Autor:");
+                    TextField nuevoAutorTextField = new TextField(comic.getAutor());
+                    Label nuevoIsbnLabel = new Label("ISBN:");
+                    TextField nuevoIsbnTextField = new TextField(comic.getIsbn());
                     Label nuevoEditorialLabel = new Label("Editorial:");
-                    TextField nuevoEditorialTextField = new TextField(videojuego.getEditorial());
-                    Label nuevoGeneroLabel = new Label("Género:");
-                    TextField nuevoGeneroTextField = new TextField(videojuego.getGenero());
+                    TextField nuevoEditorialTextField = new TextField(comic.getEditorial());
                     Label nuevoAnioPublicacionLabel = new Label("Año de publicación:");
-                    TextField nuevoAnioPublicacionTextField = new TextField(Integer.toString(videojuego.getAnioPublicacion()));
+                    TextField nuevoAnioPublicacionTextField = new TextField(Integer.toString(comic.getAnioPublicacion()));
                     Label nuevoImgLabel = new Label("URL de imágen:");
-                    TextField nuevoImgTextField = new TextField(videojuego.getImgURL());
+                    TextField nuevoImgTextField = new TextField(comic.getImgURL());
                     VBox nueVBox = new VBox();
-                    nueVBox.getChildren().addAll(nuevoTituloLabel, nuevoTituloTextField, nuevoConsolaLabel, nuevoConsolaTextField, nuevoEditorialLabel, nuevoEditorialTextField, nuevoGeneroLabel, nuevoGeneroTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
+                    nueVBox.getChildren().addAll(nuevoTituloLabel, nuevoTituloTextField, nuevoAutorLabel, nuevoAutorTextField, nuevoIsbnLabel, nuevoIsbnTextField, nuevoEditorialLabel, nuevoEditorialTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
                     nueVBox.getChildren().forEach(e -> {
                         nueVBox.setMargin(e, new Insets(0, 0, 10, 0));
                     });
@@ -269,20 +270,20 @@ public class VideojuegosController {
                     okButton.addEventFilter(ActionEvent.ACTION, e -> {
                         boolean validado = true;
                         validar(nuevoTituloTextField, validado);
-                        validar(nuevoConsolaTextField, validado);
+                        validar(nuevoAutorTextField, validado);
+                        validar(nuevoIsbnTextField, validado);
                         validar(nuevoEditorialTextField, validado);
-                        validar(nuevoGeneroTextField, validado);
                         validar(nuevoAnioPublicacionTextField, validado);
                         validar(nuevoImgTextField, validado);
                         if(validado){
-                            catalogo = new CatalogoVideojuegos();
-                            Videojuego actualizado = new Videojuego(nuevoTituloTextField.getText(), nuevoConsolaTextField.getText(), nuevoEditorialTextField.getText(), nuevoGeneroTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
-                            listaVideojuegos.set(listaVideojuegos.indexOf(videojuego), actualizado);
-                            catalogo.saveList(listaVideojuegos);
+                            catalogo = new CatalogoComics();
+                            Comic actualizado = new Comic(nuevoTituloTextField.getText(), nuevoAutorTextField.getText(), nuevoIsbnTextField.getText(), nuevoEditorialTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
+                            listaComics.set(listaComics.indexOf(comic), actualizado);
+                            catalogo.saveList(listaComics);
                             XmlService.getInstance().guardarCatalogo(catalogo);
-                            listaVideojuegos = XmlService.getInstance().leerCatalogo(catalogo).getList();
+                            listaComics = XmlService.getInstance().leerCatalogo(catalogo).getList();
                             cargarVista();
-                            generarTiles(vistaVideojuegos);
+                            generarTiles(vistaComics);
                             eh.consume();
                         }
                     });
@@ -291,15 +292,15 @@ public class VideojuegosController {
                 });
                 
                 eliminarButton.setOnAction(eh -> {
-                    listaVideojuegos.remove(listaVideojuegos.indexOf(videojuego));
-                    catalogo.saveList(listaVideojuegos);
+                    listaComics.remove(listaComics.indexOf(comic));
+                    catalogo.saveList(listaComics);
                     XmlService.getInstance().guardarCatalogo(catalogo);
-                    listaVideojuegos = XmlService.getInstance().leerCatalogo(catalogo).getList();
+                    listaComics = XmlService.getInstance().leerCatalogo(catalogo).getList();
                     cargarVista();
-                    generarTiles(vistaVideojuegos);
+                    generarTiles(vistaComics);
                 });
                 
-                card.getChildren().addAll(img, titulo, consola, detalles, buttonsBox);
+                card.getChildren().addAll(img, titulo, autor, detalles, buttonsBox);
                 card.setAlignment(Pos.TOP_CENTER);
                 containerBox.getChildren().add(card);
                 containerBox.setHgrow(card, Priority.ALWAYS);
@@ -316,52 +317,52 @@ public class VideojuegosController {
         validado = false;
     }
 
-    public void ordenar(List<Videojuego> videojuegos) {
+    public void ordenar(List<Comic> comic) {
         String orden = view.getOrderComboBox().getValue();
         if(orden.equals("Título")) {
-            videojuegos.sort( (l1, l2) -> {
+            comic.sort( (l1, l2) -> {
                 return l1.getTitulo().compareTo(l2.getTitulo());
             });
-        } else if(orden.equals("Consola")) {
-            videojuegos.sort((l1, l2) -> {
-                return l1.getConsola().compareTo(l2.getConsola());
+        } else if(orden.equals("Autor")) {
+            comic.sort((l1, l2) -> {
+                return l1.getAutor().compareTo(l2.getAutor());
+            });
+        } else if(orden.equals("ISBN")) {
+            comic.sort((l1, l2) -> {
+                return l1.getIsbn().compareTo(l2.getIsbn());
             });
         } else if(orden.equals("Editorial")) {
-            videojuegos.sort((l1, l2) -> {
+            comic.sort((l1, l2) -> {
                 return l1.getEditorial().compareTo(l2.getEditorial());
             });
-        } else if(orden.equals("Género")) {
-            videojuegos.sort((l1, l2) -> {
-                return l1.getGenero().compareTo(l2.getGenero());
-            });
         } else {
-            videojuegos.sort((l1, l2) -> {
+            comic.sort((l1, l2) -> {
                 return l1.getAnioPublicacion() - l2.getAnioPublicacion();
             });
         }
-        generarTiles(videojuegos);
+        generarTiles(comic);
     }
 
     public void buscar() {
-        List<Videojuego> filtrada = new ArrayList<>();
+        List<Comic> filtrada = new ArrayList<>();
         String filtro = view.getFilterComboBox().getValue() != null ? view.getFilterComboBox().getValue() : "";
         String input = view.getSearchBarTextField().getText().toLowerCase();
-        for(Videojuego videojuego : listaVideojuegos) {
-            if(filtro.isEmpty() && (videojuego.getTitulo().toLowerCase().contains(input) || videojuego.getConsola().toLowerCase().contains(input) || videojuego.getGenero().toLowerCase().contains(input) || videojuego.getEditorial().toLowerCase().contains(input) || Integer.toString(videojuego.getAnioPublicacion()).contains(input))) {
-                filtrada.add(videojuego);
-            } else if(filtro.equals("Título") && videojuego.getTitulo().toLowerCase().contains(input)) {
-                filtrada.add(videojuego);
-            } else if(filtro.equals("Consola") && videojuego.getConsola().toLowerCase().contains(input)) {
-                filtrada.add(videojuego);
-            }  else if(filtro.equals("Genero") && videojuego.getGenero().toLowerCase().contains(input)) {
-                filtrada.add(videojuego);
-            } else if(filtro.equals("Editorial") && videojuego.getEditorial().toLowerCase().contains(input)) {
-                filtrada.add(videojuego);
-            } else if(filtro.equals("Año") && Integer.toString(videojuego.getAnioPublicacion()).contains(input)) {
-                filtrada.add(videojuego);
+        for(Comic comic : listaComics) {
+            if(filtro.isEmpty() && (comic.getTitulo().toLowerCase().contains(input) || comic.getAutor().toLowerCase().contains(input) || comic.getIsbn().toLowerCase().contains(input) || comic.getEditorial().toLowerCase().contains(input) || Integer.toString(comic.getAnioPublicacion()).contains(input))) {
+                filtrada.add(comic);
+            } else if(filtro.equals("Título") && comic.getTitulo().toLowerCase().contains(input)) {
+                filtrada.add(comic);
+            } else if(filtro.equals("Autor") && comic.getAutor().toLowerCase().contains(input)) {
+                filtrada.add(comic);
+            } else if(filtro.equals("ISBN") && comic.getIsbn().toLowerCase().contains(input)) {
+                filtrada.add(comic);
+            } else if(filtro.equals("Editorial") && comic.getEditorial().toLowerCase().contains(input)) {
+                filtrada.add(comic);
+            }else if(filtro.equals("Año") && Integer.toString(comic.getAnioPublicacion()).contains(input)) {
+                filtrada.add(comic);
             }
         }
-        vistaVideojuegos = filtrada;
+        vistaComics = filtrada;
         generarTiles(filtrada);
     }
 }

@@ -55,7 +55,7 @@ public class LibrosController {
         view.getMenuHBox().setMargin(view.getFilterComboBox(), new Insets(0, 10, 0, 0));
         view.getMenuHBox().setMargin(view.getOrderComboBox(), new Insets(0, 10, 0, 0));
 
-        List<String> campos = new ArrayList<>(Arrays.asList("Título", "Autor", "Editorial", "Género", "Año"));
+        List<String> campos = new ArrayList<>(Arrays.asList("Título", "Autor", "ISBN", "Editorial", "Año"));
         view.getFilterComboBox().getItems().addAll(campos);
         view.getFilterComboBox().getStyleClass().add("filter-combo");
         view.getOrderComboBox().getItems().addAll(campos);
@@ -128,15 +128,17 @@ public class LibrosController {
 
             Label nuevoTituloLabel = new Label("Título:");
             TextField nuevoTituloTextField = new TextField();
-            Label nuevoautorLabel = new Label("autor:");
+            Label nuevoautorLabel = new Label("Autor:");
             TextField nuevoautorTextField = new TextField();
             Label nuevoIsbnLabel = new Label("ISBN:");
             TextField nuevoIsbnTextField = new TextField();
+            Label nuevoEditorialLabel = new Label("Editorial:");
+            TextField nuevoEditorialTextField = new TextField();
             Label nuevoAnioPublicacionLabel = new Label("Año de publicación:");
             TextField nuevoAnioPublicacionTextField = new TextField();
             Label nuevoImgLabel = new Label("URL de imágen:");
             TextField nuevoImgTextField = new TextField();
-            VBox nueVBox = new VBox(nuevoTituloLabel, nuevoTituloTextField, nuevoautorLabel, nuevoautorTextField, nuevoIsbnLabel, nuevoIsbnTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
+            VBox nueVBox = new VBox(nuevoTituloLabel, nuevoTituloTextField, nuevoautorLabel, nuevoautorTextField, nuevoIsbnLabel, nuevoIsbnTextField, nuevoEditorialLabel, nuevoEditorialTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
             nueVBox.getChildren().addAll();
             nueVBox.getChildren().forEach(e -> {
                 nueVBox.setMargin(e, new Insets(0, 0, 10, 0));
@@ -149,10 +151,11 @@ public class LibrosController {
                 validar(nuevoTituloTextField, validado);
                 validar(nuevoautorTextField, validado);
                 validar(nuevoIsbnTextField, validado);
+                validar(nuevoEditorialTextField, validado);
                 validar(nuevoAnioPublicacionTextField, validado);
                 validar(nuevoImgTextField, validado);
                 if(validado){
-                    Libro nuevoLibro = new Libro(nuevoTituloTextField.getText(), nuevoautorTextField.getText(), nuevoIsbnTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
+                    Libro nuevoLibro = new Libro(nuevoTituloTextField.getText(), nuevoautorTextField.getText(), nuevoIsbnTextField.getText(), nuevoEditorialTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
                     listaLibros.add(nuevoLibro);
                     catalogo.saveList(listaLibros);
                     XmlService.getInstance().guardarCatalogo(catalogo);
@@ -199,10 +202,13 @@ public class LibrosController {
                 card.getStyleClass().add("card");
                 
                 ImageView img = new ImageView(new Image(libro.getImgURL()));
+                img.setFitHeight(120);
+                img.setFitWidth(90);
+                img.setPreserveRatio(true);
                 Label titulo = new Label(libro.getTitulo());
                 titulo.getStyleClass().add("titulo");
                 Label autor = new Label(libro.getAutor());
-                Label detalles = new Label(libro.getIsbn() + "\nAño de publicación: " + libro.getAnioPublicacion());
+                Label detalles = new Label(libro.getIsbn() + "\nEditorial: " + libro.getEditorial() + "\nAño de publicación: " + libro.getAnioPublicacion());
                 detalles.getStyleClass().add("detalles");
                 Button modificarButton = new Button("Modificar");
                 Button eliminarButton = new Button("Eliminar");
@@ -211,6 +217,7 @@ public class LibrosController {
                 Region space = new Region();
                 HBox.setHgrow(space, Priority.ALWAYS);
                 buttonsBox.getChildren().addAll(modificarButton, space, eliminarButton);
+                buttonsBox.setAlignment(Pos.BOTTOM_CENTER);
                 
                 
                 modificarButton.setOnAction(eh -> {
@@ -239,12 +246,14 @@ public class LibrosController {
                     TextField nuevoAutorTextField = new TextField(libro.getAutor());
                     Label nuevoIsbnLabel = new Label("ISBN:");
                     TextField nuevoIsbnTextField = new TextField(libro.getIsbn());
+                    Label nuevoEditorialLabel = new Label("Editorial:");
+                    TextField nuevoEditorialTextField = new TextField(libro.getEditorial());
                     Label nuevoAnioPublicacionLabel = new Label("Año de publicación:");
                     TextField nuevoAnioPublicacionTextField = new TextField(Integer.toString(libro.getAnioPublicacion()));
                     Label nuevoImgLabel = new Label("URL de imágen:");
                     TextField nuevoImgTextField = new TextField(libro.getImgURL());
                     VBox nueVBox = new VBox();
-                    nueVBox.getChildren().addAll(nuevoTituloLabel, nuevoTituloTextField, nuevoAutorLabel, nuevoAutorTextField, nuevoIsbnLabel, nuevoIsbnTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
+                    nueVBox.getChildren().addAll(nuevoTituloLabel, nuevoTituloTextField, nuevoAutorLabel, nuevoAutorTextField, nuevoIsbnLabel, nuevoIsbnTextField, nuevoEditorialLabel, nuevoEditorialTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
                     nueVBox.getChildren().forEach(e -> {
                         nueVBox.setMargin(e, new Insets(0, 0, 10, 0));
                     });
@@ -263,11 +272,12 @@ public class LibrosController {
                         validar(nuevoTituloTextField, validado);
                         validar(nuevoAutorTextField, validado);
                         validar(nuevoIsbnTextField, validado);
+                        validar(nuevoEditorialTextField, validado);
                         validar(nuevoAnioPublicacionTextField, validado);
                         validar(nuevoImgTextField, validado);
                         if(validado){
                             catalogo = new CatalogoLibros();
-                            Libro actualizado = new Libro(nuevoTituloTextField.getText(), nuevoAutorTextField.getText(), nuevoIsbnTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
+                            Libro actualizado = new Libro(nuevoTituloTextField.getText(), nuevoAutorTextField.getText(), nuevoIsbnTextField.getText(), nuevoEditorialTextField.getText(), Integer.parseInt(nuevoAnioPublicacionTextField.getText()), nuevoImgTextField.getText());
                             listaLibros.set(listaLibros.indexOf(libro), actualizado);
                             catalogo.saveList(listaLibros);
                             XmlService.getInstance().guardarCatalogo(catalogo);
@@ -321,6 +331,10 @@ public class LibrosController {
             libro.sort((l1, l2) -> {
                 return l1.getIsbn().compareTo(l2.getIsbn());
             });
+        } else if(orden.equals("Editorial")) {
+            libro.sort((l1, l2) -> {
+                return l1.getEditorial().compareTo(l2.getEditorial());
+            });
         } else {
             libro.sort((l1, l2) -> {
                 return l1.getAnioPublicacion() - l2.getAnioPublicacion();
@@ -334,15 +348,17 @@ public class LibrosController {
         String filtro = view.getFilterComboBox().getValue() != null ? view.getFilterComboBox().getValue() : "";
         String input = view.getSearchBarTextField().getText().toLowerCase();
         for(Libro libro : listaLibros) {
-            if(filtro.isEmpty() && (libro.getTitulo().toLowerCase().contains(input) || libro.getAutor().toLowerCase().contains(input) || libro.getIsbn().toLowerCase().contains(input) || Integer.toString(libro.getAnioPublicacion()).contains(input))) {
+            if(filtro.isEmpty() && (libro.getTitulo().toLowerCase().contains(input) || libro.getAutor().toLowerCase().contains(input) || libro.getIsbn().toLowerCase().contains(input) || libro.getEditorial().toLowerCase().contains(input) || Integer.toString(libro.getAnioPublicacion()).contains(input))) {
                 filtrada.add(libro);
             } else if(filtro.equals("Título") && libro.getTitulo().toLowerCase().contains(input)) {
                 filtrada.add(libro);
             } else if(filtro.equals("Autor") && libro.getAutor().toLowerCase().contains(input)) {
                 filtrada.add(libro);
-            } else if(filtro.equals("Editorial") && libro.getIsbn().toLowerCase().contains(input)) {
+            } else if(filtro.equals("ISBN") && libro.getIsbn().toLowerCase().contains(input)) {
                 filtrada.add(libro);
-            } else if(filtro.equals("Año") && Integer.toString(libro.getAnioPublicacion()).contains(input)) {
+            } else if(filtro.equals("Editorial") && libro.getEditorial().toLowerCase().contains(input)) {
+                filtrada.add(libro);
+            }else if(filtro.equals("Año") && Integer.toString(libro.getAnioPublicacion()).contains(input)) {
                 filtrada.add(libro);
             }
         }
