@@ -18,7 +18,7 @@ public class MainView {
 
     public void load() {
         this.setSidebar(new SidebarView());
-        SidebarController sidebarController = new SidebarController(this.getSidebar());
+        SidebarController sidebarController = SidebarController.getInstance(sidebar);
         Pane emptyPane = new Pane();
         emptyPane.getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
         emptyPane.getStylesheets().add(getClass().getResource("/css/emptypane.css").toExternalForm());

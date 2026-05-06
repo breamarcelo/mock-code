@@ -1,24 +1,24 @@
 package com.budgetsgenerator.dto;
 
 public class CentralitasDTO {
-    private int id;
+    private Integer id;
     private String nombre;
     private double precio;
     
     public CentralitasDTO() {
     }
 
-    public CentralitasDTO(int id, String nombre, double precio) {
+    public CentralitasDTO(Integer id, String nombre, double precio) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

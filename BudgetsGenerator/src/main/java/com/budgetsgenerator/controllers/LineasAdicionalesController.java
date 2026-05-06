@@ -11,6 +11,8 @@ import com.budgetsgenerator.views.LineasAdicionalesView;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListCell;
 
 public class LineasAdicionalesController {
@@ -40,7 +42,19 @@ public class LineasAdicionalesController {
 
         view.getGuardarButton().setOnAction(eh -> {
             LineasAdicionalesService.getInstance().updateAll(lineasAdcicionaleList);
-            
+
+            limpiarFormulario();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
+            alert.getDialogPane().getStyleClass().add("dialog");
+            alert.setContentText("Líneas adicionales actualizadas correctamente.");
+            alert.setHeaderText("");
+            alert.setTitle("Confirmación");
+            alert.setGraphic(null);
+            alert.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
+            alert.showAndWait();
         });
 
         view.getListaButtonsBox().getChildren().addAll(view.getAgregarLineaButton(), view.getModificarLineaButton(), view.getEliminarLineaButton());

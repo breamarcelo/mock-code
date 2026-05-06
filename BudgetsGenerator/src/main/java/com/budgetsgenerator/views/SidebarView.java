@@ -1,7 +1,5 @@
 package com.budgetsgenerator.views;
 
-import com.budgetsgenerator.config.UIUtil;
-
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
@@ -13,9 +11,7 @@ public class SidebarView extends VBox{
     private Button ajustesButton = new Button("AJUSTES");
 
     public SidebarView() {
-        this.getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
-        this.getStylesheets().add(getClass().getResource("/css/sidebar.css").toExternalForm());
-        this.getStyleClass().add("sidebar");
+        
     }
 
     public Button getPresupuestosButton() {

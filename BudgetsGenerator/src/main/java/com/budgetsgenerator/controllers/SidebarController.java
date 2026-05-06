@@ -1,26 +1,46 @@
 package com.budgetsgenerator.controllers;
 
+import com.budgetsgenerator.config.UIUtil;
 import com.budgetsgenerator.views.SidebarView;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
 public class SidebarController {
-    private SidebarView view;
-    
-    public SidebarController(SidebarView view){
+    private static SidebarView view;
+    private static SidebarController instance;
+
+    private SidebarController(SidebarView view){
         this.view = view;
         load();
     }
 
-public void load() {
+    public static SidebarController getInstance(SidebarView view) {
+        if(instance == null) {
+            instance = new SidebarController(view);
+        }
+        return instance;
+    }
+
+    public void load() {
+        view.getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
+        view.getStylesheets().add(getClass().getResource("/css/sidebar.css").toExternalForm());
+        view.getStyleClass().add("sidebar");
+
         Region start = new Region();
         Region end = new Region();
+
+        ToggleButton custom = new ToggleButton();
+        custom.getStyleClass().add("custom-button");
+        custom.setOnAction(eh -> {
+            UIUtil.setDarkMode(!custom.isSelected());
+        });
         
-        view.getChildren().addAll(start, view.getPresupuestosButton(), view.getTarifasButton(), view.getLineasAdicionalesButton(),view.getProductosButton(), end, view.getAjustesButton());
+        view.getChildren().addAll(start, view.getPresupuestosButton(), view.getTarifasButton(), view.getLineasAdicionalesButton(),view.getProductosButton(), end, view.getAjustesButton(), custom);
         for(Node node : view.getChildren()){
             if(node instanceof Button) {
                 view.setMargin(node, new Insets(0, 0, 10, 0));

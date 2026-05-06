@@ -11,10 +11,18 @@ import javafx.scene.control.Button;
 
 public class MainController {
     private MainView view;
+    private static MainController instance;
 
-    public MainController(MainView view) {
+    private MainController(MainView view) {
         this.view = view;
         load();
+    }
+
+    public static MainController getInstance(MainView view) {
+        if(instance == null) {
+            instance =new MainController(view);
+        }
+        return instance;
     }
 
     public void load() {

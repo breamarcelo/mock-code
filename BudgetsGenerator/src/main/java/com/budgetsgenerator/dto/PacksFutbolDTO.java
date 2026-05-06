@@ -1,23 +1,23 @@
 package com.budgetsgenerator.dto;
 
 public class PacksFutbolDTO {
-    private int id;
+    private Integer id;
     private String nombre;
     private double precio;
     
     public PacksFutbolDTO() {
     }
     
-    public PacksFutbolDTO(int id, String nombre, double precio) {
+    public PacksFutbolDTO(Integer id, String nombre, double precio) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
     }
     
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getNombre() {

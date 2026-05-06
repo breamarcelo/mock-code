@@ -1,22 +1,22 @@
 package com.budgetsgenerator.dto;
 
 public class DescuentosDTO {
-    private int id;
+    private Integer id;
     private int porciento;
     
     public DescuentosDTO() {
     }
     
-    public DescuentosDTO(int id, int porciento) {
+    public DescuentosDTO(Integer id, int porciento) {
         this.id = id;
         this.porciento = porciento;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

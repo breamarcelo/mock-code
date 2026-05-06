@@ -17,6 +17,8 @@ import com.budgetsgenerator.views.ProductosView;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListCell;
 
 public class ProductosController {
@@ -40,6 +42,29 @@ public class ProductosController {
         view.getStreamingListView().getItems().addAll(streamingDTOs);
         view.getCentralitasListView().getItems().addAll(centralitasDTOs);
         view.getPacksFutbolListView().getItems().addAll(packsFutbolDTOs);
+
+        view.getLimpiarButton().setOnAction(eh -> {
+            limpiarFormulario();
+        });
+        
+        view.getGuardarButton().setOnAction(eh -> {
+            DescuentosService.updateAll(descuentoDTOs);
+            StreamingService.updateAll(streamingDTOs);
+            CentralitasService.updateAll(centralitasDTOs);
+            PacksFutbolService.updateAll(packsFutbolDTOs);
+            limpiarFormulario();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
+            alert.getDialogPane().getStyleClass().add("dialog");
+            alert.setContentText("Productos actualizados correctamente.");
+            alert.setHeaderText("");
+            alert.setTitle("Confirmación");
+            alert.setGraphic(null);
+            alert.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
+            alert.showAndWait();
+        });
 
         view.getDescuentosListView().setCellFactory(param -> new ListCell<DescuentosDTO>() {
             @Override
@@ -282,10 +307,14 @@ public class ProductosController {
         UIUtil.populateVBox(view.getStreamingVBox(), new ArrayList<>(Arrays.asList(view.getStreamingVBoxLabel(), view.getStreamingNombreLabel(), view.getStreamingNombreTextField(), view.getStreamingButtonsBox(), view.getStreamingListView())));
         UIUtil.populateVBox(view.getCentralitasVBox(), new ArrayList<>(Arrays.asList(view.getCentralitasVBoxLabel(), view.getCentralitasNombreLabel(), view.getCentralitasNombreTextField(), view.getCentralitasPrecioLabel(), view.getCentralitasPrecioTextField(), view.getCentralitasButtonsBox(), view.getCentralitasListView())));
         UIUtil.populateVBox(view.getPacksFutbolVBox(), new ArrayList<>(Arrays.asList(view.getPacksFutbolVBoxLabel(), view.getPacksFutbolNombreLabel(), view.getPacksFutbolNombreTextField(), view.getPacksFutbolPrecioLabel(), view.getPacksFutbolPrecioTextField(), view.getPacksFutbolButtonsBox(), view.getPacksFutbolListView())));
-
     }
 
-    public void limpiarDescuentos() {
+    public void limpiarFormulario() {
         view.getDescuentosPorcientoTextField().setText("");
+        view.getStreamingNombreTextField().setText("");
+        view.getCentralitasNombreTextField().setText("");
+        view.getCentralitasPrecioTextField().setText("");
+        view.getPacksFutbolNombreTextField().setText("");
+        view.getPacksFutbolPrecioTextField().setText("");
     }
 }

@@ -1,18 +1,18 @@
 package com.budgetsgenerator.dto;
 
 public class StreamingDTO {
-    private int id;
+    private Integer id;
     private String nombre;
     public StreamingDTO() {
     }
-    public StreamingDTO(int id, String nombre) {
+    public StreamingDTO(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getNombre() {

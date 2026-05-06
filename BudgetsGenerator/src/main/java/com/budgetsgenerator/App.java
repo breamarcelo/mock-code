@@ -14,7 +14,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         MainView mainView = new MainView();
-        MainController mainController = new MainController(mainView);
+        MainController mainController = MainController.getInstance(mainView);
         
         Scene scene = new Scene(mainView.getRoot());
         stage.setTitle("Generador de presupuestos - Orange Empresas");

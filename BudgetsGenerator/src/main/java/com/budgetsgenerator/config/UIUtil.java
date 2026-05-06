@@ -3,6 +3,9 @@ package com.budgetsgenerator.config;
 import java.util.List;
 import java.util.function.Function;
 
+import com.budgetsgenerator.controllers.MainController;
+import com.budgetsgenerator.views.MainView;
+
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -54,7 +57,9 @@ public class UIUtil {
         return darkMode;
     }
 
-    public void setDarkMode(boolean darkMode) {
-        this.darkMode = darkMode;
+    public static void setDarkMode(boolean value) {
+        darkMode = value;
+        // SidebarController.getInstance(new SidebarView());
+        // MainController.getInstance(new MainView()).load();
     }
 }
