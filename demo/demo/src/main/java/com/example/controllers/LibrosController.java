@@ -332,9 +332,11 @@ public class LibrosController {
     }
 
     public void validar(TextField field, boolean validado) {
-        field.setPromptText("Debe rellenar el campo");
-        field.getStyleClass().add("error");
-        validado = false;
+        if(field.getText().isEmpty()) {
+            field.setPromptText("Debe rellenar el campo");
+            field.getStyleClass().add("error");
+            validado = false;
+        }
     }
 
     public void ordenar(List<Libro> libro) {

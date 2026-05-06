@@ -116,7 +116,7 @@ public class VideojuegosController {
             dialog.getDialogPane().getStyleClass().add("dialog");
             dialog.setTitle("Agregar nuevo");
             dialog.setGraphic(null);
-            dialog.setHeaderText("Detalles del libro:");
+            dialog.setHeaderText("Detalles del videojuego:");
 
             Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
             cancelButton.setText("Cancelar");
@@ -331,9 +331,11 @@ public class VideojuegosController {
     }
 
     public void validar(TextField field, boolean validado) {
-        field.setPromptText("Debe rellenar el campo");
-        field.getStyleClass().add("error");
-        validado = false;
+        if(field.getText().isEmpty()) {
+            field.setPromptText("Debe rellenar el campo");
+            field.getStyleClass().add("error");
+            validado = false;
+        }
     }
 
     public void ordenar(List<Videojuego> videojuegos) {

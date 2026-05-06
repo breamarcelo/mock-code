@@ -73,5 +73,13 @@
             <AnioPublicacion>2001</AnioPublicacion>
             <ImgURL>https://images.igdb.com/igdb/image/upload/t_cover_small/co21yv.png</ImgURL>
         </Videojuego>
+        <Videojuego>
+            <Titulo>Metroid Prime: Trilogy</Titulo>
+            <Consola>Wii</Consola>
+            <Editorial>Nintendo</Editorial>
+            <Genero>Shooter / Adventure</Genero>
+            <AnioPublicacion>2009</AnioPublicacion>
+            <ImgURL>https://images.igdb.com/igdb/image/upload/t_cover_small/co404a.png</ImgURL>
+        </Videojuego>
     </Videojuegos>
 </catalogoVideojuegos>
