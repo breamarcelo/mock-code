@@ -3,6 +3,7 @@ module com.example {
     requires javafx.fxml;
     requires javafx.graphics;
     requires jakarta.xml.bind;
+    requires javafx.base;
 
     opens com.example to javafx.fxml, jakarta.xml.bind;
     opens com.example.models to jakarta.xml.bind;

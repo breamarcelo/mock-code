@@ -10,6 +10,8 @@ import com.example.models.Videojuego;
 import com.example.services.XmlService;
 import com.example.views.VideojuegosView;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -136,6 +138,15 @@ public class VideojuegosController {
             TextField nuevoGeneroTextField = new TextField();
             Label nuevoAnioPublicacionLabel = new Label("Año de publicación:");
             TextField nuevoAnioPublicacionTextField = new TextField();
+            nuevoAnioPublicacionTextField.textProperty().addListener(new ChangeListener<String>() {
+                        @Override
+                        public void changed(ObservableValue<? extends String> observable, String oldValue, 
+                            String newValue) {
+                            if (!newValue.matches("\\d*")) {
+                                nuevoAnioPublicacionTextField.setText(newValue.replaceAll("[^\\d]", ""));
+                            }
+                        }
+                    });
             Label nuevoImgLabel = new Label("URL de imágen:");
             TextField nuevoImgTextField = new TextField();
             VBox nueVBox = new VBox(nuevoTituloLabel, nuevoTituloTextField, nuevoConsolaLabel, nuevoConsolaTextField, nuevoEditorialLabel, nuevoEditorialTextField, nuevoGeneroLabel, nuevoGeneroTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
@@ -249,6 +260,15 @@ public class VideojuegosController {
                     TextField nuevoGeneroTextField = new TextField(videojuego.getGenero());
                     Label nuevoAnioPublicacionLabel = new Label("Año de publicación:");
                     TextField nuevoAnioPublicacionTextField = new TextField(Integer.toString(videojuego.getAnioPublicacion()));
+                    nuevoAnioPublicacionTextField.textProperty().addListener(new ChangeListener<String>() {
+                        @Override
+                        public void changed(ObservableValue<? extends String> observable, String oldValue, 
+                            String newValue) {
+                            if (!newValue.matches("\\d*")) {
+                                nuevoAnioPublicacionTextField.setText(newValue.replaceAll("[^\\d]", ""));
+                            }
+                        }
+                    });
                     Label nuevoImgLabel = new Label("URL de imágen:");
                     TextField nuevoImgTextField = new TextField(videojuego.getImgURL());
                     VBox nueVBox = new VBox();

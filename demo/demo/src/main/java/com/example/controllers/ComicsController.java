@@ -10,6 +10,8 @@ import com.example.models.Comic;
 import com.example.services.XmlService;
 import com.example.views.ComicsView;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -136,6 +138,15 @@ public class ComicsController {
             TextField nuevoEditorialTextField = new TextField();
             Label nuevoAnioPublicacionLabel = new Label("Año de publicación:");
             TextField nuevoAnioPublicacionTextField = new TextField();
+            nuevoAnioPublicacionTextField.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, 
+                    String newValue) {
+                    if (!newValue.matches("\\d*")) {
+                        nuevoAnioPublicacionTextField.setText(newValue.replaceAll("[^\\d]", ""));
+                    }
+                }
+            });
             Label nuevoImgLabel = new Label("URL de imágen:");
             TextField nuevoImgTextField = new TextField();
             VBox nueVBox = new VBox(nuevoTituloLabel, nuevoTituloTextField, nuevoautorLabel, nuevoautorTextField, nuevoIsbnLabel, nuevoIsbnTextField, nuevoEditorialLabel, nuevoEditorialTextField, nuevoAnioPublicacionLabel, nuevoAnioPublicacionTextField, nuevoImgLabel, nuevoImgTextField);
@@ -250,6 +261,15 @@ public class ComicsController {
                     TextField nuevoEditorialTextField = new TextField(comic.getEditorial());
                     Label nuevoAnioPublicacionLabel = new Label("Año de publicación:");
                     TextField nuevoAnioPublicacionTextField = new TextField(Integer.toString(comic.getAnioPublicacion()));
+                    nuevoAnioPublicacionTextField.textProperty().addListener(new ChangeListener<String>() {
+                        @Override
+                        public void changed(ObservableValue<? extends String> observable, String oldValue, 
+                            String newValue) {
+                            if (!newValue.matches("\\d*")) {
+                                nuevoAnioPublicacionTextField.setText(newValue.replaceAll("[^\\d]", ""));
+                            }
+                        }
+                    });
                     Label nuevoImgLabel = new Label("URL de imágen:");
                     TextField nuevoImgTextField = new TextField(comic.getImgURL());
                     VBox nueVBox = new VBox();
