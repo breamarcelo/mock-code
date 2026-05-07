@@ -1,5 +1,7 @@
 package com.budgetsgenerator.controllers;
 
+import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +46,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 public class PresupuestosController {
     private PresupuestosView view;
@@ -173,7 +177,23 @@ public class PresupuestosController {
         view.getSaveButton().setDisable(!view.getPresupuestoField().getText().isEmpty());
 
         view.getGenerarPdfButton().setOnAction(e -> {
-            XmlService.getInstance().createPdf(view.getResumenView().getItems(), view.getTotalFieldText());
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            File directory = directoryChooser.showDialog(new Stage());
+            if(!directory.toString().isEmpty()) {
+                String filePath = directory.toString() + "/" +view.getPresupuestoField().getText() + "_" + LocalDate.now() + ".pdf";
+                XmlService.getInstance().createPdf(view.getResumenView().getItems(), view.getTotalFieldText(), filePath);
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.getDialogPane().getStylesheets().add(getClass().getResource(UIUtil.getPalette()).toExternalForm());
+                alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/dialog.css").toExternalForm());
+                alert.getDialogPane().getStyleClass().add("dialog");
+                alert.setContentText("PDF generado correctamente.");
+                alert.setHeaderText("");
+                alert.setTitle("Confirmación");
+                alert.setGraphic(null);
+                alert.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
+                alert.showAndWait();
+            }
         });
 
         view.getNuevoButton().setOnAction(e -> {            
@@ -483,20 +503,20 @@ public class PresupuestosController {
         ResumentTableItem row = new ResumentTableItem();
         ListView<String> descripcion = new ListView<>();
         descripcion.setPrefHeight(138);
-        descripcion.getItems().add("Roaming: llamadas y " + dto.getRoaming() + " en Zona Roaming UE");
+        descripcion.getItems().add("Roaming: llamadas y " + dto.getRoaming() + " en Zona Roaming UE.");
         if(dto.getInternacional() != null){
-            descripcion.getItems().add("Llamadas internacionales: " + dto.getInternacional());
+            descripcion.getItems().add("Llamadas internacionales: " + dto.getInternacional() + ".");
         }
-        if(dto.isLegalitas()) {descripcion.getItems().add("Legálitas Protección Jurídica Negocios Orange");}
-        if(dto.isCloud()) {descripcion.getItems().add("Cloud y Protección Dispositivos");}
-        if(dto.isCiberProteccion()) {descripcion.getItems().add("Ciber Protección Red Móvil");}
-        if(dto.isAtencionPersonalizada()) {descripcion.getItems().add("Atención personalizada");}
+        if(dto.isLegalitas()) {descripcion.getItems().add("Legálitas Protección Jurídica Negocios Orange.");}
+        if(dto.isCloud()) {descripcion.getItems().add("Cloud y Protección Dispositivos.");}
+        if(dto.isCiberProteccion()) {descripcion.getItems().add("Ciber Protección Red Móvil.");}
+        if(dto.isAtencionPersonalizada()) {descripcion.getItems().add("Atención personalizada.");}
         if(dto.getCentralita() != null){
-            descripcion.getItems().add("Centralita Negocio: " + dto.getInternacional());
+            descripcion.getItems().add("Centralita Negocio: " + dto.getInternacional() + ".");
         }
         if(dto.getNumBeneficios() > 0) {
             descripcion.getItems().add(dto.getNumBeneficios() + " beneficios a elegir para tu negocio" + 
-            (dto.getDescuentoBeneficios() != null ? "con " + dto.getDescuentoBeneficios() : ""));
+            (dto.getDescuentoBeneficios() != null ? " con " + dto.getDescuentoBeneficios() : "") + ".");
         }
 
         row.setCantidad(1);

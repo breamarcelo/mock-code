@@ -31,13 +31,13 @@ public class XmlService {
         return instance;
     }
 
-    public void createPdf(List<ResumentTableItem> tableItems, String total){
+    public void createPdf(List<ResumentTableItem> tableItems, String total, String filePath){
         presupuestoXml = mapper.getInstance().lineaToToXml(tableItems, total);
         String xml = xmlGenerator.getInstance().createXml(presupuestoXml);
         InputStream xsl = getClass().getResourceAsStream("/templates/presupuesto.xsl");
         try {
             String html = transformXmltoHtml(xml, xsl);
-            pdfGenerator.generatePdf(html, new File("presupuesto.pdf"));
+            pdfGenerator.generatePdf(html, new File(filePath));
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

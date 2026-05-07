@@ -3,9 +3,6 @@ package com.budgetsgenerator.config;
 import java.util.List;
 import java.util.function.Function;
 
-import com.budgetsgenerator.controllers.MainController;
-import com.budgetsgenerator.views.MainView;
-
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;

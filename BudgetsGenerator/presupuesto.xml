@@ -3,19 +3,17 @@
     <LineasPresupuesto>
         <Linea>
             <Cantidad>1</Cantidad>
-            <Descripcion>Tarifa Negocio Extra 3 línea
-3 líneas móviles  con llamadas ilimitadas y Gb ilimitados
-Pack Negocio Extra 3 línea
-Fibra 10Gb
-Con Amazon Prime
+            <Descripcion>Tarifa Negocio Extra 20 línea
+20 líneas móviles  con llamadas ilimitadas y Gb ilimitados
+Fibra 2Gb
 </Descripcion>
-            <Importe>99.26</Importe>
+            <Importe>378.0</Importe>
         </Linea>
         <Linea>
             <Cantidad>1</Cantidad>
-            <Descripcion>Descuento 20%
+            <Descripcion>Descuento 30%
 </Descripcion>
-            <Importe>-19.852</Importe>
+            <Importe>-113.4</Importe>
         </Linea>
         <Linea>
             <Cantidad>1</Cantidad>
@@ -25,9 +23,21 @@ Con Amazon Prime
         </Linea>
         <Linea>
             <Cantidad>1</Cantidad>
-            <Descripcion>Pack Orange TV con más de 90 canales, deportes y todo el fútbol
+            <Descripcion>Pack Orange TV con más de 90 canales y todo el fútbol
 </Descripcion>
             <Importe>31.0</Importe>
+        </Linea>
+        <Linea>
+            <Cantidad>3</Cantidad>
+            <Descripcion>Línea Smartphone Negocio Sin Límites
+</Descripcion>
+            <Importe>33.0</Importe>
+        </Linea>
+        <Linea>
+            <Cantidad>2</Cantidad>
+            <Descripcion>Línea Smartphone Negocio 250 min
+</Descripcion>
+            <Importe>24.0</Importe>
         </Linea>
         <Linea>
             <Cantidad>1</Cantidad>
@@ -37,27 +47,17 @@ Con Amazon Prime
         </Linea>
         <Linea>
             <Cantidad>1</Cantidad>
-            <Descripcion>Línea Smartphone Negocio 250 min
-</Descripcion>
-            <Importe>12.0</Importe>
-        </Linea>
-        <Linea>
-            <Cantidad>1</Cantidad>
-            <Descripcion>Línea Smartphone Negocio Sin Límites
-</Descripcion>
-            <Importe>11.0</Importe>
-        </Linea>
-        <Linea>
-            <Cantidad>1</Cantidad>
-            <Descripcion>Roaming: llamadas y 60Gb en Zona Roaming UE
-Llamadas internacionales: 200 min a fijos y móviles
-Legálitas Protección Jurídica Negocios Orange
-Cloud y Protección Dispositivos
-Ciber Protección Red Móvil
-2 beneficios a elegir para tu negocio
+            <Descripcion>Roaming: llamadas y 60Gb en Zona Roaming UE.
+Llamadas internacionales: 200 min a fijos y móviles.
+Legálitas Protección Jurídica Negocios Orange.
+Cloud y Protección Dispositivos.
+Ciber Protección Red Móvil.
+Atención personalizada.
+Centralita Negocio: 200 min a fijos y móviles.
+3 beneficios a elegir para tu negocio con 50% o 100% de descuento.
 </Descripcion>
             <Importe>0.0</Importe>
         </Linea>
     </LineasPresupuesto>
-    <Totla>158.40800000000002</Totla>
+    <Total>377.6</Total>
 </Presupuesto>

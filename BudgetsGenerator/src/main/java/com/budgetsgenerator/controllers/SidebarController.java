@@ -4,9 +4,11 @@ import com.budgetsgenerator.config.UIUtil;
 import com.budgetsgenerator.views.SidebarView;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
@@ -34,18 +36,22 @@ public class SidebarController {
         Region start = new Region();
         Region end = new Region();
 
+        ImageView img = new ImageView(new Image(getClass().getResource("/img/masorange-logo.png").toExternalForm()));
+        img.setFitWidth(80);
+        img.setPreserveRatio(true);
         ToggleButton custom = new ToggleButton();
         custom.getStyleClass().add("custom-button");
         custom.setOnAction(eh -> {
             UIUtil.setDarkMode(!custom.isSelected());
         });
         
-        view.getChildren().addAll(start, view.getPresupuestosButton(), view.getTarifasButton(), view.getLineasAdicionalesButton(),view.getProductosButton(), end, view.getAjustesButton(), custom);
+        view.getChildren().addAll(img, start, view.getPresupuestosButton(), view.getTarifasButton(), view.getLineasAdicionalesButton(),view.getProductosButton(), end);
         for(Node node : view.getChildren()){
-            if(node instanceof Button) {
-                view.setMargin(node, new Insets(0, 0, 10, 0));
-            }
+            view.setMargin(node, new Insets(0, 0, 10, 0));
+            // if(node instanceof Button) {
+            // }
         }
+        view.setAlignment(Pos.CENTER);
         view.setVgrow(start, Priority.ALWAYS);
         view.setVgrow(end, Priority.ALWAYS);
 

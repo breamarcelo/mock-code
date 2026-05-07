@@ -9,70 +9,109 @@
                     body {
                     font-family: 'Arial', sans-serif;
                     margin: 40px;
-                    color: #333;
-                    }
-                    h1 {
-                    color: #2c3e50; border-bottom: 2px solid #3498db;
-                    padding-bottom: 10px;
                     }
                     table {
                     width: 100%;
                     border-collapse: collapse;
+                    border: 1px solid black;
+                    margin-bottom: 40px;
                     }
+                    h3, h4 {
+                        padding: 0;
+                        margin: 0;
+                    }
+                    
+                    img {
+                        width:60px;
+                        margin: 20px; 
+                    }
+
+                    .header-table {
+                        width: auto;
+                        border: none;
+                    }
+                    .demo {
+                        white-space: pre-wrap;
+                        padding: 0;
+                        
+                    }
+
                     th {
-                    background-color: #3498db;
-                    color: white;
-                    padding: 10px;
-                    text-align: left;
+                        background-color: grey;
+                        color: white;
                     }
-                    td {
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                    }
-                    tr:nth-child(even) {
-                    background-color: #f2f2f2;
+                    .body-table tr:nth-child(even) {
+                        background-color: lightgrey;
                     }
                     .total {
-                    font-weight: bold;
-                    font-size: 1.2em;
-                    text-align: right;
-                    margin-top:20px;
+                        font-weight: bold;
+                        text-align: right;
+                        margin-right: 20px;
                     }
+                    .body-table tr:last-child {
+                        background-color: white;
+                    }
+                    .body-table tr:last-child>td {
+                        border-top: 1px solid black;
+                    }
+
                 </style>
             </head>
             <body>
-                <h2>Presupuesto</h2>
-                <h3>Orange Empresas</h3>
-                <table>
+                <table class="header-table">
+                    <tr>
+                        <td rowspan="2">
+                            <img src="masorange-logo.png" alt="Logo" />
+                        </td>
+                        <td>
+                            <h3>Presupuesto</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4>Orange Empresas</h4>
+                        </td>
+                    </tr>
+                </table>
+                <table class="body-table">
                     <thead>
                         <tr>
-                            <th>CANTIDAD</th>
-                            <th>DESCRIPCIÓN</th>
-                            <th>IMPORTE</th>
+                            <th width="15%">CANTIDAD</th>
+                            <th width="70%">DESCRIPCIÓN</th>
+                            <th width="15%">IMPORTE</th>
                         </tr>
                     </thead>
                     <tbody>
                         <xsl:for-each select="LineasPresupuesto/Linea">
+                        <xsl:if test="position()!=last()">
                             <tr>
-                                <td>
+                                <td style="text-align: center;">
                                     <xsl:value-of select="Cantidad" />
                                 </td>
                                 <td>
                                     <xsl:value-of select="Descripcion" />
                                 </td>
-                                <td>
+                                <td  style="text-align: right;">
                                     <xsl:value-of select="Importe" />
                                 </td>
                             </tr>
-                        </xsl:for-each>
-                        <tr>
-                            <td colspan="2" class="total">Total:</td>
-                            <td>
-                                <xsl:value-of select="Total" />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                        </xsl:if>
+                    </xsl:for-each>
+                    <tr class="total-row">
+                        <td colspan="2" class="total">Total:</td>
+                        <td  style="text-align: right;">
+                            <xsl:value-of select="Total" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <xsl:for-each select="LineasPresupuesto/Linea">
+            <xsl:if test="position()=last()">
+                <div class="demo">
+                    <xsl:value-of select="Descripcion" />
+                </div>
+            </xsl:if>
+            </xsl:for-each>
             </body>
         </html>
     </xsl:template>
