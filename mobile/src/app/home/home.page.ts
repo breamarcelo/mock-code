@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton } from '@ionic/angular/standalone';
+import { PresupuestoService } from '../api/presupuesto-service';
+import { Presupuesto } from '../model/Presupuesto.model';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +9,20 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, Io
   styleUrls: ['home.page.scss'],
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton],
 })
-export class HomePage {
-  constructor() { }
+export class HomePage implements OnInit {
+  presupuesto?: Presupuesto;
+
+  constructor(private presupuestoService: PresupuestoService) { }
+
+  ngOnInit(): void {
+    this.presupuestoService.getAll().subscribe({
+      next: (data) => {
+        this.presupuesto = data;
+        alert(JSON.stringify(data));
+      },
+      error: (err) => console.error('Error al conectar con Spring Boot', err)
+    })
+  }
+
+
 }
