@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.api.dto.PresupuestosDTO;
+import com.example.api.dto.ResultDTO;
+import com.example.api.model.LineasPresupuestoEntity;
 import com.example.api.model.PresupuestosEntity;
+import com.example.api.repository.LineasPresupuestoRepository;
 import com.example.api.repository.PresupuestosRepository;
 import com.example.api.service.PresupuestosService;
 
@@ -21,23 +23,30 @@ import com.example.api.service.PresupuestosService;
 public class PresupuestosController {
     @Autowired
     private PresupuestosRepository repository;
+
+    @Autowired
+    private LineasPresupuestoRepository lineasRepository;
     
     @Autowired
     private PresupuestosService presupuestosService;
 
     @GetMapping()
-    public List<PresupuestosDTO> getAll() {
-        List<PresupuestosDTO> dtos = new ArrayList<>();
-        repository.findAll().stream().forEach(presupuesto -> {
-            dtos.add(presupuestosService.getInstance().toDto(presupuesto));
-        });
+    public List<ResultDTO> getAll() {
+        List<ResultDTO> dtos = new ArrayList<>();
+        List<PresupuestosEntity> presupuestos = repository.findAll();
+        for (PresupuestosEntity presupuestoEntity : presupuestos) {
+            List<LineasPresupuestoEntity> lineasEntities = lineasRepository.findAllByPresupuestoId(presupuestoEntity.getId());
+            dtos.add(presupuestosService.getInstance().toDto(presupuestoEntity, lineasEntities));
+        }
+        
         return dtos;
     }
 
     @GetMapping("/{id}")
-    public PresupuestosDTO getById(@PathVariable int id) {
+    public ResultDTO getById(@PathVariable int id) {
         PresupuestosEntity entity = repository.findById(id).get();
-        PresupuestosDTO dto = presupuestosService.getInstance().toDto(entity);
+        List<LineasPresupuestoEntity> lineas = lineasRepository.findAllByPresupuestoId(entity.getId());
+        ResultDTO dto = presupuestosService.getInstance().toDto(entity, lineas);
         return dto;
     }
 }

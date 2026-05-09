@@ -1,15 +1,22 @@
 package com.example.api.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.api.dto.CentralitasDTO;
 import com.example.api.dto.DescuentosDTO;
 import com.example.api.dto.FibrasDTO;
+import com.example.api.dto.LineasAdicionalesDTO;
+import com.example.api.dto.LineasPresupuestoDTO;
 import com.example.api.dto.PacksFutbolDTO;
 import com.example.api.dto.PresupuestosDTO;
+import com.example.api.dto.ResultDTO;
 import com.example.api.dto.ServiciosAdicionalesDTO;
 import com.example.api.dto.StreamingDTO;
 import com.example.api.dto.TarifasDTO;
+import com.example.api.model.LineasPresupuestoEntity;
 import com.example.api.model.PresupuestosEntity;
 
 @Service
@@ -24,8 +31,8 @@ public class PresupuestosService {
         }
         return instance;
     }
-    
-    public PresupuestosDTO toDto(PresupuestosEntity entity) {
+
+    public ResultDTO toDto(PresupuestosEntity entity, List<LineasPresupuestoEntity> lineaList) {
         DescuentosDTO descuento = new DescuentosDTO();
         PacksFutbolDTO packFutbol = new PacksFutbolDTO();
         CentralitasDTO centralita = new CentralitasDTO();
@@ -33,23 +40,22 @@ public class PresupuestosService {
         FibrasDTO fibra = new FibrasDTO();
         ServiciosAdicionalesDTO serviciosAdicionales = new ServiciosAdicionalesDTO();
         TarifasDTO tarifa = new TarifasDTO();
-        PresupuestosDTO dto = new PresupuestosDTO();
-
-        if(entity.getDescuento() != null) {
-            descuento.setId(entity.getDescuento().getId());
-            descuento.setPorciento(entity.getDescuento().getPorciento());
-        }
+        PresupuestosDTO presupuesto = new PresupuestosDTO();
+        double total = 0;
+        ResultDTO dto = new ResultDTO();
 
         if(entity.getPackFutbol() != null) {
             packFutbol.setId(entity.getPackFutbol().getId());
             packFutbol.setNombre(entity.getPackFutbol().getNombre());
             packFutbol.setPrecio(entity.getPackFutbol().getPrecio());
+            total += entity.getPackFutbol().getPrecio();
         }
 
         if(entity.getCentralita() != null) {
             centralita.setId(entity.getCentralita().getId());
             centralita.setNombre(entity.getCentralita().getNombre());
             centralita.setPrecio(entity.getCentralita().getPrecio());
+            total += entity.getCentralita().getPrecio();
         }
 
         if(entity.getStreaming() != null) {
@@ -83,17 +89,51 @@ public class PresupuestosService {
             tarifa.setServiciosAdicionales(serviciosAdicionales);
             tarifa.setTv(entity.getTarifa().isTv());
             tarifa.setStreaming(entity.getTarifa().isStreaming());
+            
+            if(entity.getDescuento() != null) {
+                descuento.setId(entity.getDescuento().getId());
+                descuento.setPorciento(entity.getDescuento().getPorciento());
+                total += (entity.getTarifa().getPrecio() - ((entity.getTarifa().getPrecio()*entity.getDescuento().getPorciento())/100)) + fibra.getSobrecargo();
+            } else {
+                total += entity.getTarifa().getPrecio() + fibra.getSobrecargo();
+
+            }
+        }
+
+        presupuesto.setId(entity.getId());
+        presupuesto.setNombre(entity.getNombre());
+        presupuesto.setTarifa(tarifa);
+        presupuesto.setFibra(fibra);
+        presupuesto.setStreaming(streaming);
+        presupuesto.setCentralita(centralita);
+        presupuesto.setPackFutbol(packFutbol);
+        presupuesto.setDescuento(descuento);
+
+        List<LineasPresupuestoDTO> lineasPresupuestoDTOs = new ArrayList<>();
+        for (LineasPresupuestoEntity linea : lineaList) {
+            LineasAdicionalesDTO lineasAdicionalesDTO = new LineasAdicionalesDTO();
+            LineasPresupuestoDTO lineasPresupuestoDTO = new LineasPresupuestoDTO();
+
+            lineasAdicionalesDTO.setId(linea.getLineaAdicional().getId());
+            lineasAdicionalesDTO.setNombre(linea.getLineaAdicional().getNombre());
+            lineasAdicionalesDTO.setTipo(linea.getLineaAdicional().getTipo());
+            lineasAdicionalesDTO.setNumeroLineas(linea.getLineaAdicional().getNumLineas());
+            lineasAdicionalesDTO.setLlamadas(linea.getLineaAdicional().getLlamadas());
+            lineasAdicionalesDTO.setGb(linea.getLineaAdicional().getGb());
+            lineasAdicionalesDTO.setFibra(linea.getLineaAdicional().getFibra());
+            lineasAdicionalesDTO.setPrecio(linea.getLineaAdicional().getPrecio());
+
+            lineasPresupuestoDTO.setId(linea.getId());
+            lineasPresupuestoDTO.setCantidad(linea.getCantidad());
+            lineasPresupuestoDTO.setLineaAdicional(lineasAdicionalesDTO);
+
+            lineasPresupuestoDTOs.add(lineasPresupuestoDTO);
+            total += lineasPresupuestoDTO.getCantidad() * lineasAdicionalesDTO.getPrecio();
         }
         
-        dto.setId(entity.getId());
-        dto.setNombre(entity.getNombre());
-        dto.setTarifa(tarifa);
-        dto.setFibra(fibra);
-        dto.setStreaming(streaming);
-        dto.setCentralita(centralita);
-        dto.setPackFutbol(packFutbol);
-        dto.setDescuento(descuento);
-        
+        dto.setPresupuesto(presupuesto);
+        dto.setLineas(lineasPresupuestoDTOs);
+        dto.setTotal(total);
         return dto;
     }
 }
