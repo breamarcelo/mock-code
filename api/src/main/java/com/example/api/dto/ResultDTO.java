@@ -5,12 +5,14 @@ import java.util.List;
 public class ResultDTO {
     private PresupuestosDTO presupuesto;
     private List<LineasPresupuestoDTO> lineas;
+    private ServiciosAdicionalesDTO serviciosAdicionales;
     private double total;
     public ResultDTO() {
     }
-    public ResultDTO(PresupuestosDTO presupuesto, List<LineasPresupuestoDTO> lineas) {
+    public ResultDTO(PresupuestosDTO presupuesto, List<LineasPresupuestoDTO> lineas, ServiciosAdicionalesDTO serviciosAdicionales) {
         this.presupuesto = presupuesto;
         this.lineas = lineas;
+        this.serviciosAdicionales = serviciosAdicionales;
     }
     public PresupuestosDTO getPresupuesto() {
         return presupuesto;
@@ -29,6 +31,12 @@ public class ResultDTO {
     }
     public void setTotal(double total) {
         this.total = total;
+    }
+    public ServiciosAdicionalesDTO getServiciosAdicionales() {
+        return serviciosAdicionales;
+    }
+    public void setServiciosAdicionales(ServiciosAdicionalesDTO serviciosAdicionales) {
+        this.serviciosAdicionales = serviciosAdicionales;
     }
     
 }

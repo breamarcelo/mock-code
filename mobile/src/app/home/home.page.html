@@ -51,7 +51,8 @@
       }
     </ion-card-content>
 
-    <ion-button expand="block" style="margin: 15px;">Generar PDF</ion-button>
+    <ion-button expand="block" style="margin: 15px;" (click)="generatePdf(res.presupuesto.id)">Generar
+      PDF</ion-button>
   </ion-card>
   }
 </ion-content>

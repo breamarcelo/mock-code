@@ -13,4 +13,8 @@ export class PresupuestoService {
     return this.http.get<Result[]>('http://localhost:8080/api/presupuestos');
   }
 
+  getById(id: number) {
+    return this.http.get<Result>(`http://localhost:8080/api/presupuestos/${id}`);
+  }
+
 }

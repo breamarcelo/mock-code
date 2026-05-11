@@ -83,35 +83,35 @@
                     </thead>
                     <tbody>
                         <xsl:for-each select="LineasPresupuesto/Linea">
-                        <xsl:if test="position()!=last()">
-                            <tr>
-                                <td style="text-align: center;">
-                                    <xsl:value-of select="Cantidad" />
-                                </td>
-                                <td>
-                                    <xsl:value-of select="Descripcion" />
-                                </td>
-                                <td  style="text-align: right;">
-                                    <xsl:value-of select="Importe" />
-                                </td>
-                            </tr>
-                        </xsl:if>
-                    </xsl:for-each>
-                    <tr class="total-row">
-                        <td colspan="2" class="total">Total:</td>
-                        <td  style="text-align: right;">
-                            <xsl:value-of select="Total" />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <xsl:for-each select="LineasPresupuesto/Linea">
-            <xsl:if test="position()=last()">
-                <div class="demo">
-                    <xsl:value-of select="Descripcion" />
-                </div>
-            </xsl:if>
-            </xsl:for-each>
+                            <xsl:if test="position()!=last()">
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <xsl:value-of select="Cantidad" />
+                                    </td>
+                                    <td>
+                                        <xsl:value-of select="Descripcion" />
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <xsl:value-of select="Importe" />
+                                    </td>
+                                </tr>
+                            </xsl:if>
+                        </xsl:for-each>
+                        <tr class="total-row">
+                            <td colspan="2" class="total">Total:</td>
+                            <td style="text-align: right;">
+                                <xsl:value-of select="Total" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <xsl:for-each select="LineasPresupuesto/Linea">
+                    <xsl:if test="position()=last()">
+                        <div class="demo">
+                            <xsl:value-of select="Descripcion" />
+                        </div>
+                    </xsl:if>
+                </xsl:for-each>
             </body>
         </html>
     </xsl:template>

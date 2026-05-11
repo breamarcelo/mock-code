@@ -18,7 +18,7 @@ import com.example.api.repository.PresupuestosRepository;
 import com.example.api.service.PresupuestosService;
 
 @RestController
-@CrossOrigin(origins="http://localhost:8100/")
+@CrossOrigin(origins="http://localhost:8100")
 @RequestMapping("/api/presupuestos")
 public class PresupuestosController {
     @Autowired

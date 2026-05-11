@@ -96,7 +96,6 @@ public class PresupuestosService {
                 total += (entity.getTarifa().getPrecio() - ((entity.getTarifa().getPrecio()*entity.getDescuento().getPorciento())/100)) + fibra.getSobrecargo();
             } else {
                 total += entity.getTarifa().getPrecio() + fibra.getSobrecargo();
-
             }
         }
 
@@ -134,6 +133,7 @@ public class PresupuestosService {
         dto.setPresupuesto(presupuesto);
         dto.setLineas(lineasPresupuestoDTOs);
         dto.setTotal(total);
+        dto.setServiciosAdicionales(serviciosAdicionales);
         return dto;
     }
 }
